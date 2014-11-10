@@ -34,7 +34,7 @@ class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UI
     var tabIndicatorColor: UIColor = UIColor.lightGrayColor()
     // tabbar
     var tabbar: UIToolbar = UIToolbar(frame: CGRectZero)
-    var tabbarPosition: UIBarPosition = UIBarPosition.Top
+    var tabbarPosition: UIBarPosition = UIBarPosition.TopAttached
     var tabScrollView: UIScrollView = UIScrollView()
     
     required init(coder aDecoder: NSCoder) {
