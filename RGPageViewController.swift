@@ -34,6 +34,7 @@ class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UI
     var tabIndicatorColor: UIColor = UIColor.lightGrayColor()
     // tabbar
     var tabbar: UIToolbar = UIToolbar(frame: CGRectZero)
+    var barTintColor: UIColor?
     var tabbarPosition: UIBarPosition = UIBarPosition.TopAttached
     var tabScrollView: UIScrollView = UIScrollView()
     
@@ -145,6 +146,14 @@ class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UI
             self.tabIndicatorColor = self.delegate!.colorForTabIndicator!()
         }
         
+        if (self.delegate?.heightForIndicator? != nil) {
+            self.tabIndicatorHeight = self.delegate!.heightForIndicator!()
+        }
+        
+        if (self.delegate?.tintColorForTabBar? != nil) {
+            self.barTintColor = self.delegate!.tintColorForTabBar!()
+        }
+        
         self.tabScrollView.frame = CGRectMake(0.0, 0.0, self.view.bounds.size.width, self.tabHeight)
         self.tabScrollView.setTranslatesAutoresizingMaskIntoConstraints(false)
         self.tabScrollView.backgroundColor = UIColor.clearColor()
@@ -174,6 +183,9 @@ class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UI
         
         self.tabScrollView.contentSize = CGSizeMake(contentSizeWidth, self.tabHeight)
         
+        if self.barTintColor != nil {
+            self.tabbar.barTintColor = self.barTintColor
+        }
         self.tabbar.translucent = true
         self.tabbar.setTranslatesAutoresizingMaskIntoConstraints(false)
         self.tabbar.addSubview(self.tabScrollView)
@@ -204,7 +216,7 @@ class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UI
                 tabWidth = self.delegate!.widthForTabAtIndex!(index)
             }
             
-            let tabView: RGTabView = RGTabView(frame: CGRectMake(0.0, 0.0, tabWidth, self.tabHeight), color: self.tabIndicatorColor)
+            let tabView: RGTabView = RGTabView(frame: CGRectMake(0.0, 0.0, tabWidth, self.tabHeight), indicatorColor: self.tabIndicatorColor, indicatorHeight: self.tabIndicatorHeight)
             
             tabView.addSubview(tabViewContent!)
             tabView.clipsToBounds = true
@@ -435,10 +447,12 @@ class RGTabView: UIView {
     var indicatorHeight: CGFloat = 2.0
     var indicatorColor: UIColor = UIColor.lightGrayColor()
     
-    init(frame: CGRect, color indicatorColor: UIColor) {
+    init(frame: CGRect, indicatorColor: UIColor, indicatorHeight: CGFloat) {
         super.init(frame: frame)
         
         self.indicatorColor = indicatorColor
+        self.indicatorHeight = indicatorHeight
+        
         self.initSelf()
     }
 
@@ -526,21 +540,30 @@ extension UIImage {
     /// :returns: the height of the tab view
     optional func heightForTabbar() -> CGFloat
     
+    /// Delegate objects can implement this method to set a custom height for the tab indicator.
+    ///
+    /// :returns: the height of the tab indicator
+    optional func heightForIndicator() -> CGFloat
+    
     /// Delegate objects can implement this method if tabs use dynamic width.
     ///
     /// :param: index the index of the tab
     /// :returns: the width for the tab at the given index
     optional func widthForTabAtIndex(index: Int) -> CGFloat
     
-    /// Delegate objects can implement this method to specify the position of the Tabbar.
+    /// Delegate objects can implement this method to specify the position of the tabbar.
     ///
     /// :param: bar the tabbar
     /// :returns: the position for the tabbar
     optional func positionForTabbar(bar: UIBarPositioning) -> UIBarPosition
     
-    /// Delegate objects can implement this method to specify the position of the Tabbar.
+    /// Delegate objects can implement this method to specify the color of the tab indicator.
     ///
-    /// :param: bar the tabbar
-    /// :returns: the position for the tabbar
+    /// :returns: the color for the tab indicator
     optional func colorForTabIndicator() -> UIColor
+    
+    /// Delegate objects can implement this method to specify a tint color for the tabbar.
+    ///
+    /// :returns: the tint color for the tabbar
+    optional func tintColorForTabBar() -> UIColor
 }
