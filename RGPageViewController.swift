@@ -141,6 +141,10 @@ class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UI
             self.tabHeight = self.delegate!.heightForTabbar!()
         }
         
+        if (self.delegate?.colorForTabIndicator? != nil) {
+            self.tabIndicatorColor = self.delegate!.colorForTabIndicator!()
+        }
+        
         self.tabScrollView.frame = CGRectMake(0.0, 0.0, self.view.bounds.size.width, self.tabHeight)
         self.tabScrollView.setTranslatesAutoresizingMaskIntoConstraints(false)
         self.tabScrollView.backgroundColor = UIColor.clearColor()
@@ -200,7 +204,7 @@ class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UI
                 tabWidth = self.delegate!.widthForTabAtIndex!(index)
             }
             
-            let tabView: RGTabView = RGTabView(frame: CGRectMake(0.0, 0.0, tabWidth, self.tabHeight))
+            let tabView: RGTabView = RGTabView(frame: CGRectMake(0.0, 0.0, tabWidth, self.tabHeight), color: self.tabIndicatorColor)
             
             tabView.addSubview(tabViewContent!)
             tabView.clipsToBounds = true
@@ -221,26 +225,10 @@ class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UI
         }
         
         if self.pageViewControllers.objectAtIndex(index).isEqual(NSNull()) {
-            var vc: UIViewController? = nil
-            var view: UIView? = nil
+            let vc: UIViewController? = self.datasource?.viewControllerForPageAtIndex?(self, index: index)
+            let view: UIView = vc?.view.subviews[0] as UIView
             
-            vc = self.datasource?.viewControllerForPageAtIndex?(self, index: index)
-            
-            if vc == nil {
-                vc = UIViewController()
-                view = self.datasource?.viewForPageAtIndex?(self, index: index)
-                
-                if view == nil {
-                    view = UIView()
-                }
-                
-                vc?.view = UIView()
-                vc?.view.addSubview(view!)
-            }
-            
-            view = vc?.view.subviews[0] as? UIView
-            
-            if view? is UIScrollView {
+            if view is UIScrollView {
                 var edgeInsets: UIEdgeInsets = (view as UIScrollView).contentInset
                 
                 if self.tabbarPosition == UIBarPosition.Top || self.tabbarPosition == UIBarPosition.TopAttached {
@@ -447,9 +435,10 @@ class RGTabView: UIView {
     var indicatorHeight: CGFloat = 2.0
     var indicatorColor: UIColor = UIColor.lightGrayColor()
     
-    override init(frame: CGRect) {
+    init(frame: CGRect, color indicatorColor: UIColor) {
         super.init(frame: frame)
         
+        self.indicatorColor = indicatorColor
         self.initSelf()
     }
 
@@ -523,14 +512,6 @@ extension UIImage {
     ///
     /// :returns: a UIViewController instance whose view will be shown as content
     optional func viewControllerForPageAtIndex(pageViewController: RGPageViewController, index: Int) -> UIViewController?
-    
-    /// The content for any page. Return a UIView and RGPageViewController will use it to show as content.
-    ///
-    /// :param: pageViewController the RGPageViewController instance that's subject to
-    /// :param: index the index of the content whose view is asked
-    ///
-    /// :returns: a UIView instance which will be shown as content
-    optional func viewForPageAtIndex(pageViewController: RGPageViewController, index: Int) -> UIView?
 }
 
 // MARK: - RGPageViewController Delegate
@@ -556,4 +537,10 @@ extension UIImage {
     /// :param: bar the tabbar
     /// :returns: the position for the tabbar
     optional func positionForTabbar(bar: UIBarPositioning) -> UIBarPosition
+    
+    /// Delegate objects can implement this method to specify the position of the Tabbar.
+    ///
+    /// :param: bar the tabbar
+    /// :returns: the position for the tabbar
+    optional func colorForTabIndicator() -> UIColor
 }
