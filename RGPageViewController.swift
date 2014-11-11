@@ -248,7 +248,7 @@ class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UI
         }
         
         if self.pageViewControllers.objectAtIndex(index).isEqual(NSNull()) {
-            let vc: UIViewController? = self.datasource?.viewControllerForPageAtIndex?(self, index: index)
+            let vc: UIViewController? = self.datasource?.viewControllerForPageAtIndex(self, index: index)
             let view: UIView = vc?.view.subviews[0] as UIView
             
             if view is UIScrollView {
@@ -552,7 +552,7 @@ extension UIImage {
     /// :param: index the index of the content whose view is asked
     ///
     /// :returns: a UIViewController instance whose view will be shown as content
-    optional func viewControllerForPageAtIndex(pageViewController: RGPageViewController, index: Int) -> UIViewController?
+    func viewControllerForPageAtIndex(pageViewController: RGPageViewController, index: Int) -> UIViewController?
 }
 
 // MARK: - RGPageViewController Delegate
