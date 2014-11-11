@@ -139,7 +139,10 @@ class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UI
         self.tabs.removeAllObjects()
         self.pageViewControllers.removeAllObjects()
         
-        self.pageCount = self.datasource?.numberOfPagesForViewController(self)
+        if let theSource = self.datasource {
+            self.pageCount = theSource.numberOfPagesForViewController(self)
+        }
+        
         self.tabs = NSMutableArray(capacity: self.pageCount)
         self.pageViewControllers = NSMutableArray(capacity: self.pageCount)
         
@@ -149,20 +152,22 @@ class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UI
         }
         
         // init Tabbar
-        if (self.delegate?.heightForTabbar? != nil) {
-            self.tabHeight = self.delegate!.heightForTabbar!()
-        }
-        
-        if (self.delegate?.colorForTabIndicator? != nil) {
-            self.tabIndicatorColor = self.delegate!.colorForTabIndicator!()
-        }
-        
-        if (self.delegate?.heightForIndicator? != nil) {
-            self.tabIndicatorHeight = self.delegate!.heightForIndicator!()
-        }
-        
-        if (self.delegate?.tintColorForTabBar? != nil) {
-            self.barTintColor = self.delegate!.tintColorForTabBar!()
+        if let theDelegate = self.delegate {
+            if let tabHeight = theDelegate.heightForTabbar?() {
+                self.tabHeight = tabHeight
+            }
+            
+            if let indicatorColor = theDelegate.colorForTabIndicator?() {
+                self.tabIndicatorColor = indicatorColor
+            }
+            
+            if let indicatorHeight = theDelegate.heightForIndicator?() {
+                self.tabIndicatorHeight = indicatorHeight
+            }
+            
+            if let tintColor = theDelegate.tintColorForTabBar?() {
+                self.barTintColor = tintColor
+            }
         }
         
         self.tabScrollView.frame = CGRectMake(0.0, 0.0, self.view.bounds.size.width, self.tabHeight)
@@ -197,6 +202,7 @@ class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UI
         if self.barTintColor != nil {
             self.tabbar.barTintColor = self.barTintColor
         }
+        
         self.tabbar.translucent = true
         self.tabbar.setTranslatesAutoresizingMaskIntoConstraints(false)
         self.tabbar.addSubview(self.tabScrollView)
@@ -223,8 +229,10 @@ class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UI
 
             tabViewContent = self.datasource?.tabViewForPageAtIndex(self, index: index)
             
-            if (self.delegate?.widthForTabAtIndex? != nil) {
-                tabWidth = self.delegate!.widthForTabAtIndex!(index)
+            if let theDelegate = self.delegate {
+                if let tw = theDelegate.widthForTabAtIndex?(index) {
+                    tabWidth = tw
+                }
             }
             
             let tabView: RGTabView = RGTabView(frame: CGRectMake(0.0, 0.0, tabWidth, self.tabHeight), indicatorColor: self.tabIndicatorColor, indicatorHeight: self.tabIndicatorHeight)
@@ -357,8 +365,10 @@ class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UI
     
     // MARK: - UIToolbarDelegate
     func positionForBar(bar: UIBarPositioning) -> UIBarPosition {
-        if (self.delegate?.positionForTabbar? != nil) {
-            self.tabbarPosition = self.delegate!.positionForTabbar!(bar)
+        if let theDelegate = self.delegate {
+            if let position = theDelegate.positionForTabbar?(bar) {
+                self.tabbarPosition = position
+            }
         }
         
         return self.tabbarPosition
