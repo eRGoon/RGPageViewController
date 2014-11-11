@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E30149FB1A121DCC001D8CAA /* RGPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E30149FA1A121DCC001D8CAA /* RGPageViewController.swift */; };
+		E30149FC1A121DCC001D8CAA /* RGPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E30149FA1A121DCC001D8CAA /* RGPageViewController.swift */; };
 		E309AD851A10B72500AD2EBD /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E309AD841A10B72500AD2EBD /* MainViewController.swift */; };
 		E3796D921A0E3B1700F00461 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3796D911A0E3B1700F00461 /* AppDelegate.swift */; };
 		E3796D961A0E3B1700F00461 /* DataViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3796D951A0E3B1700F00461 /* DataViewController.swift */; };
@@ -14,8 +16,6 @@
 		E3796D9D1A0E3B1700F00461 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E3796D9C1A0E3B1700F00461 /* Images.xcassets */; };
 		E3796DA01A0E3B1700F00461 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = E3796D9E1A0E3B1700F00461 /* LaunchScreen.xib */; };
 		E3796DAC1A0E3B1700F00461 /* RGViewPagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3796DAB1A0E3B1700F00461 /* RGViewPagerTests.swift */; };
-		E3796DB71A0E3B6800F00461 /* RGPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3796DB61A0E3B6800F00461 /* RGPageViewController.swift */; };
-		E3796DB81A0E3B6800F00461 /* RGPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3796DB61A0E3B6800F00461 /* RGPageViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -29,6 +29,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		E30149FA1A121DCC001D8CAA /* RGPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RGPageViewController.swift; path = ../RGPageViewController.swift; sourceTree = "<group>"; };
 		E309AD841A10B72500AD2EBD /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		E3796D8C1A0E3B1700F00461 /* RGViewPager.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RGViewPager.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E3796D901A0E3B1700F00461 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -40,7 +41,6 @@
 		E3796DA51A0E3B1700F00461 /* RGViewPagerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RGViewPagerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E3796DAA1A0E3B1700F00461 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E3796DAB1A0E3B1700F00461 /* RGViewPagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RGViewPagerTests.swift; sourceTree = "<group>"; };
-		E3796DB61A0E3B6800F00461 /* RGPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RGPageViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,12 +61,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		E30149FD1A121DEC001D8CAA /* RGPageViewController */ = {
+			isa = PBXGroup;
+			children = (
+				E30149FA1A121DCC001D8CAA /* RGPageViewController.swift */,
+			);
+			name = RGPageViewController;
+			sourceTree = "<group>";
+		};
 		E3796D831A0E3B1600F00461 = {
 			isa = PBXGroup;
 			children = (
 				E3796D8E1A0E3B1700F00461 /* RGViewPager */,
 				E3796DA81A0E3B1700F00461 /* RGViewPagerTests */,
-				E3796DB51A0E3B1E00F00461 /* RGPageViewController */,
+				E30149FD1A121DEC001D8CAA /* RGPageViewController */,
 				E3796D8D1A0E3B1700F00461 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -117,14 +125,6 @@
 				E3796DAA1A0E3B1700F00461 /* Info.plist */,
 			);
 			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		E3796DB51A0E3B1E00F00461 /* RGPageViewController */ = {
-			isa = PBXGroup;
-			children = (
-				E3796DB61A0E3B6800F00461 /* RGPageViewController.swift */,
-			);
-			name = RGPageViewController;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -227,9 +227,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E3796DB71A0E3B6800F00461 /* RGPageViewController.swift in Sources */,
 				E309AD851A10B72500AD2EBD /* MainViewController.swift in Sources */,
 				E3796D961A0E3B1700F00461 /* DataViewController.swift in Sources */,
+				E30149FB1A121DCC001D8CAA /* RGPageViewController.swift in Sources */,
 				E3796D921A0E3B1700F00461 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -238,7 +238,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E3796DB81A0E3B6800F00461 /* RGPageViewController.swift in Sources */,
+				E30149FC1A121DCC001D8CAA /* RGPageViewController.swift in Sources */,
 				E3796DAC1A0E3B1700F00461 /* RGViewPagerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
