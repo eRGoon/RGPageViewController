@@ -76,6 +76,17 @@ class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UI
         // add constraints
         // tabbar constraints
         if self.tabbarPosition == UIBarPosition.Top || self.tabbarPosition == UIBarPosition.TopAttached {
+            // remove hairline image in navigation bar
+            if self.topLayoutGuide.length == 64.0 {
+                let navBar: UINavigationBar? = self.navigationController?.navigationBar
+                
+                if navBar != nil {
+                    let hairlineView: UIImageView? = self.findHairlineImageView(containedIn: navBar!)
+                    
+                    hairlineView?.hidden = true
+                }
+            }
+            
             viewConstraints.addObject(NSLayoutConstraint(item: self.tabbar, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: self.topLayoutGuide, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: 0.0))
         } else if self.tabbarPosition == UIBarPosition.Bottom {
             viewConstraints.addObject(NSLayoutConstraint(item: self.tabbar, attribute: NSLayoutAttribute.Bottom, relatedBy: NSLayoutRelation.Equal, toItem: self.bottomLayoutGuide, attribute: NSLayoutAttribute.Top, multiplier: 1.0, constant: 0.0))
@@ -321,6 +332,22 @@ class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UI
     
     func indexForViewController(vc: UIViewController) -> (Int) {
         return self.pageViewControllers.indexOfObject(vc)
+    }
+    
+    func findHairlineImageView(containedIn view: UIView) -> UIImageView? {
+        if view is UIImageView && view.bounds.size.height <= 1.0 {
+            return view as? UIImageView
+        }
+        
+        for subview in view.subviews {
+            let imageView: UIImageView? = self.findHairlineImageView(containedIn: subview as UIView)
+            
+            if imageView != nil {
+                return imageView
+            }
+        }
+        
+        return nil
     }
     
     // MARK: - Interface rotation

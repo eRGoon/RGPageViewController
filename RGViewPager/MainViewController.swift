@@ -61,24 +61,4 @@ class MainViewController: RGPageViewController, RGPageViewControllerDataSource, 
         
         return tabSize.width + 32.0
     }
-    
-    func positionForTabbar(bar: UIBarPositioning) -> UIBarPosition {
-        return UIBarPosition.Bottom
-    }
-    
-    func heightForTabbar() -> CGFloat {
-        return 44.0
-    }
-    
-    func heightForIndicator() -> CGFloat {
-        return 6.0
-    }
-    
-    func colorForTabIndicator() -> UIColor {
-        return UIColor(red: 0.84705882352941, green: 0.61960784313725, blue: 0.12941176470588, alpha: 1.0)
-    }
-    
-    func tintColorForTabBar() -> UIColor {
-        return UIColor.lightGrayColor()
-    }
 }
