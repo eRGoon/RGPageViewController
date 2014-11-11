@@ -592,5 +592,5 @@ extension UIImage {
     /// Delegate objects can implement this method to specify a tint color for the tabbar.
     ///
     /// :returns: the tint color for the tabbar
-    optional func tintColorForTabBar() -> UIColor
+    optional func tintColorForTabBar() -> UIColor?
 }

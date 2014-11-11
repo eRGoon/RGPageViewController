@@ -51,6 +51,7 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="zlm-uu-vDx">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="barTintColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     </navigationBar>
                     <connections>
                         <segue destination="PxF-Ax-wPy" kind="relationship" relationship="rootViewController" id="jsh-7D-UBB"/>

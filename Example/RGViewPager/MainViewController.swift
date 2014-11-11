@@ -55,10 +55,36 @@ class MainViewController: RGPageViewController, RGPageViewControllerDataSource, 
     }
     
     // MARK: - RGPageViewController Delegate
+    // use this for defining the width for a tab at a given index
     func widthForTabAtIndex(index: Int) -> CGFloat {
         let tabTitle: NSString = self.tabTitles.objectAtIndex(index) as NSString
         let tabSize: CGSize = tabTitle.sizeWithAttributes([NSFontAttributeName: UIFont.systemFontOfSize(17.0)])
         
         return tabSize.width + 32.0
+    }
+    
+    // use this to set a custom height for the tabbar
+    func heightForTabbar() -> CGFloat {
+        return super.tabHeight
+    }
+    
+    // use this to change the height of the tab indicator
+    func heightForIndicator() -> CGFloat {
+        return super.tabIndicatorHeight
+    }
+    
+    // use this to specify the position of the tabbar
+    func positionForTabbar(bar: UIBarPositioning) -> UIBarPosition {
+        return super.tabbarPosition
+    }
+    
+    // use this to specify the color for the tab indicator
+    func colorForTabIndicator() -> UIColor {
+        return super.tabIndicatorColor
+    }
+    
+    // use this to specify the tint color for the tabbar
+    func tintColorForTabBar() -> UIColor? {
+        return self.navigationController?.navigationBar.barTintColor
     }
 }
