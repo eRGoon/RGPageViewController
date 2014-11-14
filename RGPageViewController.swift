@@ -28,7 +28,7 @@ class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UI
     // tabs
     var tabs: NSMutableArray = NSMutableArray()
     var currentTabIndex: Int = 0
-    var tabWidth: CGFloat = 128.0
+    var tabWidth: CGFloat = UIScreen.mainScreen().bounds.size.width / 3.0
     var tabHeight: CGFloat = 38.0
     var tabIndicatorHeight: CGFloat = 2.0
     var tabIndicatorColor: UIColor = UIColor.lightGrayColor()
@@ -76,14 +76,10 @@ class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UI
         // add constraints
         // tabbar constraints
         if self.tabbarPosition == UIBarPosition.Top || self.tabbarPosition == UIBarPosition.TopAttached {
-            // remove hairline image in navigation bar
-            if self.topLayoutGuide.length == 64.0 {
-                let navBar: UINavigationBar? = self.navigationController?.navigationBar
-                
-                if navBar != nil {
-                    let hairlineView: UIImageView? = self.findHairlineImageView(containedIn: navBar!)
-                    
-                    hairlineView?.hidden = true
+            // remove hairline image in navigation bar if TopAttached
+            if let navController = self.navigationController {
+                if self.tabbarPosition == UIBarPosition.TopAttached {
+                    navController.navigationBar.hideHairline()
                 }
             }
             
@@ -167,6 +163,7 @@ class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UI
             
             if let tintColor = theDelegate.tintColorForTabBar?() {
                 self.barTintColor = tintColor
+                self.tabbar.barTintColor = self.barTintColor
             }
         }
         
@@ -181,27 +178,24 @@ class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UI
         var contentSizeWidth: CGFloat = 0.0
         
         for i in 0 ..< self.pageCount {
-            var tabView: RGTabView = self.tabViewAtIndex(i)!
-            var frame: CGRect = tabView.frame
-            
-            frame.origin.x = contentSizeWidth
-            
-            tabView.frame = frame
-            
-            self.tabScrollView.addSubview(tabView)
-            
-            contentSizeWidth += CGRectGetWidth(frame)
-            
-            var tapRecognizer: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "handleTap:")
-            
-            tabView.addGestureRecognizer(tapRecognizer)
+            if let tabView: RGTabView = self.tabViewAtIndex(i) {
+                var frame: CGRect = tabView.frame
+                
+                frame.origin.x = contentSizeWidth
+                
+                tabView.frame = frame
+                
+                self.tabScrollView.addSubview(tabView)
+                
+                contentSizeWidth += CGRectGetWidth(frame)
+                
+                var tapRecognizer: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "handleTap:")
+                
+                tabView.addGestureRecognizer(tapRecognizer)
+            }
         }
         
         self.tabScrollView.contentSize = CGSizeMake(contentSizeWidth, self.tabHeight)
-        
-        if self.barTintColor != nil {
-            self.tabbar.barTintColor = self.barTintColor
-        }
         
         self.tabbar.translucent = true
         self.tabbar.setTranslatesAutoresizingMaskIntoConstraints(false)
@@ -213,6 +207,7 @@ class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UI
         
         self.view.addSubview(self.pagerView!)
         self.view.addSubview(self.tabbar)
+        
         self.selectTabAtIndex(0)
         
         self.needsSetup = false
@@ -224,27 +219,25 @@ class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UI
         }
         
         if self.tabs.objectAtIndex(index).isEqual(NSNull()) {
-            var tabViewContent: UIView? = nil
-            var tabWidth: CGFloat = self.tabWidth
-
-            tabViewContent = self.datasource?.tabViewForPageAtIndex(self, index: index)
-            
-            if let theDelegate = self.delegate {
-                if let tw = theDelegate.widthForTabAtIndex?(index) {
-                    tabWidth = tw
+            if let tabViewContent: UIView = self.datasource?.tabViewForPageAtIndex(self, index: index) {
+                var tabView: RGTabView
+                
+                if let theWidth: CGFloat = self.delegate?.widthForTabAtIndex?(index) {
+                    tabView = RGTabView(frame: CGRectMake(0.0, 0.0, theWidth, self.tabHeight), indicatorColor: self.tabIndicatorColor, indicatorHeight: self.tabIndicatorHeight)
+                } else {
+                    tabView = RGTabView(frame: CGRectMake(0.0, 0.0, self.tabWidth, self.tabHeight), indicatorColor: self.tabIndicatorColor, indicatorHeight: self.tabIndicatorHeight)
                 }
+                
+                tabView.addSubview(tabViewContent)
+                
+                tabView.clipsToBounds = true
+                tabView.indicatorHeight = self.tabIndicatorHeight
+                tabView.indicatorColor = self.tabIndicatorColor
+                
+                tabViewContent.center = tabView.center
+                
+                self.tabs.replaceObjectAtIndex(index, withObject: tabView)
             }
-            
-            let tabView: RGTabView = RGTabView(frame: CGRectMake(0.0, 0.0, tabWidth, self.tabHeight), indicatorColor: self.tabIndicatorColor, indicatorHeight: self.tabIndicatorHeight)
-            
-            tabView.addSubview(tabViewContent!)
-            tabView.clipsToBounds = true
-            tabView.indicatorHeight = self.tabIndicatorHeight
-            tabView.indicatorColor = self.tabIndicatorColor
-            
-            tabViewContent!.center = tabView.center
-            
-            self.tabs.replaceObjectAtIndex(index, withObject: tabView)
         }
         
         return self.tabs.objectAtIndex(index) as? RGTabView
@@ -256,24 +249,26 @@ class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UI
         }
         
         if self.pageViewControllers.objectAtIndex(index).isEqual(NSNull()) {
-            let vc: UIViewController? = self.datasource?.viewControllerForPageAtIndex(self, index: index)
-            let view: UIView = vc?.view.subviews[0] as UIView
-            
-            if view is UIScrollView {
-                var edgeInsets: UIEdgeInsets = (view as UIScrollView).contentInset
+            if let vc: UIViewController = self.datasource?.viewControllerForPageAtIndex(self, index: index) {
+                let view: UIView = vc.view.subviews[0] as UIView
                 
-                if self.tabbarPosition == UIBarPosition.Top || self.tabbarPosition == UIBarPosition.TopAttached {
-                    edgeInsets.top = self.topLayoutGuide.length + self.tabHeight
-                } else if self.tabbarPosition == UIBarPosition.Bottom {
-                    edgeInsets.top = self.topLayoutGuide.length
-                    edgeInsets.bottom = self.tabHeight
+                if view is UIScrollView {
+                    let scrollView = (view as UIScrollView)
+                    var edgeInsets: UIEdgeInsets = scrollView.contentInset
+                    
+                    if self.tabbarPosition == UIBarPosition.Top || self.tabbarPosition == UIBarPosition.TopAttached {
+                        edgeInsets.top = self.topLayoutGuide.length + self.tabHeight
+                    } else if self.tabbarPosition == UIBarPosition.Bottom {
+                        edgeInsets.top = self.topLayoutGuide.length
+                        edgeInsets.bottom = self.tabHeight
+                    }
+                    
+                    scrollView.contentInset = edgeInsets
+                    scrollView.scrollIndicatorInsets = edgeInsets
                 }
                 
-                (view as UIScrollView).contentInset = edgeInsets
-                (view as UIScrollView).scrollIndicatorInsets = edgeInsets
+                self.pageViewControllers.replaceObjectAtIndex(index, withObject: vc)
             }
-            
-            self.pageViewControllers.replaceObjectAtIndex(index, withObject: vc!)
         }
         
         return self.pageViewControllers.objectAtIndex(index) as? UIViewController
@@ -294,6 +289,7 @@ class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UI
         }
         
         self.animatingToTab = true
+        
         self.updateTabIndex(index, animated: true)
         self.updatePager(index)
         
@@ -309,53 +305,38 @@ class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UI
         
         self.currentTabIndex = index
         
-        if animated {
-            self.tabScrollView.scrollRectToVisible(newTab.frame, animated: true)
-        }
+        self.tabScrollView.scrollRectToVisible(newTab.frame, animated: animated)
     }
     
     func updatePager(index: Int) {
-        let vc: UIViewController = self.viewControllerAtIndex(index)!
-        
-        if index == self.currentPageIndex {
-            self.pager.setViewControllers([vc], direction: UIPageViewControllerNavigationDirection.Forward, animated: false, completion: { (Bool) -> Void in
-                self.animatingToTab = false
-            })
-        } else if !(index + 1 == self.currentPageIndex || index - 1 == self.currentPageIndex) {
-            self.pager.setViewControllers([vc], direction: index < self.currentPageIndex ? UIPageViewControllerNavigationDirection.Reverse : UIPageViewControllerNavigationDirection.Forward, animated: true, completion: { (Bool) -> Void in
-                self.animatingToTab = false
-                
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                    self.pager.setViewControllers([vc], direction: index < self.currentPageIndex ? UIPageViewControllerNavigationDirection.Reverse : UIPageViewControllerNavigationDirection.Forward, animated: false, completion: nil)
+        if let vc: UIViewController = self.viewControllerAtIndex(index) {
+            weak var weakSelf: RGPageViewController? = self
+            weak var weakPager: UIPageViewController? = self.pager
+            
+            if index == self.currentPageIndex {
+                self.pager.setViewControllers([vc], direction: UIPageViewControllerNavigationDirection.Forward, animated: false, completion: { (Bool) -> Void in
+                    weakSelf!.animatingToTab = false
                 })
-            })
-        } else {
-            self.pager.setViewControllers([vc], direction: index < self.currentPageIndex ? UIPageViewControllerNavigationDirection.Reverse : UIPageViewControllerNavigationDirection.Forward, animated: true, completion: { (Bool) -> Void in
-                self.animatingToTab = false
-            })
+            } else if !(index + 1 == self.currentPageIndex || index - 1 == self.currentPageIndex) {
+                self.pager.setViewControllers([vc], direction: index < self.currentPageIndex ? UIPageViewControllerNavigationDirection.Reverse : UIPageViewControllerNavigationDirection.Forward, animated: true, completion: { (Bool) -> Void in
+                    weakSelf!.animatingToTab = false
+                    
+                    dispatch_async(dispatch_get_main_queue(), {
+                        weakPager!.setViewControllers([vc], direction: index < weakSelf!.currentPageIndex ? UIPageViewControllerNavigationDirection.Reverse : UIPageViewControllerNavigationDirection.Forward, animated: false, completion: nil)
+                    })
+                })
+            } else {
+                self.pager.setViewControllers([vc], direction: index < self.currentPageIndex ? UIPageViewControllerNavigationDirection.Reverse : UIPageViewControllerNavigationDirection.Forward, animated: true, completion: { (Bool) -> Void in
+                    weakSelf!.animatingToTab = false
+                })
+            }
+            
+            self.currentPageIndex = index
         }
-        
-        self.currentPageIndex = index
     }
     
     func indexForViewController(vc: UIViewController) -> (Int) {
         return self.pageViewControllers.indexOfObject(vc)
-    }
-    
-    func findHairlineImageView(containedIn view: UIView) -> UIImageView? {
-        if view is UIImageView && view.bounds.size.height <= 1.0 {
-            return view as? UIImageView
-        }
-        
-        for subview in view.subviews {
-            let imageView: UIImageView? = self.findHairlineImageView(containedIn: subview as UIView)
-            
-            if imageView != nil {
-                return imageView
-            }
-        }
-        
-        return nil
     }
     
     // MARK: - Interface rotation
@@ -365,10 +346,8 @@ class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UI
     
     // MARK: - UIToolbarDelegate
     func positionForBar(bar: UIBarPositioning) -> UIBarPosition {
-        if let theDelegate = self.delegate {
-            if let position = theDelegate.positionForTabbar?(bar) {
-                self.tabbarPosition = position
-            }
+        if let position = self.delegate?.positionForTabbar?(bar) {
+            self.tabbarPosition = position
         }
         
         return self.tabbarPosition
@@ -415,13 +394,11 @@ class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UI
     }
     
     func scrollViewShouldScrollToTop(scrollView: UIScrollView) -> Bool {
-        var result: Bool? = false
-
-        if (self.pageViewScrollDelegate?.scrollViewShouldScrollToTop? != nil) {
-            result = self.pageViewScrollDelegate?.scrollViewShouldScrollToTop?(scrollView)
+        if let shouldScroll = self.pageViewScrollDelegate?.scrollViewShouldScrollToTop?(scrollView) {
+            return shouldScroll
         }
         
-        return result!
+        return false
     }
     
     func scrollViewDidScrollToTop(scrollView: UIScrollView) {
@@ -465,11 +442,11 @@ class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UI
     }
     
     func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView? {
-        var view: UIView? = nil
+        if let view: UIView = self.pageViewScrollDelegate?.viewForZoomingInScrollView?(scrollView) {
+            return view
+        }
         
-        view = self.pageViewScrollDelegate?.viewForZoomingInScrollView?(scrollView)
-        
-        return view
+        return nil
     }
 }
 
@@ -478,7 +455,11 @@ class RGTabView: UIView {
     // variables
     var selected: Bool = false {
         didSet {
-            self.setNeedsDisplay()
+            if self.subviews[0] is RGTabBarItem {
+                (self.subviews[0] as RGTabBarItem).selected = self.selected
+            } else {
+                self.setNeedsDisplay()
+            }
         }
     }
     var indicatorHeight: CGFloat = 2.0
@@ -507,15 +488,96 @@ class RGTabView: UIView {
         super.drawRect(rect)
         
         if self.selected {
-            var bezierPath: UIBezierPath = UIBezierPath()
+            if !(self.subviews[0] is RGTabBarItem) {
+                var bezierPath: UIBezierPath = UIBezierPath()
+                
+                bezierPath.moveToPoint(CGPointMake(0.0, CGRectGetHeight(rect) - 1.0))
+                bezierPath.addLineToPoint(CGPointMake(CGRectGetWidth(rect), CGRectGetHeight(rect) - 1.0))
+                bezierPath.lineWidth = self.indicatorHeight
+                
+                self.indicatorColor.setStroke()
+                
+                bezierPath.stroke()
+            }
+        }
+    }
+}
+
+// MARK: - RGTabBarItem
+class RGTabBarItem: UIView {
+    var selected: Bool = false {
+        didSet {
+            self.setSelectedState()
+        }
+    }
+    var text: String?
+    var image: UIImage?
+    var textLabel: UILabel?
+    var imageView: UIImageView?
+    var normalColor: UIColor? = UIColor.grayColor()
+    
+    init(frame: CGRect, text: String?, image: UIImage?, color: UIColor?) {
+        super.init(frame: frame)
+        
+        self.text = text
+        self.image = image?.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
+        
+        if color != nil {
+            self.normalColor = color
+        }
+        
+        self.initSelf()
+    }
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+
+        self.initSelf()
+    }
+    
+    required init(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        
+        self.initSelf()
+    }
+    
+    func initSelf() {
+        self.backgroundColor = UIColor.clearColor()
+        
+        if self.image != nil {
+            self.imageView = UIImageView(image: self.image)
             
-            bezierPath.moveToPoint(CGPointMake(0.0, CGRectGetHeight(rect) - 1.0))
-            bezierPath.addLineToPoint(CGPointMake(CGRectGetWidth(rect), CGRectGetHeight(rect) - 1.0))
-            bezierPath.lineWidth = self.indicatorHeight
+            self.addSubview(self.imageView!)
             
-            self.indicatorColor.setStroke()
+            self.imageView!.tintColor = self.normalColor
+            self.imageView!.center.x = self.center.x
+            self.imageView!.center.y = self.center.y - 5.0
+        }
+        
+        if self.text != nil {
+            self.textLabel = UILabel()
             
-            bezierPath.stroke()
+            self.textLabel!.numberOfLines = 1
+            self.textLabel!.text = self.text
+            self.textLabel!.textAlignment = NSTextAlignment.Center
+            self.textLabel!.textColor = self.normalColor
+            self.textLabel!.font = UIFont.systemFontOfSize(10.0)
+            
+            self.textLabel!.sizeToFit()
+
+            self.textLabel!.frame = CGRectMake(0.0, self.frame.size.height - self.textLabel!.frame.size.height - 3.0, self.frame.size.width, self.textLabel!.frame.size.height)
+            
+            self.addSubview(self.textLabel!)
+        }
+    }
+    
+    func setSelectedState() {
+        if self.selected {
+            self.textLabel?.textColor = self.tintColor
+            self.imageView?.tintColor = self.tintColor
+        } else {
+            self.textLabel?.textColor = self.normalColor
+            self.imageView?.tintColor = self.normalColor
         }
     }
 }
@@ -536,6 +598,29 @@ extension UIImage {
         UIGraphicsEndImageContext()
         
         return image;
+    }
+}
+
+// MARK: - UINavigationBar hide Hairline
+extension UINavigationBar {
+    func hideHairline() {
+        if let hairlineView: UIImageView = self.findHairlineImageView(containedIn: self) {
+            hairlineView.hidden = true
+        }
+    }
+    
+    func findHairlineImageView(containedIn view: UIView) -> UIImageView? {
+        if view is UIImageView && view.bounds.size.height <= 1.0 {
+            return view as? UIImageView
+        }
+        
+        for subview in view.subviews {
+            if let imageView: UIImageView = self.findHairlineImageView(containedIn: subview as UIView) {
+                return imageView
+            }
+        }
+        
+        return nil
     }
 }
 

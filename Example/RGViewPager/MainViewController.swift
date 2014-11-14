@@ -32,13 +32,19 @@ class MainViewController: RGPageViewController, RGPageViewControllerDataSource, 
     }
     
     func tabViewForPageAtIndex(pageViewController: RGPageViewController, index: Int) -> UIView {
-        let label: UILabel = UILabel()
         let title: String = self.tabTitles.objectAtIndex(index) as String
+        //let tabView: RGTabBarItem = RGTabBarItem(frame: CGRectMake(0.0, 0.0, self.view.bounds.width / 6.0, 49.0), text: title, image: UIImage(named: "Grid"), color: nil)
+        
+        let label: UILabel = UILabel()
         
         label.text = title
+        label.textColor = UIColor.whiteColor()
+        
         label.sizeToFit()
         
         return label
+        
+        //return tabView
     }
     
     func viewControllerForPageAtIndex(pageViewController: RGPageViewController, index: Int) -> UIViewController? {
@@ -61,26 +67,28 @@ class MainViewController: RGPageViewController, RGPageViewControllerDataSource, 
         let tabSize: CGSize = tabTitle.sizeWithAttributes([NSFontAttributeName: UIFont.systemFontOfSize(17.0)])
         
         return tabSize.width + 32.0
+        
+        //return self.view.bounds.width / 5.0
     }
     
     // use this to set a custom height for the tabbar
-    func heightForTabbar() -> CGFloat {
-        return super.tabHeight
-    }
+    /*func heightForTabbar() -> CGFloat {
+        return 49.0
+    }*/
     
     // use this to change the height of the tab indicator
-    func heightForIndicator() -> CGFloat {
+    /*func heightForIndicator() -> CGFloat {
         return super.tabIndicatorHeight
-    }
+    }*/
     
     // use this to specify the position of the tabbar
-    func positionForTabbar(bar: UIBarPositioning) -> UIBarPosition {
-        return super.tabbarPosition
-    }
+    /*func positionForTabbar(bar: UIBarPositioning) -> UIBarPosition {
+        return UIBarPosition.Bottom
+    }*/
     
     // use this to specify the color for the tab indicator
     func colorForTabIndicator() -> UIColor {
-        return super.tabIndicatorColor
+        return UIColor.whiteColor()
     }
     
     // use this to specify the tint color for the tabbar
