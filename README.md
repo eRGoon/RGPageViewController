@@ -120,13 +120,17 @@ Examples
 ---
 ### Basic Configuration
 
+All `RGPageViewControllerDataSource` protocol methods must be implemented.
+
 ```swift
 // MARK: - RGPageViewController Data Source
 func numberOfPagesForViewController(pageViewController: RGPageViewController) -> Int {
+    // return the total amount of pages
     return self.tabTitles.count
 }
     
 func tabViewForPageAtIndex(pageViewController: RGPageViewController, index: Int) -> UIView {
+    // return a simple labelfor the tab view
     let title: String = self.tabTitles.objectAtIndex(index) as String
     let label: UILabel = UILabel()
     
