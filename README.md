@@ -53,7 +53,8 @@ func viewControllerForPageAtIndex(pageViewController: RGPageViewController, inde
 ```swift
 optional func didChangePageToIndex(index: Int)
 ```
-**Description:**&nbsp;&nbsp;Delegate objects can implement this method if they want to be informed when a page changed.  
+**Description:**&nbsp;&nbsp;Delegate objects can implement this method if they want to be informed when a page  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;changed.  
 **Parameters:**&nbsp;&nbsp;`index`  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the index of the current page.  
 
@@ -66,13 +67,15 @@ optional func heightForTabbar() -> CGFloat
 ```swift
 optional func heightForIndicator() -> CGFloat
 ```
-**Description:**&nbsp;&nbsp;Delegate objects can implement this method to set a custom height for the tab indicator.  
+**Description:**&nbsp;&nbsp;Delegate objects can implement this method to set a custom height for the  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tab indicator.  
 **Returns:**&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the height of the tab indicator.  
 
 ```swift
 optional func widthForTabAtIndex(index: Int) -> CGFloat
 ```
-**Description:**&nbsp;&nbsp;Delegate objects can implement this method if tabs use dynamic width or to overwrite the default width for tabs.  
+**Description:**&nbsp;&nbsp;Delegate objects can implement this method if tabs use dynamic width  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;or to overwrite the default width for tabs.  
 **Parameters:**&nbsp;&nbsp;`index`  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the index of the tab.  
 **Returns:**&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the width for the tab at the given index.  
