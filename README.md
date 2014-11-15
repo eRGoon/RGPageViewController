@@ -20,6 +20,22 @@ Usage
 ---
 Subclass `RGPageViewController` and implement it's `datasource` and `delegate` methods.
 
+```swift
+class MainViewController: RGPageViewController, RGPageViewControllerDataSource, RGPageViewControllerDelegate {
+    var tabTitles: NSArray = NSArray()
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        let dateFormatter = NSDateFormatter()
+        tabTitles = dateFormatter.monthSymbols
+
+        self.datasource = self
+        self.delegate = self
+    }
+}
+```
+
 ### RGPageViewControllerDataSource
 ```swift
 func numberOfPagesForViewController(pageViewController: RGPageViewController) -> Int
@@ -99,3 +115,87 @@ optional func tintColorForTabBar() -> UIColor?
 ```
 **Description:**&nbsp;&nbsp;Delegate objects can implement this method to specify a tint color for the tabbar.  
 **Returns:**&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;thethe tint color for the tabbar.  
+
+Examples
+---
+### Basic Configuration
+
+```swift
+// MARK: - RGPageViewController Data Source
+func numberOfPagesForViewController(pageViewController: RGPageViewController) -> Int {
+    return self.tabTitles.count
+}
+    
+func tabViewForPageAtIndex(pageViewController: RGPageViewController, index: Int) -> UIView {
+    let title: String = self.tabTitles.objectAtIndex(index) as String
+    let label: UILabel = UILabel()
+    
+    label.text = title
+    
+    label.sizeToFit()
+        
+    return label
+}
+    
+func viewControllerForPageAtIndex(pageViewController: RGPageViewController, index: Int) -> UIViewController? {
+    // Create a new view controller and pass suitable data.
+    let dataViewController = self.storyboard!.instantiateViewControllerWithIdentifier("DataViewController") as DataViewController
+        
+    dataViewController.dataObject = self.tabTitles[index]
+        
+    return dataViewController
+}
+```
+#### UITabBar replacement
+
+If you need something similar to a `UITabBar` but with the features of a `UIPageViewController`, change your `tabViewForPageAtIndex(pageViewController: RGPageViewController, index: Int)` and implement `heightForTabbar()` as well as `positionForTabbar(bar: UIBarPositioning)`.
+
+```swift
+// MARK: - RGPageViewController Delegate
+func tabViewForPageAtIndex(pageViewController: RGPageViewController, index: Int) -> UIView {
+    let title: String = self.tabTitles.objectAtIndex(index) as String
+    // create a RGTabBarItem and pass a title, an image and a color
+    // the color will be used for tinting image and text
+    let tabView: RGTabBarItem = RGTabBarItem(frame: CGRectMake(0.0, 0.0, self.view.bounds.width / 6.0, 49.0), text: title, image: UIImage(named: "Grid"), color: nil)
+    
+    // if you want to adjust the color for selected state of the item, adjust the tintColor
+    tabView.tintColor = UIColor.redColor()
+        
+    return tabView
+}
+
+func heightForTabbar() -> CGFloat {
+    // default height of UITabBar is 49px
+    return 49.0
+}
+
+func positionForTabbar(bar: UIBarPositioning) -> UIBarPosition {
+    // attach the Tabbar to the bottom of the view
+    return UIBarPosition.Bottom
+}
+```
+
+License
+---
+The MIT License (MIT)
+
+Copyright (c) 2014 Ronny Gerasch
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
