@@ -118,14 +118,14 @@ optional func tintColorForTabBar() -> UIColor?
 
 Examples
 ---
+
+All `RGPageViewControllerDataSource` protocol methods must be implemented. All `RGPageViewControllerDelegate` protocol methods are optional.
+
 ### Basic Configuration
-
-All `RGPageViewControllerDataSource` protocol methods must be implemented.
-
 ```swift
 // MARK: - RGPageViewController Data Source
 func numberOfPagesForViewController(pageViewController: RGPageViewController) -> Int {
-    // return the total amount of pages
+    // return the total number of pages
     return self.tabTitles.count
 }
     
@@ -155,7 +155,7 @@ func viewControllerForPageAtIndex(pageViewController: RGPageViewController, inde
 If you need something similar to a `UITabBar` but with the features of a `UIPageViewController`, change your `tabViewForPageAtIndex(pageViewController: RGPageViewController, index: Int)` and implement `heightForTabbar()` as well as `positionForTabbar(bar: UIBarPositioning)`.
 
 ```swift
-// MARK: - RGPageViewController Delegate
+// MARK: - RGPageViewController Data Source
 func tabViewForPageAtIndex(pageViewController: RGPageViewController, index: Int) -> UIView {
     let title: String = self.tabTitles.objectAtIndex(index) as String
     // create a RGTabBarItem and pass a title, an image and a color
@@ -168,6 +168,7 @@ func tabViewForPageAtIndex(pageViewController: RGPageViewController, index: Int)
     return tabView
 }
 
+// MARK: - RGPageViewController Delegate
 func heightForTabbar() -> CGFloat {
     // default height of UITabBar is 49px
     return 49.0
