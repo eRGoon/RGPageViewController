@@ -130,7 +130,7 @@ func numberOfPagesForViewController(pageViewController: RGPageViewController) ->
 }
     
 func tabViewForPageAtIndex(pageViewController: RGPageViewController, index: Int) -> UIView {
-    // return a simple labelfor the tab view
+    // return a simple label for the tab view
     let title: String = self.tabTitles.objectAtIndex(index) as String
     let label: UILabel = UILabel()
     
