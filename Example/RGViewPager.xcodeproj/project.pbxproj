@@ -10,12 +10,35 @@
 		E30149FB1A121DCC001D8CAA /* RGPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E30149FA1A121DCC001D8CAA /* RGPageViewController.swift */; };
 		E30149FC1A121DCC001D8CAA /* RGPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E30149FA1A121DCC001D8CAA /* RGPageViewController.swift */; };
 		E309AD851A10B72500AD2EBD /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E309AD841A10B72500AD2EBD /* MainViewController.swift */; };
+		E35BD2CC1A8D511D00625A74 /* better_call_saul_bg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E35BD2AC1A8D511D00625A74 /* better_call_saul_bg.jpg */; };
+		E35BD2CD1A8D511D00625A74 /* better_call_saul_poster.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E35BD2AD1A8D511D00625A74 /* better_call_saul_poster.jpg */; };
+		E35BD2CE1A8D511D00625A74 /* breaking_bad_bg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E35BD2AF1A8D511D00625A74 /* breaking_bad_bg.jpg */; };
+		E35BD2CF1A8D511D00625A74 /* breaking_bad_poster.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E35BD2B01A8D511D00625A74 /* breaking_bad_poster.jpg */; };
+		E35BD2D01A8D511D00625A74 /* falling_skies_bg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E35BD2B21A8D511D00625A74 /* falling_skies_bg.jpg */; };
+		E35BD2D11A8D511D00625A74 /* falling_skies_poster.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E35BD2B31A8D511D00625A74 /* falling_skies_poster.jpg */; };
+		E35BD2D21A8D511D00625A74 /* friends_bg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E35BD2B51A8D511D00625A74 /* friends_bg.jpg */; };
+		E35BD2D31A8D511D00625A74 /* friends_poster.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E35BD2B61A8D511D00625A74 /* friends_poster.jpg */; };
+		E35BD2D41A8D511D00625A74 /* game_of_thrones_bg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E35BD2B81A8D511D00625A74 /* game_of_thrones_bg.jpg */; };
+		E35BD2D51A8D511D00625A74 /* game_of_thrones_poster.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E35BD2B91A8D511D00625A74 /* game_of_thrones_poster.jpg */; };
+		E35BD2D61A8D511D00625A74 /* gotham_bg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E35BD2BB1A8D511D00625A74 /* gotham_bg.jpg */; };
+		E35BD2D71A8D511D00625A74 /* gotham_poster.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E35BD2BC1A8D511D00625A74 /* gotham_poster.jpg */; };
+		E35BD2D81A8D511D00625A74 /* house_of_cards_bg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E35BD2BE1A8D511D00625A74 /* house_of_cards_bg.jpg */; };
+		E35BD2D91A8D511D00625A74 /* house_of_cards_poster.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E35BD2BF1A8D511D00625A74 /* house_of_cards_poster.jpg */; };
+		E35BD2DA1A8D511D00625A74 /* how_i_met_your_mother_bg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E35BD2C11A8D511D00625A74 /* how_i_met_your_mother_bg.jpg */; };
+		E35BD2DB1A8D511D00625A74 /* how_i_met_your_mother_poster.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E35BD2C21A8D511D00625A74 /* how_i_met_your_mother_poster.jpg */; };
+		E35BD2DC1A8D511D00625A74 /* shameless_bg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E35BD2C41A8D511D00625A74 /* shameless_bg.jpg */; };
+		E35BD2DD1A8D511D00625A74 /* shameless_poster.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E35BD2C51A8D511D00625A74 /* shameless_poster.jpg */; };
+		E35BD2DE1A8D511D00625A74 /* the_big_bang_theory_bg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E35BD2C71A8D511D00625A74 /* the_big_bang_theory_bg.jpg */; };
+		E35BD2DF1A8D511D00625A74 /* the_big_bang_theory_poster.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E35BD2C81A8D511D00625A74 /* the_big_bang_theory_poster.jpg */; };
+		E35BD2E01A8D511D00625A74 /* the_walking_dead_bg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E35BD2CA1A8D511D00625A74 /* the_walking_dead_bg.jpg */; };
+		E35BD2E11A8D511D00625A74 /* the_walking_dead_poster.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E35BD2CB1A8D511D00625A74 /* the_walking_dead_poster.jpg */; };
 		E3796D921A0E3B1700F00461 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3796D911A0E3B1700F00461 /* AppDelegate.swift */; };
 		E3796D961A0E3B1700F00461 /* DataViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3796D951A0E3B1700F00461 /* DataViewController.swift */; };
 		E3796D9B1A0E3B1700F00461 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E3796D991A0E3B1700F00461 /* Main.storyboard */; };
 		E3796D9D1A0E3B1700F00461 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E3796D9C1A0E3B1700F00461 /* Images.xcassets */; };
 		E3796DA01A0E3B1700F00461 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = E3796D9E1A0E3B1700F00461 /* LaunchScreen.xib */; };
 		E3796DAC1A0E3B1700F00461 /* RGViewPagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3796DAB1A0E3B1700F00461 /* RGViewPagerTests.swift */; };
+		E3C721971A8DF52C000BC1E2 /* FloatRatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3C721961A8DF52C000BC1E2 /* FloatRatingView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -31,6 +54,28 @@
 /* Begin PBXFileReference section */
 		E30149FA1A121DCC001D8CAA /* RGPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RGPageViewController.swift; path = ../RGPageViewController.swift; sourceTree = "<group>"; };
 		E309AD841A10B72500AD2EBD /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		E35BD2AC1A8D511D00625A74 /* better_call_saul_bg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = better_call_saul_bg.jpg; sourceTree = "<group>"; };
+		E35BD2AD1A8D511D00625A74 /* better_call_saul_poster.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = better_call_saul_poster.jpg; sourceTree = "<group>"; };
+		E35BD2AF1A8D511D00625A74 /* breaking_bad_bg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = breaking_bad_bg.jpg; sourceTree = "<group>"; };
+		E35BD2B01A8D511D00625A74 /* breaking_bad_poster.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = breaking_bad_poster.jpg; sourceTree = "<group>"; };
+		E35BD2B21A8D511D00625A74 /* falling_skies_bg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = falling_skies_bg.jpg; sourceTree = "<group>"; };
+		E35BD2B31A8D511D00625A74 /* falling_skies_poster.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = falling_skies_poster.jpg; sourceTree = "<group>"; };
+		E35BD2B51A8D511D00625A74 /* friends_bg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = friends_bg.jpg; sourceTree = "<group>"; };
+		E35BD2B61A8D511D00625A74 /* friends_poster.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = friends_poster.jpg; sourceTree = "<group>"; };
+		E35BD2B81A8D511D00625A74 /* game_of_thrones_bg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = game_of_thrones_bg.jpg; sourceTree = "<group>"; };
+		E35BD2B91A8D511D00625A74 /* game_of_thrones_poster.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = game_of_thrones_poster.jpg; sourceTree = "<group>"; };
+		E35BD2BB1A8D511D00625A74 /* gotham_bg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = gotham_bg.jpg; sourceTree = "<group>"; };
+		E35BD2BC1A8D511D00625A74 /* gotham_poster.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = gotham_poster.jpg; sourceTree = "<group>"; };
+		E35BD2BE1A8D511D00625A74 /* house_of_cards_bg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = house_of_cards_bg.jpg; sourceTree = "<group>"; };
+		E35BD2BF1A8D511D00625A74 /* house_of_cards_poster.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = house_of_cards_poster.jpg; sourceTree = "<group>"; };
+		E35BD2C11A8D511D00625A74 /* how_i_met_your_mother_bg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = how_i_met_your_mother_bg.jpg; sourceTree = "<group>"; };
+		E35BD2C21A8D511D00625A74 /* how_i_met_your_mother_poster.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = how_i_met_your_mother_poster.jpg; sourceTree = "<group>"; };
+		E35BD2C41A8D511D00625A74 /* shameless_bg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = shameless_bg.jpg; sourceTree = "<group>"; };
+		E35BD2C51A8D511D00625A74 /* shameless_poster.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = shameless_poster.jpg; sourceTree = "<group>"; };
+		E35BD2C71A8D511D00625A74 /* the_big_bang_theory_bg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = the_big_bang_theory_bg.jpg; sourceTree = "<group>"; };
+		E35BD2C81A8D511D00625A74 /* the_big_bang_theory_poster.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = the_big_bang_theory_poster.jpg; sourceTree = "<group>"; };
+		E35BD2CA1A8D511D00625A74 /* the_walking_dead_bg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = the_walking_dead_bg.jpg; sourceTree = "<group>"; };
+		E35BD2CB1A8D511D00625A74 /* the_walking_dead_poster.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = the_walking_dead_poster.jpg; sourceTree = "<group>"; };
 		E3796D8C1A0E3B1700F00461 /* RGViewPager.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RGViewPager.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E3796D901A0E3B1700F00461 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E3796D911A0E3B1700F00461 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -41,6 +86,7 @@
 		E3796DA51A0E3B1700F00461 /* RGViewPagerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RGViewPagerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E3796DAA1A0E3B1700F00461 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E3796DAB1A0E3B1700F00461 /* RGViewPagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RGViewPagerTests.swift; sourceTree = "<group>"; };
+		E3C721961A8DF52C000BC1E2 /* FloatRatingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatRatingView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,6 +115,123 @@
 			name = RGPageViewController;
 			sourceTree = "<group>";
 		};
+		E35BD2AA1A8D511D00625A74 /* fanart */ = {
+			isa = PBXGroup;
+			children = (
+				E35BD2AB1A8D511D00625A74 /* Better Call Saul */,
+				E35BD2AE1A8D511D00625A74 /* Breaking Bad */,
+				E35BD2B11A8D511D00625A74 /* Falling Skies */,
+				E35BD2B41A8D511D00625A74 /* Friends */,
+				E35BD2B71A8D511D00625A74 /* Game of Thrones */,
+				E35BD2BA1A8D511D00625A74 /* Gotham */,
+				E35BD2BD1A8D511D00625A74 /* House of Cards */,
+				E35BD2C01A8D511D00625A74 /* How I Met Your Mother */,
+				E35BD2C31A8D511D00625A74 /* Shameless */,
+				E35BD2C61A8D511D00625A74 /* The Big Bang Theory */,
+				E35BD2C91A8D511D00625A74 /* The Walking Dead */,
+			);
+			path = fanart;
+			sourceTree = "<group>";
+		};
+		E35BD2AB1A8D511D00625A74 /* Better Call Saul */ = {
+			isa = PBXGroup;
+			children = (
+				E35BD2AC1A8D511D00625A74 /* better_call_saul_bg.jpg */,
+				E35BD2AD1A8D511D00625A74 /* better_call_saul_poster.jpg */,
+			);
+			path = "Better Call Saul";
+			sourceTree = "<group>";
+		};
+		E35BD2AE1A8D511D00625A74 /* Breaking Bad */ = {
+			isa = PBXGroup;
+			children = (
+				E35BD2AF1A8D511D00625A74 /* breaking_bad_bg.jpg */,
+				E35BD2B01A8D511D00625A74 /* breaking_bad_poster.jpg */,
+			);
+			path = "Breaking Bad";
+			sourceTree = "<group>";
+		};
+		E35BD2B11A8D511D00625A74 /* Falling Skies */ = {
+			isa = PBXGroup;
+			children = (
+				E35BD2B21A8D511D00625A74 /* falling_skies_bg.jpg */,
+				E35BD2B31A8D511D00625A74 /* falling_skies_poster.jpg */,
+			);
+			path = "Falling Skies";
+			sourceTree = "<group>";
+		};
+		E35BD2B41A8D511D00625A74 /* Friends */ = {
+			isa = PBXGroup;
+			children = (
+				E35BD2B51A8D511D00625A74 /* friends_bg.jpg */,
+				E35BD2B61A8D511D00625A74 /* friends_poster.jpg */,
+			);
+			path = Friends;
+			sourceTree = "<group>";
+		};
+		E35BD2B71A8D511D00625A74 /* Game of Thrones */ = {
+			isa = PBXGroup;
+			children = (
+				E35BD2B81A8D511D00625A74 /* game_of_thrones_bg.jpg */,
+				E35BD2B91A8D511D00625A74 /* game_of_thrones_poster.jpg */,
+			);
+			path = "Game of Thrones";
+			sourceTree = "<group>";
+		};
+		E35BD2BA1A8D511D00625A74 /* Gotham */ = {
+			isa = PBXGroup;
+			children = (
+				E35BD2BB1A8D511D00625A74 /* gotham_bg.jpg */,
+				E35BD2BC1A8D511D00625A74 /* gotham_poster.jpg */,
+			);
+			path = Gotham;
+			sourceTree = "<group>";
+		};
+		E35BD2BD1A8D511D00625A74 /* House of Cards */ = {
+			isa = PBXGroup;
+			children = (
+				E35BD2BE1A8D511D00625A74 /* house_of_cards_bg.jpg */,
+				E35BD2BF1A8D511D00625A74 /* house_of_cards_poster.jpg */,
+			);
+			path = "House of Cards";
+			sourceTree = "<group>";
+		};
+		E35BD2C01A8D511D00625A74 /* How I Met Your Mother */ = {
+			isa = PBXGroup;
+			children = (
+				E35BD2C11A8D511D00625A74 /* how_i_met_your_mother_bg.jpg */,
+				E35BD2C21A8D511D00625A74 /* how_i_met_your_mother_poster.jpg */,
+			);
+			path = "How I Met Your Mother";
+			sourceTree = "<group>";
+		};
+		E35BD2C31A8D511D00625A74 /* Shameless */ = {
+			isa = PBXGroup;
+			children = (
+				E35BD2C41A8D511D00625A74 /* shameless_bg.jpg */,
+				E35BD2C51A8D511D00625A74 /* shameless_poster.jpg */,
+			);
+			path = Shameless;
+			sourceTree = "<group>";
+		};
+		E35BD2C61A8D511D00625A74 /* The Big Bang Theory */ = {
+			isa = PBXGroup;
+			children = (
+				E35BD2C71A8D511D00625A74 /* the_big_bang_theory_bg.jpg */,
+				E35BD2C81A8D511D00625A74 /* the_big_bang_theory_poster.jpg */,
+			);
+			path = "The Big Bang Theory";
+			sourceTree = "<group>";
+		};
+		E35BD2C91A8D511D00625A74 /* The Walking Dead */ = {
+			isa = PBXGroup;
+			children = (
+				E35BD2CA1A8D511D00625A74 /* the_walking_dead_bg.jpg */,
+				E35BD2CB1A8D511D00625A74 /* the_walking_dead_poster.jpg */,
+			);
+			path = "The Walking Dead";
+			sourceTree = "<group>";
+		};
 		E3796D831A0E3B1600F00461 = {
 			isa = PBXGroup;
 			children = (
@@ -95,7 +258,6 @@
 				E3796D951A0E3B1700F00461 /* DataViewController.swift */,
 				E309AD841A10B72500AD2EBD /* MainViewController.swift */,
 				E3796D991A0E3B1700F00461 /* Main.storyboard */,
-				E3796D9C1A0E3B1700F00461 /* Images.xcassets */,
 				E3796D9E1A0E3B1700F00461 /* LaunchScreen.xib */,
 				E3796D8F1A0E3B1700F00461 /* Supporting Files */,
 			);
@@ -105,6 +267,9 @@
 		E3796D8F1A0E3B1700F00461 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				E3C721961A8DF52C000BC1E2 /* FloatRatingView.swift */,
+				E35BD2AA1A8D511D00625A74 /* fanart */,
+				E3796D9C1A0E3B1700F00461 /* Images.xcassets */,
 				E3796D901A0E3B1700F00461 /* Info.plist */,
 			);
 			name = "Supporting Files";
@@ -207,9 +372,31 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E35BD2D81A8D511D00625A74 /* house_of_cards_bg.jpg in Resources */,
+				E35BD2D51A8D511D00625A74 /* game_of_thrones_poster.jpg in Resources */,
+				E35BD2DE1A8D511D00625A74 /* the_big_bang_theory_bg.jpg in Resources */,
 				E3796D9B1A0E3B1700F00461 /* Main.storyboard in Resources */,
+				E35BD2CE1A8D511D00625A74 /* breaking_bad_bg.jpg in Resources */,
+				E35BD2DF1A8D511D00625A74 /* the_big_bang_theory_poster.jpg in Resources */,
+				E35BD2DC1A8D511D00625A74 /* shameless_bg.jpg in Resources */,
+				E35BD2D91A8D511D00625A74 /* house_of_cards_poster.jpg in Resources */,
+				E35BD2E01A8D511D00625A74 /* the_walking_dead_bg.jpg in Resources */,
 				E3796DA01A0E3B1700F00461 /* LaunchScreen.xib in Resources */,
+				E35BD2CD1A8D511D00625A74 /* better_call_saul_poster.jpg in Resources */,
+				E35BD2D31A8D511D00625A74 /* friends_poster.jpg in Resources */,
+				E35BD2CF1A8D511D00625A74 /* breaking_bad_poster.jpg in Resources */,
+				E35BD2D71A8D511D00625A74 /* gotham_poster.jpg in Resources */,
+				E35BD2DA1A8D511D00625A74 /* how_i_met_your_mother_bg.jpg in Resources */,
+				E35BD2DD1A8D511D00625A74 /* shameless_poster.jpg in Resources */,
+				E35BD2D11A8D511D00625A74 /* falling_skies_poster.jpg in Resources */,
+				E35BD2D21A8D511D00625A74 /* friends_bg.jpg in Resources */,
 				E3796D9D1A0E3B1700F00461 /* Images.xcassets in Resources */,
+				E35BD2D61A8D511D00625A74 /* gotham_bg.jpg in Resources */,
+				E35BD2DB1A8D511D00625A74 /* how_i_met_your_mother_poster.jpg in Resources */,
+				E35BD2D41A8D511D00625A74 /* game_of_thrones_bg.jpg in Resources */,
+				E35BD2D01A8D511D00625A74 /* falling_skies_bg.jpg in Resources */,
+				E35BD2CC1A8D511D00625A74 /* better_call_saul_bg.jpg in Resources */,
+				E35BD2E11A8D511D00625A74 /* the_walking_dead_poster.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -230,6 +417,7 @@
 				E309AD851A10B72500AD2EBD /* MainViewController.swift in Sources */,
 				E3796D961A0E3B1700F00461 /* DataViewController.swift in Sources */,
 				E30149FB1A121DCC001D8CAA /* RGPageViewController.swift in Sources */,
+				E3C721971A8DF52C000BC1E2 /* FloatRatingView.swift in Sources */,
 				E3796D921A0E3B1700F00461 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -357,6 +545,7 @@
 				INFOPLIST_FILE = RGViewPager/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -367,6 +556,7 @@
 				INFOPLIST_FILE = RGViewPager/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};

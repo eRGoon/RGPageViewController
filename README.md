@@ -12,6 +12,9 @@ Screenshots
 <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" width="20">
 <img src="http://ergoon.github.io/RGPageViewController/images/colored.png" width="210" title="Custom colors">
 
+<img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" width="10">
+<img src="http://ergoon.github.io/RGPageViewController/images/ipad.png" width="680" title="Left Tabbar">
+
 Installation
 ---
 Simply copy `RGPageViewController.swift` to your project.
@@ -75,17 +78,23 @@ optional func didChangePageToIndex(index: Int)
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the index of the current page.  
 
 ```swift
+optional func widthForTabbar() -> CGFloat
+```
+**Description:**&nbsp;&nbsp;Delegate objects can implement this method to set a custom width for the tabbar if attached to Left or Right.  
+**Returns:**&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the width of the tabbar.  
+
+```swift
 optional func heightForTabbar() -> CGFloat
 ```
-**Description:**&nbsp;&nbsp;Delegate objects can implement this method to set a custom height for the tabbar.  
+**Description:**&nbsp;&nbsp;Delegate objects can implement this method to set a custom height for the tabbar if atached to Top or Bottom.  
 **Returns:**&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the height of the tabbar.  
 
 ```swift
-optional func heightForIndicator() -> CGFloat
+optional func widthOrHeightForIndicator() -> CGFloat
 ```
-**Description:**&nbsp;&nbsp;Delegate objects can implement this method to set a custom height for the  
+**Description:**&nbsp;&nbsp;Delegate objects can implement this method to set a custom width or height for the  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tab indicator.  
-**Returns:**&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the height of the tab indicator.  
+**Returns:**&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the width or height of the tab indicator.  
 
 ```swift
 optional func widthForTabAtIndex(index: Int) -> CGFloat
@@ -97,12 +106,13 @@ optional func widthForTabAtIndex(index: Int) -> CGFloat
 **Returns:**&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the width for the tab at the given index.  
 
 ```swift
-optional func positionForTabbar(bar: UIBarPositioning) -> UIBarPosition
+optional func heightForTabAtIndex(index: Int) -> CGFloat
 ```
-**Description:**&nbsp;&nbsp;Delegate objects can implement this method to specify the position of the tabbar.  
-**Parameters:**&nbsp;&nbsp;`bar`  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the tabbar.  
-**Returns:**&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the position for the tabbar.  
+**Description:**&nbsp;&nbsp;Delegate objects can implement this method if tabs use dynamic height  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;or to overwrite the default height for tabs.  
+**Parameters:**&nbsp;&nbsp;`index`  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the index of the tab.  
+**Returns:**&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the height for the tab at the given index.  
 
 ```swift
 optional func colorForTabIndicator() -> UIColor
@@ -152,9 +162,15 @@ func viewControllerForPageAtIndex(pageViewController: RGPageViewController, inde
 ```
 #### UITabBar replacement
 
-If you need something similar to a `UITabBar` but with the features of a `UIPageViewController`, change your `tabViewForPageAtIndex(pageViewController: RGPageViewController, index: Int)` and implement `heightForTabbar()` as well as `positionForTabbar(bar: UIBarPositioning)`.
+If you need something similar to a `UITabBar` but with the features of a `UIPageViewController`, change your `tabViewForPageAtIndex(pageViewController: RGPageViewController, index: Int)` and implement `heightForTabbar()` and override the default position `positionForTabbar(bar: UIBarPositioning)`.
 
 ```swift
+// MARK: - RGTabbarPosition
+override var tabbarPosition: RGTabbarPosition {
+    get {
+        return .Bottom
+    }
+}
 // MARK: - RGPageViewController Data Source
 func tabViewForPageAtIndex(pageViewController: RGPageViewController, index: Int) -> UIView {
     let title: String = self.tabTitles.objectAtIndex(index) as String
@@ -172,11 +188,6 @@ func tabViewForPageAtIndex(pageViewController: RGPageViewController, index: Int)
 func heightForTabbar() -> CGFloat {
     // default height of UITabBar is 49px
     return 49.0
-}
-
-func positionForTabbar(bar: UIBarPositioning) -> UIBarPosition {
-    // attach the Tabbar to the bottom of the view
-    return UIBarPosition.Bottom
 }
 ```
 
