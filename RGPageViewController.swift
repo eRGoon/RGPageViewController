@@ -433,7 +433,7 @@ class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UI
             if let vc: UIViewController = self.datasource?.viewControllerForPageAtIndex(self, index: index) {
                 let view: UIView = vc.view.subviews[0] as UIView
                 
-                /*if view is UIScrollView {
+                if view is UIScrollView {
                     let scrollView = (view as UIScrollView)
                     var edgeInsets: UIEdgeInsets = scrollView.contentInset
                     
@@ -449,7 +449,7 @@ class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UI
                     
                     scrollView.contentInset = edgeInsets
                     scrollView.scrollIndicatorInsets = edgeInsets
-                }*/
+                }
                 
                 self.pageViewControllers.replaceObjectAtIndex(index, withObject: vc)
             }
