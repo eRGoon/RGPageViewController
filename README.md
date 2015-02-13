@@ -5,8 +5,8 @@ RGPageViewController is a custom UIPageViewController written in Swift. It is in
 Screenshots
 ---
 
-<img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" width="8">
-<img src="http://ergoon.github.io/RGPageViewController/images/ipad.png" width="684" title="Left Tabbar">
+<img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" width="4">
+<img src="http://ergoon.github.io/RGPageViewController/images/ipad.png" width="700" title="Left Tabbar">
 
 <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" width="10">
 <img src="http://ergoon.github.io/RGPageViewController/images/default.png" width="210" title="Default settings">
@@ -162,7 +162,7 @@ func viewControllerForPageAtIndex(pageViewController: RGPageViewController, inde
 ```
 #### UITabBar replacement
 
-If you need something similar to a `UITabBar` but with the features of a `UIPageViewController`, change your `tabViewForPageAtIndex(pageViewController: RGPageViewController, index: Int)` and implement `heightForTabbar()` and override the default position `positionForTabbar(bar: UIBarPositioning)`.
+If you need something similar to a `UITabBar` but with the features of a `UIPageViewController`, change your `tabViewForPageAtIndex(pageViewController: RGPageViewController, index: Int)` and implement `heightForTabbar()` and override the default position `RGTabbarPosition.Top`.
 
 ```swift
 // MARK: - RGTabbarPosition
@@ -171,6 +171,7 @@ override var tabbarPosition: RGTabbarPosition {
         return .Bottom
     }
 }
+
 // MARK: - RGPageViewController Data Source
 func tabViewForPageAtIndex(pageViewController: RGPageViewController, index: Int) -> UIView {
     let title: String = self.tabTitles.objectAtIndex(index) as String
@@ -190,6 +191,56 @@ func heightForTabbar() -> CGFloat {
     return 49.0
 }
 ```
+#### Additional Options
+##### UIPageViewControllerNavigationOrientation
+Change the default orientation of the pageView by overriding `pagerOrientation`.    
+**Default:**&nbsp;&nbsp;&nbsp;UIPageViewControllerNavigationOrientation.Horizontal    
+**Options:**&nbsp;&nbsp;Horizontal | Vertical
+```swift
+// MARK: - UIPageViewControllerNavigationOrientation
+override var pagerOrientation: UIPageViewControllerNavigationOrientation {
+    get {
+        return .Vertical
+    }
+}
+```
+##### RGTabbarPosition
+Change the default position of the Tabbar by overriding `tabbarPosition`.    
+**Default:**&nbsp;&nbsp;&nbsp;RGTabbarPosition.Top    
+**Options:**&nbsp;&nbsp;Top | Bottom | Left | Right
+```swift
+// MARK: - RGTabbarPosition
+override var tabbarPosition: RGTabbarPosition {
+    get {
+        return .Left
+    }
+}
+```
+##### RGTabbarStyle
+Change the default style of the Tabbar by overriding `tabbarStyle`.    
+**Default:**&nbsp;&nbsp;&nbsp;RGTabbarStyle.Blurred    
+**Options:**&nbsp;&nbsp;Blurred | Solid
+```swift
+// MARK: - RGTabbarStyle
+override var tabbarStyle: RGTabbarStyle {
+    get {
+        return .Solid
+    }
+}
+```
+##### RGTabStyle
+Change the default style of the Tabs by overriding `tabStyle`.    
+**Default:**&nbsp;&nbsp;&nbsp;RGTabStyle.None    
+**Options:**&nbsp;&nbsp;None | InactiveFaded
+```swift
+// MARK: - RGTabStyle
+override var tabStyle: RGTabStyle {
+    get {
+        return .InactiveFaded
+    }
+}
+```
+
 
 License
 ---
