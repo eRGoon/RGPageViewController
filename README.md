@@ -5,15 +5,15 @@ RGPageViewController is a custom UIPageViewController written in Swift. It is in
 Screenshots
 ---
 
+<img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" width="8">
+<img src="http://ergoon.github.io/RGPageViewController/images/ipad.png" width="684" title="Left Tabbar">
+
 <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" width="10">
 <img src="http://ergoon.github.io/RGPageViewController/images/default.png" width="210" title="Default settings">
 <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" width="20">
 <img src="http://ergoon.github.io/RGPageViewController/images/uitabbar.png" width="210" title="UITabBar mode">
 <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" width="20">
 <img src="http://ergoon.github.io/RGPageViewController/images/colored.png" width="210" title="Custom colors">
-
-<img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" width="10">
-<img src="http://ergoon.github.io/RGPageViewController/images/ipad.png" width="680" title="Left Tabbar">
 
 Installation
 ---
