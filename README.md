@@ -2,20 +2,20 @@ RGPageViewController
 ===
 RGPageViewController is a custom UIPageViewController written in Swift. It is inspired by [ICViewPager](https://github.com/iltercengiz/ICViewPager "ICViewPager") by Ilter Cengiz but with some modifications. It combines an Android-like ViewPager with the blur effect introduced in iOS7. It is fully customizable and can also be used as a replacement for UITabBar.
 
-- [Screenshots](#)
-- [Installation](#)
-- [Usage](#)
-	- [RGPageViewControllerDataSource](#)
-	- [RGPageViewControllerDelegate](#)
-- [Examples](#)
-	- [Basic Configuration](#)
-		- [UITabBar replacement](#)
-		- [Additional Options](#)
-			- [UIPageViewControllerNavigationOrientation](#)
-			- [RGTabbarPosition](#)
-			- [RGTabbarStyle](#)
-			- [RGTabStyle](#)
-- [License](#)
+- [Screenshots](#screenshots)
+- [Installation](#installation)
+- [Usage](#usage)
+	- [RGPageViewControllerDataSource](#rgpageviewcontrollerdatasource)
+	- [RGPageViewControllerDelegate](#rgpageviewcontrollerdelegate)
+- [Examples](#examples)
+	- [Basic Configuration](#basic-configuration)
+		- [UITabBar replacement](#uitabbar-replacement)
+		- [Additional Options](#addidtional-options)
+			- [UIPageViewControllerNavigationOrientation](#uipageviewcontrollernavigationorientation)
+			- [RGTabbarPosition](#rgtabbarposition)
+			- [RGTabbarStyle](#rgtabbarstyle)
+			- [RGTabStyle](#rgtabstyle)
+- [License](#license)
 
 Screenshots
 ---
