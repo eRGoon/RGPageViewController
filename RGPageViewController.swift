@@ -54,24 +54,25 @@ class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UI
     var tabbarHeight: CGFloat = 38.0
     var tabIndicatorWidthOrHeight: CGFloat = 2.0
     var tabIndicatorColor: UIColor = UIColor.lightGrayColor()
+    var tabMargin: CGFloat = 0.0
+    var tabStyle: RGTabStyle {
+        get {
+            return .None
+        }
+    }
     // tabbar
     var tabbarStyle: RGTabbarStyle {
         get {
             return .Blurred
         }
     }
-    var tabStyle: RGTabStyle {
-        get {
-            return .None
-        }
-    }
-    var tabbar: UIView!
-    var barTintColor: UIColor?
     var tabbarPosition: RGTabbarPosition {
         get {
             return .Top
         }
     }
+    var tabbar: UIView!
+    var barTintColor: UIColor?
     var tabScrollView: UIScrollView = UIScrollView()
     
     required init(coder aDecoder: NSCoder) {
@@ -355,7 +356,7 @@ class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UI
         self.tabScrollView.showsHorizontalScrollIndicator = false
         self.tabScrollView.showsVerticalScrollIndicator = false
         
-        var contentSizeWH: CGFloat = 0.0
+        var contentSizeWH: CGFloat = self.tabMargin / 2.0
         
         for i in 0 ..< self.pageCount {
             if let tabView: RGTabView = self.tabViewAtIndex(i) {
@@ -365,11 +366,11 @@ class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UI
                 case .Top, .Bottom:
                     frame.origin.x = contentSizeWH
  
-                    contentSizeWH += CGRectGetWidth(frame)
+                    contentSizeWH += CGRectGetWidth(frame) + self.tabMargin
                 case .Left, .Right:
                     frame.origin.y = contentSizeWH
                     
-                    contentSizeWH += CGRectGetHeight(frame)
+                    contentSizeWH += CGRectGetHeight(frame) + self.tabMargin
                 }
                 
                 tabView.frame = frame
@@ -381,6 +382,8 @@ class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UI
                 tabView.addGestureRecognizer(tapRecognizer)
             }
         }
+        
+        contentSizeWH -= self.tabMargin / 2.0
         
         switch self.tabbarPosition {
         case .Top, .Bottom:
@@ -514,7 +517,18 @@ class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UI
         
         self.currentTabIndex = index
         
-        self.tabScrollView.scrollRectToVisible(newTab.frame, animated: animated)
+        var visibleRect = newTab.frame
+        
+        switch self.tabbarPosition {
+        case .Top, .Bottom:
+            visibleRect.origin.x -= self.tabMargin / 2.0
+            visibleRect.size.width += self.tabMargin
+        case .Left, .Right:
+            visibleRect.origin.y -= self.tabMargin / 2.0
+            visibleRect.size.height += self.tabMargin
+        }
+        
+        self.tabScrollView.scrollRectToVisible(visibleRect, animated: animated)
     }
     
     private func updatePager(index: Int) {

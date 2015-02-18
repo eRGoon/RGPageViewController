@@ -53,6 +53,8 @@ class MainViewController: RGPageViewController, RGPageViewControllerDataSource, 
         
         data = [bcs, bb, fs, f, got, g, hoc, himym, s, tbbt, twd]
         
+        self.tabMargin = 16.0
+        
         self.datasource = self
         self.delegate = self
     }
@@ -93,7 +95,7 @@ class MainViewController: RGPageViewController, RGPageViewControllerDataSource, 
     // MARK: - RGPageViewController Delegate
     // use this to set a custom height for the tabbar
     func heightForTabAtIndex(index: Int) -> CGFloat {
-        return 180.0
+        return 164.0
     }
     
     // use this to set a custom height for the tabbar
