@@ -184,16 +184,26 @@ class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UI
     private func layoutTabbarLeft() -> NSMutableArray {
         let constraints: NSMutableArray = NSMutableArray()
         
-        // adjust hairline image in navigation bar if attached to left
-        /*if let navController = self.navigationController {
-            navController.navigationBar.hideHairline()
-        }*/
+        // scroll tabbar under topbar if using solid style
+        if self.tabbarStyle == RGTabbarStyle.Solid {
+            constraints.addObject(NSLayoutConstraint(item: self.tabbar, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Top, multiplier: 1.0, constant: 0.0))
+            constraints.addObject(NSLayoutConstraint(item: self.tabbar, attribute: NSLayoutAttribute.Bottom, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: 0.0))
+
+            var edgeInsets: UIEdgeInsets = self.tabScrollView.contentInset
+            
+            edgeInsets.top = self.topLayoutGuide.length
+            edgeInsets.bottom = self.bottomLayoutGuide.length
+            
+            self.tabScrollView.contentInset = edgeInsets
+            self.tabScrollView.scrollIndicatorInsets = edgeInsets
+        } else {
+            constraints.addObject(NSLayoutConstraint(item: self.tabbar, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: self.topLayoutGuide, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: 0.0))
+            constraints.addObject(NSLayoutConstraint(item: self.tabbar, attribute: NSLayoutAttribute.Bottom, relatedBy: NSLayoutRelation.Equal, toItem: self.bottomLayoutGuide, attribute: NSLayoutAttribute.Top, multiplier: 1.0, constant: 0.0))
+        }
         
         // tabbar constraints
-        constraints.addObject(NSLayoutConstraint(item: self.tabbar, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: self.topLayoutGuide, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: 0.0))
         constraints.addObject(NSLayoutConstraint(item: self.tabbar, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Leading, multiplier: 1.0, constant: 0.0))
         constraints.addObject(NSLayoutConstraint(item: self.tabbar, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1.0, constant: self.tabbarWidth))
-        constraints.addObject(NSLayoutConstraint(item: self.tabbar, attribute: NSLayoutAttribute.Bottom, relatedBy: NSLayoutRelation.Equal, toItem: self.bottomLayoutGuide, attribute: NSLayoutAttribute.Top, multiplier: 1.0, constant: 0.0))
         
         // tabbar scrollView constraints
         constraints.addObject(NSLayoutConstraint(item: self.tabScrollView, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: self.tabbar, attribute: NSLayoutAttribute.Top, multiplier: 1.0, constant: 0.0))
@@ -213,13 +223,22 @@ class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UI
     private func layoutTabbarRight() -> NSMutableArray {
         let constraints: NSMutableArray = NSMutableArray()
         
-        // adjust hairline image in navigation bar if attached to right
-        if let navController = self.navigationController {
-            navController.navigationBar.hideHairline()
+        // scroll tabbar under topbar if using solid style
+        if self.tabbarStyle == RGTabbarStyle.Solid {
+            constraints.addObject(NSLayoutConstraint(item: self.tabbar, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Top, multiplier: 1.0, constant: 0.0))
+            
+            var edgeInsets: UIEdgeInsets = self.tabScrollView.contentInset
+            
+            edgeInsets.top = self.topLayoutGuide.length
+            edgeInsets.bottom = self.bottomLayoutGuide.length
+            
+            self.tabScrollView.contentInset = edgeInsets
+            self.tabScrollView.scrollIndicatorInsets = edgeInsets
+        } else {
+            constraints.addObject(NSLayoutConstraint(item: self.tabbar, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: self.topLayoutGuide, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: 0.0))
         }
         
         // tabbar constraints
-        constraints.addObject(NSLayoutConstraint(item: self.tabbar, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: self.topLayoutGuide, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: 0.0))
         constraints.addObject(NSLayoutConstraint(item: self.tabbar, attribute: NSLayoutAttribute.Trailing, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Trailing, multiplier: 1.0, constant: 0.0))
         constraints.addObject(NSLayoutConstraint(item: self.tabbar, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1.0, constant: self.tabbarWidth))
         constraints.addObject(NSLayoutConstraint(item: self.tabbar, attribute: NSLayoutAttribute.Bottom, relatedBy: NSLayoutRelation.Equal, toItem: self.bottomLayoutGuide, attribute: NSLayoutAttribute.Top, multiplier: 1.0, constant: 0.0))
@@ -234,7 +253,7 @@ class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UI
         constraints.addObject(NSLayoutConstraint(item: self.pagerView!, attribute: NSLayoutAttribute.Bottom, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: 0.0))
         constraints.addObject(NSLayoutConstraint(item: self.pagerView!, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Top, multiplier: 1.0, constant: 0.0))
         constraints.addObject(NSLayoutConstraint(item: self.pagerView!, attribute: NSLayoutAttribute.Trailing, relatedBy: NSLayoutRelation.Equal, toItem: self.tabbar, attribute: NSLayoutAttribute.Leading, multiplier: 1.0, constant: 0.0))
-        constraints.addObject(NSLayoutConstraint(item: self.pagerView!, attribute: NSLayoutAttribute.Trailing, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Trailing, multiplier: 1.0, constant: 0.0))
+        constraints.addObject(NSLayoutConstraint(item: self.pagerView!, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Leading, multiplier: 1.0, constant: 0.0))
         
         return constraints
     }
@@ -403,11 +422,17 @@ class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UI
                     } else {
                         tabView = RGTabView(frame: CGRectMake(0.0, 0.0, self.tabWidth, self.tabbarHeight), indicatorColor: self.tabIndicatorColor, indicatorHW: self.tabIndicatorWidthOrHeight, style: self.tabStyle, orientation: .Horizontal)
                     }
-                case .Left, .Right:
+                case .Left:
                     if let theHeight: CGFloat = self.delegate?.heightForTabAtIndex?(index) {
-                        tabView = RGTabView(frame: CGRectMake(0.0, 0.0, self.tabbarWidth, theHeight), indicatorColor: self.tabIndicatorColor, indicatorHW: self.tabIndicatorWidthOrHeight, style: self.tabStyle, orientation: .Vertical)
+                        tabView = RGTabView(frame: CGRectMake(0.0, 0.0, self.tabbarWidth, theHeight), indicatorColor: self.tabIndicatorColor, indicatorHW: self.tabIndicatorWidthOrHeight, style: self.tabStyle, orientation: .VerticalLeft)
                     } else {
-                        tabView = RGTabView(frame: CGRectMake(0.0, 0.0, self.tabbarWidth, self.tabbarWidth), indicatorColor: self.tabIndicatorColor, indicatorHW: self.tabIndicatorWidthOrHeight, style: self.tabStyle, orientation: .Vertical)
+                        tabView = RGTabView(frame: CGRectMake(0.0, 0.0, self.tabbarWidth, self.tabbarWidth), indicatorColor: self.tabIndicatorColor, indicatorHW: self.tabIndicatorWidthOrHeight, style: self.tabStyle, orientation: .VerticalLeft)
+                    }
+                case .Right:
+                    if let theHeight: CGFloat = self.delegate?.heightForTabAtIndex?(index) {
+                        tabView = RGTabView(frame: CGRectMake(0.0, 0.0, self.tabbarWidth, theHeight), indicatorColor: self.tabIndicatorColor, indicatorHW: self.tabIndicatorWidthOrHeight, style: self.tabStyle, orientation: .VerticalRight)
+                    } else {
+                        tabView = RGTabView(frame: CGRectMake(0.0, 0.0, self.tabbarWidth, self.tabbarWidth), indicatorColor: self.tabIndicatorColor, indicatorHW: self.tabIndicatorWidthOrHeight, style: self.tabStyle, orientation: .VerticalRight)
                     }
                 }
                 
@@ -433,7 +458,7 @@ class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UI
             if let vc: UIViewController = self.datasource?.viewControllerForPageAtIndex(self, index: index) {
                 let view: UIView = vc.view.subviews[0] as UIView
                 
-                /*if view is UIScrollView {
+                if view is UIScrollView {
                     let scrollView = (view as UIScrollView)
                     var edgeInsets: UIEdgeInsets = scrollView.contentInset
                     
@@ -449,7 +474,7 @@ class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UI
                     
                     scrollView.contentInset = edgeInsets
                     scrollView.scrollIndicatorInsets = edgeInsets
-                }*/
+                }
                 
                 self.pageViewControllers.replaceObjectAtIndex(index, withObject: vc)
             }
@@ -645,7 +670,8 @@ class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UI
 class RGTabView: UIView {
     enum RGTabOrientation {
         case Horizontal
-        case Vertical
+        case VerticalLeft
+        case VerticalRight
     }
     
     // variables
@@ -707,9 +733,13 @@ class RGTabView: UIView {
                     bezierPath.moveToPoint(CGPointMake(0.0, CGRectGetHeight(rect) - self.indicatorHW / 2.0))
                     bezierPath.addLineToPoint(CGPointMake(CGRectGetWidth(rect), CGRectGetHeight(rect) - self.indicatorHW / 2.0))
                     bezierPath.lineWidth = self.indicatorHW
-                } else {
+                } else if self.orientation == .VerticalLeft {
                     bezierPath.moveToPoint(CGPointMake(self.indicatorHW / 2.0, 0.0))
                     bezierPath.addLineToPoint(CGPointMake(self.indicatorHW / 2.0, CGRectGetHeight(rect)))
+                    bezierPath.lineWidth = self.indicatorHW
+                } else if self.orientation == .VerticalRight {
+                    bezierPath.moveToPoint(CGPointMake(CGRectGetWidth(rect) - (self.indicatorHW / 2.0), 0.0))
+                    bezierPath.addLineToPoint(CGPointMake(CGRectGetWidth(rect) - (self.indicatorHW / 2.0), CGRectGetHeight(rect)))
                     bezierPath.lineWidth = self.indicatorHW
                 }
                 
