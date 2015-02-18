@@ -10,7 +10,7 @@ RGPageViewController is a custom UIPageViewController written in Swift. It is in
 - [Examples](#examples)
 	- [Basic Configuration](#basic-configuration)
 		- [UITabBar replacement](#uitabbar-replacement)
-		- [Additional Options](#addidtional-options)
+		- [Additional Options](#additional-options)
 			- [UIPageViewControllerNavigationOrientation](#uipageviewcontrollernavigationorientation)
 			- [RGTabbarPosition](#rgtabbarposition)
 			- [RGTabbarStyle](#rgtabbarstyle)
