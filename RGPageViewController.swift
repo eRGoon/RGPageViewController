@@ -97,6 +97,21 @@ class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UI
         if self.needsSetup {
             self.setupSelf()
         }
+        else {
+            // remove hairline image in navigation bar if attached to top
+            if let navController = self.navigationController {
+                navController.navigationBar.hideHairline()
+            }
+        }
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        // add hairline image in navigation bar if attached to top
+        if let navController = self.navigationController {
+            navController.navigationBar.showHairline()
+        }
     }
     
     override func viewWillLayoutSubviews() {
@@ -868,6 +883,12 @@ extension UINavigationBar {
     func hideHairline() {
         if let hairlineView: UIImageView = self.findHairlineImageView(containedIn: self) {
             hairlineView.hidden = true
+        }
+    }
+    
+    func showHairline() {
+        if let hairlineView: UIImageView = self.findHairlineImageView(containedIn: self) {
+            hairlineView.hidden = false
         }
     }
     
