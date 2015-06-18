@@ -70,7 +70,7 @@ class MainViewController: RGPageViewController, RGPageViewControllerDataSource, 
     
     func tabViewForPageAtIndex(pageViewController: RGPageViewController, index: Int) -> UIView {
         let tabView = UIImageView(frame: CGRectMake(0.0, 0.0, 115.0, 164.0))
-        let imageName: String = self.data[index]["image"] as String
+        let imageName: String = self.data[index]["image"] as! String
         
         tabView.contentMode = UIViewContentMode.ScaleAspectFill
         tabView.backgroundColor = UIColor.whiteColor()
@@ -85,7 +85,7 @@ class MainViewController: RGPageViewController, RGPageViewControllerDataSource, 
         }
         
         // Create a new view controller and pass suitable data.
-        let dataViewController = self.storyboard!.instantiateViewControllerWithIdentifier("DataViewController") as DataViewController
+        let dataViewController = self.storyboard!.instantiateViewControllerWithIdentifier("DataViewController") as! DataViewController
         
         dataViewController.dataObject = self.data[index]
         

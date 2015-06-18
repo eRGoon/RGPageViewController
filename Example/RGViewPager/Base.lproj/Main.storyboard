@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="an3-eU-scv">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="an3-eU-scv">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
     <scenes>
         <!--Data View Controller-->
@@ -47,29 +47,6 @@
                                     <constraint firstAttribute="height" constant="1" id="qRK-Ep-L41"/>
                                 </constraints>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6hO-zK-Par" customClass="FloatRatingView" customModule="RGViewPager" customModuleProvider="target">
-                                <rect key="frame" x="318" y="260" width="220" height="22"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="220" id="7AW-vw-oen"/>
-                                    <constraint firstAttribute="height" constant="22" id="cev-we-pHr"/>
-                                </constraints>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="rating">
-                                        <real key="value" value="0.0"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="image" keyPath="emptyImage" value="star_empty"/>
-                                    <userDefinedRuntimeAttribute type="image" keyPath="fullImage" value="star_full"/>
-                                    <userDefinedRuntimeAttribute type="boolean" keyPath="halfRatings" value="YES"/>
-                                    <userDefinedRuntimeAttribute type="boolean" keyPath="editable" value="NO"/>
-                                    <userDefinedRuntimeAttribute type="boolean" keyPath="floatRatings" value="YES"/>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="minRating">
-                                        <integer key="value" value="0"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="maxRating">
-                                        <integer key="value" value="10"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
-                            </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="9.9" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9nP-6f-SNy">
                                 <rect key="frame" x="546" y="260" width="30" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -82,34 +59,27 @@
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="bottomLeft" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9i6-sk-8G5">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="bottomLeft" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9i6-sk-8G5">
                                 <rect key="frame" x="318" y="545" width="258" height="21"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
                         <constraints>
-                            <constraint firstItem="GPS-oC-AR2" firstAttribute="top" secondItem="6hO-zK-Par" secondAttribute="bottom" constant="12" id="0at-1e-nWx"/>
-                            <constraint firstItem="6hO-zK-Par" firstAttribute="leading" secondItem="GPS-oC-AR2" secondAttribute="leading" id="1GV-02-49q"/>
                             <constraint firstItem="cuI-Ea-FOo" firstAttribute="trailing" secondItem="GPS-oC-AR2" secondAttribute="trailing" id="1eV-kB-Rcs"/>
                             <constraint firstItem="cuI-Ea-FOo" firstAttribute="top" secondItem="i7n-lc-4In" secondAttribute="bottom" constant="8" id="4Ge-ci-eHq"/>
-                            <constraint firstItem="9nP-6f-SNy" firstAttribute="leading" secondItem="6hO-zK-Par" secondAttribute="trailing" constant="8" id="5Y1-0l-L17"/>
                             <constraint firstItem="Dny-la-uT5" firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="9i6-sk-8G5" secondAttribute="bottom" id="7Ga-rW-hao"/>
                             <constraint firstItem="9i6-sk-8G5" firstAttribute="leading" secondItem="pyQ-ER-DO3" secondAttribute="trailing" constant="24" id="Ai3-oT-sGW"/>
                             <constraint firstItem="i7n-lc-4In" firstAttribute="top" secondItem="pyQ-ER-DO3" secondAttribute="top" constant="10" id="C8D-95-24r"/>
                             <constraint firstItem="pyQ-ER-DO3" firstAttribute="centerY" secondItem="Dny-la-uT5" secondAttribute="centerY" id="Cea-P8-Ww5"/>
                             <constraint firstItem="i7n-lc-4In" firstAttribute="trailing" secondItem="cuI-Ea-FOo" secondAttribute="trailing" id="E1K-4e-UiV"/>
                             <constraint firstAttribute="bottom" secondItem="kdU-dH-EKw" secondAttribute="bottom" id="FJH-iX-JG7"/>
-                            <constraint firstItem="6hO-zK-Par" firstAttribute="top" secondItem="cuI-Ea-FOo" secondAttribute="bottom" constant="8" id="ISZ-2a-JMT">
-                                <variation key="widthClass=regular" constant="16"/>
-                            </constraint>
                             <constraint firstItem="pyQ-ER-DO3" firstAttribute="centerX" secondItem="Dny-la-uT5" secondAttribute="centerX" id="IXq-Jg-Rf0"/>
                             <constraint firstAttribute="centerY" secondItem="kdU-dH-EKw" secondAttribute="centerY" id="Jxv-Iq-H83"/>
                             <constraint firstItem="kdU-dH-EKw" firstAttribute="top" secondItem="gLe-Tb-ylt" secondAttribute="top" id="KhV-j0-vI1"/>
                             <constraint firstItem="i7n-lc-4In" firstAttribute="leading" secondItem="cuI-Ea-FOo" secondAttribute="leading" id="Sxd-7t-jhp"/>
                             <constraint firstItem="a4F-Wq-f2I" firstAttribute="top" secondItem="pyQ-ER-DO3" secondAttribute="bottom" constant="24" id="TLs-OD-2Bn"/>
                             <constraint firstAttribute="trailing" secondItem="9i6-sk-8G5" secondAttribute="trailing" constant="24" id="W5q-bu-yqT"/>
-                            <constraint firstItem="cuI-Ea-FOo" firstAttribute="leading" secondItem="6hO-zK-Par" secondAttribute="leading" id="WF8-Rc-ZCf"/>
                             <constraint firstItem="i7n-lc-4In" firstAttribute="leading" secondItem="pyQ-ER-DO3" secondAttribute="trailing" constant="24" id="Xyc-Oy-OIw"/>
                             <constraint firstAttribute="trailing" secondItem="kdU-dH-EKw" secondAttribute="trailing" id="YOL-W8-8BO"/>
                             <constraint firstItem="9i6-sk-8G5" firstAttribute="top" secondItem="i7n-lc-4In" secondAttribute="bottom" constant="8" id="YaO-6L-KNj"/>
@@ -118,9 +88,6 @@
                             <constraint firstAttribute="centerX" secondItem="kdU-dH-EKw" secondAttribute="centerX" id="dET-rS-oZd"/>
                             <constraint firstItem="9i6-sk-8G5" firstAttribute="bottom" secondItem="pyQ-ER-DO3" secondAttribute="bottom" constant="-10" id="gEd-RD-gwF"/>
                             <constraint firstItem="kdU-dH-EKw" firstAttribute="leading" secondItem="gLe-Tb-ylt" secondAttribute="leading" id="kG1-Mu-qaA"/>
-                            <constraint firstItem="9nP-6f-SNy" firstAttribute="centerY" secondItem="6hO-zK-Par" secondAttribute="centerY" constant="-0.5" id="pFn-VY-7hw">
-                                <variation key="widthClass=regular" constant="0.0"/>
-                            </constraint>
                             <constraint firstAttribute="trailing" secondItem="i7n-lc-4In" secondAttribute="trailing" constant="24" id="vqA-ZL-l86"/>
                             <constraint firstItem="9i6-sk-8G5" firstAttribute="top" secondItem="GPS-oC-AR2" secondAttribute="bottom" constant="12" id="yUX-O7-Gzn"/>
                         </constraints>
@@ -132,12 +99,8 @@
                                 <exclude reference="7Ga-rW-hao"/>
                                 <exclude reference="Z9a-TM-cFj"/>
                                 <exclude reference="1eV-kB-Rcs"/>
-                                <exclude reference="1GV-02-49q"/>
-                                <exclude reference="0at-1e-nWx"/>
                                 <exclude reference="YaO-6L-KNj"/>
                                 <exclude reference="yUX-O7-Gzn"/>
-                                <exclude reference="5Y1-0l-L17"/>
-                                <exclude reference="pFn-VY-7hw"/>
                             </mask>
                         </variation>
                         <variation key="widthClass=regular">
@@ -147,12 +110,8 @@
                             <mask key="constraints">
                                 <include reference="7Ga-rW-hao"/>
                                 <include reference="1eV-kB-Rcs"/>
-                                <include reference="1GV-02-49q"/>
-                                <include reference="0at-1e-nWx"/>
                                 <exclude reference="gEd-RD-gwF"/>
                                 <include reference="yUX-O7-Gzn"/>
-                                <include reference="5Y1-0l-L17"/>
-                                <include reference="pFn-VY-7hw"/>
                             </mask>
                         </variation>
                     </view>
@@ -165,7 +124,6 @@
                         <outlet property="nameLabel" destination="i7n-lc-4In" id="Xe6-RY-3db"/>
                         <outlet property="posterView" destination="pyQ-ER-DO3" id="Vv0-Kr-Fwz"/>
                         <outlet property="ratingLabel" destination="9nP-6f-SNy" id="k38-ej-Qap"/>
-                        <outlet property="ratingView" destination="6hO-zK-Par" id="4QY-zY-NBW"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PHE-GN-Yf3" sceneMemberID="firstResponder"/>
@@ -208,8 +166,4 @@
             <point key="canvasLocation" x="181" y="476"/>
         </scene>
     </scenes>
-    <resources>
-        <image name="star_empty" width="22" height="22"/>
-        <image name="star_full" width="22" height="22"/>
-    </resources>
 </document>

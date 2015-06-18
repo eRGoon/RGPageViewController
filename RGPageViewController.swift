@@ -44,23 +44,48 @@ class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UI
             return .Horizontal
         }
     }
-    var pagerView: UIView?
-    var pagerScrollView: UIScrollView?
+    //var pagerView: UIView?
+    var pagerScrollView: UIScrollView!
     // tabs
     var tabs: NSMutableArray = NSMutableArray()
     var currentTabIndex: Int = 0
     var tabWidth: CGFloat = UIScreen.mainScreen().bounds.size.width / 3.0
-    var tabbarWidth: CGFloat = 100.0
-    var tabbarHeight: CGFloat = 38.0
-    var tabIndicatorWidthOrHeight: CGFloat = 2.0
-    var tabIndicatorColor: UIColor = UIColor.lightGrayColor()
-    var tabMargin: CGFloat = 0.0
+    var tabbarWidth: CGFloat {
+        get {
+            return 100.0
+        }
+    }
+    var tabbarHeight: CGFloat {
+        get {
+            return 38.0
+        }
+    }
+    var tabIndicatorWidthOrHeight: CGFloat {
+        get {
+            return 2.0
+        }
+    }
+    var tabIndicatorColor: UIColor {
+        get {
+            return UIColor.lightGrayColor()
+        }
+    }
+    var tabMargin: CGFloat {
+        get {
+            return 0.0
+        }
+    }
     var tabStyle: RGTabStyle {
         get {
             return .None
         }
     }
     // tabbar
+    var tabbarHidden: Bool {
+        get {
+            return false
+        }
+    }
     var tabbarStyle: RGTabbarStyle {
         get {
             return .Blurred
@@ -72,19 +97,75 @@ class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UI
         }
     }
     var tabbar: UIView!
-    var barTintColor: UIColor?
+    var barTintColor: UIColor? {
+        get {
+            return nil
+        }
+    }
     var tabScrollView: UIScrollView = UIScrollView()
     
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        
-        self.initSelf()
     }
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+    }
+    
+    override func loadView() {
+        super.loadView()
         
-        self.initSelf()
+        // init pager
+        pager = UIPageViewController(transitionStyle: UIPageViewControllerTransitionStyle.Scroll, navigationOrientation: pagerOrientation, options: nil)
+        
+        addChildViewController(pager)
+        
+        pagerScrollView = pager.view.subviews[0] as! UIScrollView
+        pageViewScrollDelegate = pagerScrollView.delegate
+        
+        pagerScrollView.scrollsToTop = false
+        pagerScrollView.delegate = self
+        
+        // init tabbar
+        switch tabbarStyle {
+        case .Blurred:
+            tabbar = UIToolbar()
+            
+            if let bar = tabbar as? UIToolbar {
+                bar.barTintColor = barTintColor
+                bar.translucent = true
+                bar.delegate = self
+            }
+        case .Solid:
+            tabbar = UIView()
+            
+            tabbar.backgroundColor = barTintColor
+        }
+        
+        tabbar.hidden = tabbarHidden
+        
+        tabScrollView.backgroundColor = UIColor.clearColor()
+        tabScrollView.scrollsToTop = false
+        tabScrollView.opaque = false
+        tabScrollView.showsHorizontalScrollIndicator = false
+        tabScrollView.showsVerticalScrollIndicator = false
+        
+        // layout
+        switch tabbarPosition {
+        case .Top:
+            layoutTabbarTop()
+        case .Bottom:
+            layoutTabbarBottom()
+        case .Left:
+            layoutTabbarLeft()
+        case .Right:
+            layoutTabbarRight()
+        }
+        
+        tabbar.addSubview(tabScrollView)
+        
+        view.addSubview(pager.view)
+        view.addSubview(tabbar)
     }
     
     override func viewDidLoad() {
@@ -94,30 +175,8 @@ class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UI
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-        if self.needsSetup {
-            self.setupSelf()
-        }
-        else {
-            // remove hairline image in navigation bar if attached to top
-            if let navController = self.navigationController {
-                navController.navigationBar.hideHairline()
-            }
-        }
-    }
-    
-    override func viewWillDisappear(animated: Bool) {
-        super.viewWillDisappear(animated)
-        
-        // add hairline image in navigation bar if attached to top
-        if let navController = self.navigationController {
-            navController.navigationBar.showHairline()
-        }
-    }
-    
-    override func viewWillLayoutSubviews() {
-        if self.needsLayoutSubviews {
-            self.layoutSubviews()
-            self.selectTabAtIndex(self.currentTabIndex)
+        if needsSetup {
+            setupSelf()
         }
     }
     
@@ -125,272 +184,179 @@ class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UI
         super.didReceiveMemoryWarning()
     }
     
-    private func layoutSubviews() {
-        var constraints: NSMutableArray!
+    private func layoutTabbarTop() {
+        tabbar.autoresizingMask = .FlexibleWidth
+        tabScrollView.autoresizingMask = .FlexibleWidth
+        pager.view.autoresizingMask = (UIViewAutoresizing.FlexibleHeight | UIViewAutoresizing.FlexibleWidth)
         
-        switch self.tabbarPosition {
-        case .Top:
-            constraints = layoutTabbarTop()
-        case .Bottom:
-            constraints = layoutTabbarBottom()
-        case .Left:
-            constraints = layoutTabbarLeft()
-        case .Right:
-            constraints = layoutTabbarRight()
-        }
-        
-        self.view.addConstraints(constraints)
-        
-        self.needsLayoutSubviews = false
-    }
-    
-    private func layoutTabbarTop() -> NSMutableArray {
-        let constraints: NSMutableArray = NSMutableArray()
+        var barTop: CGFloat = 20
         
         // remove hairline image in navigation bar if attached to top
-        if let navController = self.navigationController {
+        if let navController = navigationController where !navController.navigationBar.hidden {
+            barTop = 64
+            
             navController.navigationBar.hideHairline()
         }
         
-        // tabbar constraints
-        constraints.addObject(NSLayoutConstraint(item: self.tabbar, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: self.topLayoutGuide, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: 0.0))
-        constraints.addObject(NSLayoutConstraint(item: self.tabbar, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1.0, constant: self.tabbarHeight))
-        constraints.addObject(NSLayoutConstraint(item: self.tabbar, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Leading, multiplier: 1.0, constant: 0.0))
-        constraints.addObject(NSLayoutConstraint(item: self.tabbar, attribute: NSLayoutAttribute.Trailing, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Trailing, multiplier: 1.0, constant: 0.0))
+        let tabbarFrame = CGRect(x: 0, y: barTop, width: view.bounds.size.width, height: tabbarHidden ? 0 : tabbarHeight)
         
-        // tabbar scrollView constraints
-        constraints.addObject(NSLayoutConstraint(item: self.tabScrollView, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: self.tabbar, attribute: NSLayoutAttribute.Top, multiplier: 1.0, constant: 0.0))
-        constraints.addObject(NSLayoutConstraint(item: self.tabScrollView, attribute: NSLayoutAttribute.Bottom, relatedBy: NSLayoutRelation.Equal, toItem: self.tabbar, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: 0.0))
-        constraints.addObject(NSLayoutConstraint(item: self.tabScrollView, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: self.tabbar, attribute: NSLayoutAttribute.Leading, multiplier: 1.0, constant: 0.0))
-        constraints.addObject(NSLayoutConstraint(item: self.tabScrollView, attribute: NSLayoutAttribute.Trailing, relatedBy: NSLayoutRelation.Equal, toItem: self.tabbar, attribute: NSLayoutAttribute.Trailing, multiplier: 1.0, constant: 0.0))
+        tabbar.frame = tabbarFrame
         
-        // tabpager constraints
-        constraints.addObject(NSLayoutConstraint(item: self.pagerView!, attribute: NSLayoutAttribute.Bottom, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: 0.0))
-        constraints.addObject(NSLayoutConstraint(item: self.pagerView!, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Top, multiplier: 1.0, constant: 0.0))
-        constraints.addObject(NSLayoutConstraint(item: self.pagerView!, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Leading, multiplier: 1.0, constant: 0.0))
-        constraints.addObject(NSLayoutConstraint(item: self.pagerView!, attribute: NSLayoutAttribute.Trailing, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Trailing, multiplier: 1.0, constant: 0.0))
+        let tabScrollerFrame = CGRect(x: 0, y: 0, width: tabbarFrame.size.width, height: tabbarFrame.size.height)
         
-        return constraints
+        tabScrollView.frame = tabScrollerFrame
+        
+        let pagerFrame = CGRect(x: 0, y: 0, width: view.bounds.size.width, height: view.bounds.size.height)
+        
+        pager.view.frame = pagerFrame
     }
     
-    private func layoutTabbarBottom() -> NSMutableArray {
-        let constraints: NSMutableArray = NSMutableArray()
+    private func layoutTabbarBottom() {
+        tabbar.autoresizingMask = .FlexibleWidth
+        tabScrollView.autoresizingMask = .FlexibleWidth
+        pager.view.autoresizingMask = (UIViewAutoresizing.FlexibleHeight | UIViewAutoresizing.FlexibleWidth)
         
-        // tabbar constraints
-        constraints.addObject(NSLayoutConstraint(item: self.tabbar, attribute: NSLayoutAttribute.Bottom, relatedBy: NSLayoutRelation.Equal, toItem: self.bottomLayoutGuide, attribute: NSLayoutAttribute.Top, multiplier: 1.0, constant: 0.0))
-        constraints.addObject(NSLayoutConstraint(item: self.tabbar, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1.0, constant: self.tabbarHeight))
-        constraints.addObject(NSLayoutConstraint(item: self.tabbar, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Leading, multiplier: 1.0, constant: 0.0))
-        constraints.addObject(NSLayoutConstraint(item: self.tabbar, attribute: NSLayoutAttribute.Trailing, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Trailing, multiplier: 1.0, constant: 0.0))
+        let tabbarFrame = CGRect(x: 0, y: view.bounds.size.height - tabbarHeight, width: view.bounds.size.width, height: tabbarHidden ? 0 : tabbarHeight)
         
-        // tabbar scrollView constraints
-        constraints.addObject(NSLayoutConstraint(item: self.tabScrollView, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: self.tabbar, attribute: NSLayoutAttribute.Top, multiplier: 1.0, constant: 0.0))
-        constraints.addObject(NSLayoutConstraint(item: self.tabScrollView, attribute: NSLayoutAttribute.Bottom, relatedBy: NSLayoutRelation.Equal, toItem: self.tabbar, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: 0.0))
-        constraints.addObject(NSLayoutConstraint(item: self.tabScrollView, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: self.tabbar, attribute: NSLayoutAttribute.Leading, multiplier: 1.0, constant: 0.0))
-        constraints.addObject(NSLayoutConstraint(item: self.tabScrollView, attribute: NSLayoutAttribute.Trailing, relatedBy: NSLayoutRelation.Equal, toItem: self.tabbar, attribute: NSLayoutAttribute.Trailing, multiplier: 1.0, constant: 0.0))
+        tabbar.frame = tabbarFrame
         
-        // tabpager constraints
-        constraints.addObject(NSLayoutConstraint(item: self.pagerView!, attribute: NSLayoutAttribute.Bottom, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: 0.0))
-        constraints.addObject(NSLayoutConstraint(item: self.pagerView!, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Top, multiplier: 1.0, constant: 0.0))
-        constraints.addObject(NSLayoutConstraint(item: self.pagerView!, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Leading, multiplier: 1.0, constant: 0.0))
-        constraints.addObject(NSLayoutConstraint(item: self.pagerView!, attribute: NSLayoutAttribute.Trailing, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Trailing, multiplier: 1.0, constant: 0.0))
+        let tabScrollerFrame = CGRect(x: 0, y: 0, width: tabbarFrame.size.width, height: tabbarFrame.size.height)
         
-        return constraints
+        tabScrollView.frame = tabScrollerFrame
+        
+        let pagerFrame = CGRect(x: 0, y: 0, width: view.bounds.size.width, height: view.bounds.size.height)
+        
+        pager.view.frame = pagerFrame
     }
     
-    private func layoutTabbarLeft() -> NSMutableArray {
-        let constraints: NSMutableArray = NSMutableArray()
+    private func layoutTabbarLeft() {
+        tabbar.autoresizingMask = .FlexibleHeight
+        tabScrollView.autoresizingMask = .FlexibleHeight
+        pager.view.autoresizingMask = (.FlexibleHeight | .FlexibleWidth)
+        
+        var barTop: CGFloat = 0
         
         // scroll tabbar under topbar if using solid style
-        if self.tabbarStyle == RGTabbarStyle.Solid {
-            constraints.addObject(NSLayoutConstraint(item: self.tabbar, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Top, multiplier: 1.0, constant: 0.0))
-            constraints.addObject(NSLayoutConstraint(item: self.tabbar, attribute: NSLayoutAttribute.Bottom, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: 0.0))
-
-            var edgeInsets: UIEdgeInsets = self.tabScrollView.contentInset
+        if tabbarStyle == .Solid {
+            var scrollTop: CGFloat = 20
             
-            edgeInsets.top = self.topLayoutGuide.length
-            edgeInsets.bottom = self.bottomLayoutGuide.length
+            if let navController = navigationController where !navController.navigationBar.hidden {
+                scrollTop = 64
+            }
             
-            self.tabScrollView.contentInset = edgeInsets
-            self.tabScrollView.scrollIndicatorInsets = edgeInsets
+            var edgeInsets: UIEdgeInsets = tabScrollView.contentInset
+            
+            edgeInsets.top = scrollTop
+            edgeInsets.bottom = 0
+            
+            tabScrollView.contentInset = edgeInsets
+            tabScrollView.scrollIndicatorInsets = edgeInsets
         } else {
-            constraints.addObject(NSLayoutConstraint(item: self.tabbar, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: self.topLayoutGuide, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: 0.0))
-            constraints.addObject(NSLayoutConstraint(item: self.tabbar, attribute: NSLayoutAttribute.Bottom, relatedBy: NSLayoutRelation.Equal, toItem: self.bottomLayoutGuide, attribute: NSLayoutAttribute.Top, multiplier: 1.0, constant: 0.0))
+            barTop = 20
+            
+            if let navController = navigationController where !navController.navigationBar.hidden {
+                barTop = 64
+            }
         }
         
-        // tabbar constraints
-        constraints.addObject(NSLayoutConstraint(item: self.tabbar, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Leading, multiplier: 1.0, constant: 0.0))
-        constraints.addObject(NSLayoutConstraint(item: self.tabbar, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1.0, constant: self.tabbarWidth))
+        let tabbarFrame = CGRect(x: 0, y: barTop, width: tabbarHidden ? 0 : tabbarWidth, height: view.bounds.size.height - barTop)
         
-        // tabbar scrollView constraints
-        constraints.addObject(NSLayoutConstraint(item: self.tabScrollView, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: self.tabbar, attribute: NSLayoutAttribute.Top, multiplier: 1.0, constant: 0.0))
-        constraints.addObject(NSLayoutConstraint(item: self.tabScrollView, attribute: NSLayoutAttribute.Bottom, relatedBy: NSLayoutRelation.Equal, toItem: self.tabbar, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: 0.0))
-        constraints.addObject(NSLayoutConstraint(item: self.tabScrollView, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: self.tabbar, attribute: NSLayoutAttribute.Leading, multiplier: 1.0, constant: 0.0))
-        constraints.addObject(NSLayoutConstraint(item: self.tabScrollView, attribute: NSLayoutAttribute.Trailing, relatedBy: NSLayoutRelation.Equal, toItem: self.tabbar, attribute: NSLayoutAttribute.Trailing, multiplier: 1.0, constant: 0.0))
+        tabbar.frame = tabbarFrame
         
-        // tabpager constraints
-        constraints.addObject(NSLayoutConstraint(item: self.pagerView!, attribute: NSLayoutAttribute.Bottom, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: 0.0))
-        constraints.addObject(NSLayoutConstraint(item: self.pagerView!, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Top, multiplier: 1.0, constant: 0.0))
-        constraints.addObject(NSLayoutConstraint(item: self.pagerView!, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: self.tabbar, attribute: NSLayoutAttribute.Trailing, multiplier: 1.0, constant: 0.0))
-        constraints.addObject(NSLayoutConstraint(item: self.pagerView!, attribute: NSLayoutAttribute.Trailing, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Trailing, multiplier: 1.0, constant: 0.0))
+        let tabScrollerFrame = CGRect(x: 0, y: 0, width: tabbarFrame.size.width, height: tabbarFrame.size.height)
         
-        return constraints
+        tabScrollView.frame = tabScrollerFrame
+        
+        let pagerFrame = CGRect(x: tabbarHidden ? 0 : tabbarWidth, y: 0, width: view.bounds.size.width - (tabbarHidden ? 0 : tabbarWidth), height: view.bounds.size.height)
+        
+        pager.view.frame = pagerFrame
     }
     
-    private func layoutTabbarRight() -> NSMutableArray {
-        let constraints: NSMutableArray = NSMutableArray()
+    private func layoutTabbarRight() {
+        tabbar.autoresizingMask = .FlexibleHeight
+        tabScrollView.autoresizingMask = .FlexibleHeight
+        pager.view.autoresizingMask = (.FlexibleHeight | .FlexibleWidth)
+        
+        var barTop: CGFloat = 0
         
         // scroll tabbar under topbar if using solid style
-        if self.tabbarStyle == RGTabbarStyle.Solid {
-            constraints.addObject(NSLayoutConstraint(item: self.tabbar, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Top, multiplier: 1.0, constant: 0.0))
+        if tabbarStyle == .Solid {
+            var scrollTop: CGFloat = 20
             
-            var edgeInsets: UIEdgeInsets = self.tabScrollView.contentInset
+            if let navController = navigationController where !navController.navigationBar.hidden {
+                scrollTop = 64
+            }
             
-            edgeInsets.top = self.topLayoutGuide.length
-            edgeInsets.bottom = self.bottomLayoutGuide.length
+            var edgeInsets: UIEdgeInsets = tabScrollView.contentInset
             
-            self.tabScrollView.contentInset = edgeInsets
-            self.tabScrollView.scrollIndicatorInsets = edgeInsets
+            edgeInsets.top = scrollTop
+            edgeInsets.bottom = 0
+            
+            tabScrollView.contentInset = edgeInsets
+            tabScrollView.scrollIndicatorInsets = edgeInsets
         } else {
-            constraints.addObject(NSLayoutConstraint(item: self.tabbar, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: self.topLayoutGuide, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: 0.0))
+            barTop = 20
+            
+            if let navController = self.navigationController where !navController.navigationBar.hidden {
+                barTop = 64
+            }
         }
         
-        // tabbar constraints
-        constraints.addObject(NSLayoutConstraint(item: self.tabbar, attribute: NSLayoutAttribute.Trailing, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Trailing, multiplier: 1.0, constant: 0.0))
-        constraints.addObject(NSLayoutConstraint(item: self.tabbar, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1.0, constant: self.tabbarWidth))
-        constraints.addObject(NSLayoutConstraint(item: self.tabbar, attribute: NSLayoutAttribute.Bottom, relatedBy: NSLayoutRelation.Equal, toItem: self.bottomLayoutGuide, attribute: NSLayoutAttribute.Top, multiplier: 1.0, constant: 0.0))
+        let tabbarFrame = CGRect(x: view.bounds.size.width - tabbarWidth, y: barTop, width: tabbarHidden ? 0 : tabbarWidth, height: view.bounds.size.height - barTop)
         
-        // tabbar scrollView constraints
-        constraints.addObject(NSLayoutConstraint(item: self.tabScrollView, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: self.tabbar, attribute: NSLayoutAttribute.Top, multiplier: 1.0, constant: 0.0))
-        constraints.addObject(NSLayoutConstraint(item: self.tabScrollView, attribute: NSLayoutAttribute.Bottom, relatedBy: NSLayoutRelation.Equal, toItem: self.tabbar, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: 0.0))
-        constraints.addObject(NSLayoutConstraint(item: self.tabScrollView, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: self.tabbar, attribute: NSLayoutAttribute.Leading, multiplier: 1.0, constant: 0.0))
-        constraints.addObject(NSLayoutConstraint(item: self.tabScrollView, attribute: NSLayoutAttribute.Trailing, relatedBy: NSLayoutRelation.Equal, toItem: self.tabbar, attribute: NSLayoutAttribute.Trailing, multiplier: 1.0, constant: 0.0))
+        tabbar.frame = tabbarFrame
         
-        // tabpager constraints
-        constraints.addObject(NSLayoutConstraint(item: self.pagerView!, attribute: NSLayoutAttribute.Bottom, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: 0.0))
-        constraints.addObject(NSLayoutConstraint(item: self.pagerView!, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Top, multiplier: 1.0, constant: 0.0))
-        constraints.addObject(NSLayoutConstraint(item: self.pagerView!, attribute: NSLayoutAttribute.Trailing, relatedBy: NSLayoutRelation.Equal, toItem: self.tabbar, attribute: NSLayoutAttribute.Leading, multiplier: 1.0, constant: 0.0))
-        constraints.addObject(NSLayoutConstraint(item: self.pagerView!, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Leading, multiplier: 1.0, constant: 0.0))
+        let tabScrollerFrame = CGRect(x: 0, y: 0, width: tabbarFrame.size.width, height: tabbarFrame.size.height)
         
-        return constraints
-    }
-    
-    private func initSelf() {
-        // init pager
-        self.pager = UIPageViewController(transitionStyle: UIPageViewControllerTransitionStyle.Scroll, navigationOrientation: self.pagerOrientation, options: nil)
+        tabScrollView.frame = tabScrollerFrame
         
-        // init tabbar
-        switch self.tabbarStyle {
-        case .Blurred:
-            self.tabbar = UIToolbar(frame: CGRectZero)
-        case .Solid:
-            self.tabbar = UIView(frame: CGRectZero)
-        }
+        let pagerFrame = CGRect(x: 0, y: 0, width: view.bounds.size.width - (tabbarHidden ? 0 : tabbarWidth), height: view.bounds.size.height)
         
-        self.addChildViewController(self.pager)
-        
-        self.pagerView = self.pager.view
-        self.pagerScrollView = self.pagerView!.subviews[0] as? UIScrollView
-        self.pageViewScrollDelegate = self.pagerScrollView?.delegate
-        
-        self.pagerScrollView!.scrollsToTop = false
-        self.pagerScrollView!.delegate = self
-        
-        self.pager.dataSource = self
-        self.pager.delegate = self
-        
-        self.animatingToTab = false
-        self.needsSetup = true
+        pager.view.frame = pagerFrame
     }
     
     private func setupSelf() {
-        for tabView in self.tabs {
-            (tabView as RGTabView).removeFromSuperview()
+        for tabView in tabs {
+            (tabView as! RGTabView).removeFromSuperview()
         }
         
-        self.tabScrollView.contentSize = CGSizeZero
+        tabScrollView.contentSize = CGSizeZero
         
-        self.tabs.removeAllObjects()
-        self.pageViewControllers.removeAllObjects()
+        tabs.removeAllObjects()
+        pageViewControllers.removeAllObjects()
         
-        if let theSource = self.datasource {
-            self.pageCount = theSource.numberOfPagesForViewController(self)
+        if let theSource = datasource {
+            pageCount = theSource.numberOfPagesForViewController(self)
         }
         
-        self.tabs = NSMutableArray(capacity: self.pageCount)
-        self.pageViewControllers = NSMutableArray(capacity: self.pageCount)
+        tabs = NSMutableArray(capacity: pageCount)
+        pageViewControllers = NSMutableArray(capacity: pageCount)
         
-        for i in 0 ..< self.pageCount {
-            self.tabs.addObject(NSNull())
-            self.pageViewControllers.addObject(NSNull())
+        for i in 0 ..< pageCount {
+            tabs.addObject(NSNull())
+            pageViewControllers.addObject(NSNull())
         }
         
-        // init Tabbar
-        if let theDelegate = self.delegate {
-            if let tabHeight = theDelegate.heightForTabbar?() {
-                self.tabbarHeight = tabHeight
-            }
-            
-            if let tabWidth = theDelegate.widthForTabbar?() {
-                self.tabbarWidth = tabWidth
-            }
-            
-            if let indicatorColor = theDelegate.colorForTabIndicator?() {
-                self.tabIndicatorColor = indicatorColor
-            }
-            
-            if let indicatorHW = theDelegate.widthOrHeightForIndicator?() {
-                self.tabIndicatorWidthOrHeight = indicatorHW
-            }
-            
-            if let tintColor = theDelegate.tintColorForTabBar?() {
-                self.barTintColor = tintColor
-                
-                switch self.tabbarStyle {
-                case .Blurred:
-                    (self.tabbar as UIToolbar).barTintColor = self.barTintColor
-                case .Solid:
-                    self.tabbar.backgroundColor = self.barTintColor
-                }
-            }
-        }
+        var contentSizeWH: CGFloat = tabMargin / 2.0
         
-        var tabScrollFrame: CGRect = CGRectMake(0.0, 0.0, self.view.bounds.size.width, self.tabbarHeight)
-        
-        switch self.tabbarPosition {
-        case .Top, .Bottom:
-            tabScrollFrame = CGRectMake(0.0, 0.0, self.view.bounds.size.width, self.tabbarHeight)
-        case .Left, .Right:
-            tabScrollFrame = CGRectMake(0.0, 0.0, self.tabbarWidth, self.view.bounds.size.height)
-        }
-        
-        self.tabScrollView.frame = tabScrollFrame
-        self.tabScrollView.setTranslatesAutoresizingMaskIntoConstraints(false)
-        self.tabScrollView.backgroundColor = UIColor.clearColor()
-        self.tabScrollView.scrollsToTop = false
-        self.tabScrollView.opaque = false
-        self.tabScrollView.showsHorizontalScrollIndicator = false
-        self.tabScrollView.showsVerticalScrollIndicator = false
-        
-        var contentSizeWH: CGFloat = self.tabMargin / 2.0
-        
-        for i in 0 ..< self.pageCount {
-            if let tabView: RGTabView = self.tabViewAtIndex(i) {
+        for i in 0 ..< pageCount {
+            if let tabView: RGTabView = tabViewAtIndex(i) {
                 var frame: CGRect = tabView.frame
                 
-                switch self.tabbarPosition {
+                switch tabbarPosition {
                 case .Top, .Bottom:
                     frame.origin.x = contentSizeWH
  
-                    contentSizeWH += CGRectGetWidth(frame) + self.tabMargin
+                    contentSizeWH += CGRectGetWidth(frame) + tabMargin
                 case .Left, .Right:
                     frame.origin.y = contentSizeWH
                     
-                    contentSizeWH += CGRectGetHeight(frame) + self.tabMargin
+                    contentSizeWH += CGRectGetHeight(frame) + tabMargin
                 }
                 
                 tabView.frame = frame
                 
-                self.tabScrollView.addSubview(tabView)
+                tabScrollView.addSubview(tabView)
                 
                 var tapRecognizer: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "handleTap:")
                 
@@ -398,59 +364,50 @@ class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UI
             }
         }
         
-        contentSizeWH -= self.tabMargin / 2.0
+        contentSizeWH -= tabMargin / 2.0
         
-        switch self.tabbarPosition {
+        switch tabbarPosition {
         case .Top, .Bottom:
-            self.tabScrollView.contentSize = CGSizeMake(contentSizeWH, self.tabbarHeight)
+            tabScrollView.contentSize = CGSizeMake(contentSizeWH, tabbarHeight)
         case .Left, .Right:
-            self.tabScrollView.contentSize = CGSizeMake(self.tabbarWidth, contentSizeWH)
+            tabScrollView.contentSize = CGSizeMake(tabbarWidth, contentSizeWH)
         }
         
-        if self.tabbarStyle == .Blurred {
-            (self.tabbar as UIToolbar).translucent = true
-            (self.tabbar as UIToolbar).delegate = self
-        }
+        pager.dataSource = self
+        pager.delegate = self
         
-        self.tabbar.setTranslatesAutoresizingMaskIntoConstraints(false)
-        self.tabbar.addSubview(self.tabScrollView)
+        selectTabAtIndex(currentTabIndex)
         
-        self.pagerView!.setTranslatesAutoresizingMaskIntoConstraints(false)
-        self.pagerView!.autoresizingMask = (UIViewAutoresizing.FlexibleHeight | UIViewAutoresizing.FlexibleWidth)
-        
-        self.view.addSubview(self.pagerView!)
-        self.view.addSubview(self.tabbar)
-        
-        self.needsSetup = false
+        needsSetup = false
     }
     
     private func tabViewAtIndex(index: Int) -> RGTabView? {
-        if index >= self.pageCount {
+        if index >= pageCount {
             return nil
         }
         
-        if self.tabs.objectAtIndex(index).isEqual(NSNull()) {
-            if let tabViewContent: UIView = self.datasource?.tabViewForPageAtIndex(self, index: index) {
+        if tabs.objectAtIndex(index).isEqual(NSNull()) {
+            if let tabViewContent: UIView = datasource?.tabViewForPageAtIndex(self, index: index) {
                 var tabView: RGTabView
                 
-                switch self.tabbarPosition {
+                switch tabbarPosition {
                 case .Top, .Bottom:
-                    if let theWidth: CGFloat = self.delegate?.widthForTabAtIndex?(index) {
-                        tabView = RGTabView(frame: CGRectMake(0.0, 0.0, theWidth, self.tabbarHeight), indicatorColor: self.tabIndicatorColor, indicatorHW: self.tabIndicatorWidthOrHeight, style: self.tabStyle, orientation: .Horizontal)
+                    if let theWidth: CGFloat = delegate?.widthForTabAtIndex?(index) {
+                        tabView = RGTabView(frame: CGRectMake(0.0, 0.0, theWidth, tabbarHeight), indicatorColor: tabIndicatorColor, indicatorHW: tabIndicatorWidthOrHeight, style: tabStyle, orientation: .Horizontal)
                     } else {
-                        tabView = RGTabView(frame: CGRectMake(0.0, 0.0, self.tabWidth, self.tabbarHeight), indicatorColor: self.tabIndicatorColor, indicatorHW: self.tabIndicatorWidthOrHeight, style: self.tabStyle, orientation: .Horizontal)
+                        tabView = RGTabView(frame: CGRectMake(0.0, 0.0, tabWidth, tabbarHeight), indicatorColor: tabIndicatorColor, indicatorHW: tabIndicatorWidthOrHeight, style: tabStyle, orientation: .Horizontal)
                     }
                 case .Left:
-                    if let theHeight: CGFloat = self.delegate?.heightForTabAtIndex?(index) {
-                        tabView = RGTabView(frame: CGRectMake(0.0, 0.0, self.tabbarWidth, theHeight), indicatorColor: self.tabIndicatorColor, indicatorHW: self.tabIndicatorWidthOrHeight, style: self.tabStyle, orientation: .VerticalLeft)
+                    if let theHeight: CGFloat = delegate?.heightForTabAtIndex?(index) {
+                        tabView = RGTabView(frame: CGRectMake(0.0, 0.0, tabbarWidth, theHeight), indicatorColor: tabIndicatorColor, indicatorHW: tabIndicatorWidthOrHeight, style: tabStyle, orientation: .VerticalLeft)
                     } else {
-                        tabView = RGTabView(frame: CGRectMake(0.0, 0.0, self.tabbarWidth, self.tabbarWidth), indicatorColor: self.tabIndicatorColor, indicatorHW: self.tabIndicatorWidthOrHeight, style: self.tabStyle, orientation: .VerticalLeft)
+                        tabView = RGTabView(frame: CGRectMake(0.0, 0.0, tabbarWidth, tabbarWidth), indicatorColor: tabIndicatorColor, indicatorHW: tabIndicatorWidthOrHeight, style: tabStyle, orientation: .VerticalLeft)
                     }
                 case .Right:
-                    if let theHeight: CGFloat = self.delegate?.heightForTabAtIndex?(index) {
-                        tabView = RGTabView(frame: CGRectMake(0.0, 0.0, self.tabbarWidth, theHeight), indicatorColor: self.tabIndicatorColor, indicatorHW: self.tabIndicatorWidthOrHeight, style: self.tabStyle, orientation: .VerticalRight)
+                    if let theHeight: CGFloat = delegate?.heightForTabAtIndex?(index) {
+                        tabView = RGTabView(frame: CGRectMake(0.0, 0.0, tabbarWidth, theHeight), indicatorColor: tabIndicatorColor, indicatorHW: tabIndicatorWidthOrHeight, style: tabStyle, orientation: .VerticalRight)
                     } else {
-                        tabView = RGTabView(frame: CGRectMake(0.0, 0.0, self.tabbarWidth, self.tabbarWidth), indicatorColor: self.tabIndicatorColor, indicatorHW: self.tabIndicatorWidthOrHeight, style: self.tabStyle, orientation: .VerticalRight)
+                        tabView = RGTabView(frame: CGRectMake(0.0, 0.0, tabbarWidth, tabbarWidth), indicatorColor: tabIndicatorColor, indicatorHW: tabIndicatorWidthOrHeight, style: tabStyle, orientation: .VerticalRight)
                     }
                 }
                 
@@ -460,103 +417,103 @@ class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UI
                 
                 tabViewContent.center = tabView.center
                 
-                self.tabs.replaceObjectAtIndex(index, withObject: tabView)
+                tabs.replaceObjectAtIndex(index, withObject: tabView)
             }
         }
         
-        return self.tabs.objectAtIndex(index) as? RGTabView
+        return tabs.objectAtIndex(index) as? RGTabView
     }
     
     private func viewControllerAtIndex(index: Int) -> UIViewController? {
-        if index >= self.pageCount {
+        if index >= pageCount {
             return nil
         }
         
-        if self.pageViewControllers.objectAtIndex(index).isEqual(NSNull()) {
-            if let vc: UIViewController = self.datasource?.viewControllerForPageAtIndex(self, index: index) {
-                let view: UIView = vc.view.subviews[0] as UIView
+        if pageViewControllers.objectAtIndex(index).isEqual(NSNull()) {
+            if let vc: UIViewController = datasource?.viewControllerForPageAtIndex(self, index: index) {
+                let view: UIView = vc.view.subviews[0] as! UIView
                 
                 if view is UIScrollView {
-                    let scrollView = (view as UIScrollView)
+                    let scrollView = (view as! UIScrollView)
                     var edgeInsets: UIEdgeInsets = scrollView.contentInset
                     
-                    if self.tabbarPosition == RGTabbarPosition.Top {
-                        edgeInsets.top = self.topLayoutGuide.length + self.tabbarHeight
-                    } else if self.tabbarPosition == RGTabbarPosition.Bottom {
-                        edgeInsets.top = self.topLayoutGuide.length
-                        edgeInsets.bottom = self.tabbarHeight
+                    if tabbarPosition == RGTabbarPosition.Top {
+                        edgeInsets.top = tabbar.frame.origin.y + tabbarHeight
+                    } else if tabbarPosition == RGTabbarPosition.Bottom {
+                        edgeInsets.top = tabbar.frame.origin.y
+                        edgeInsets.bottom = tabbarHeight
                     } else {
-                        edgeInsets.top = self.topLayoutGuide.length
-                        edgeInsets.bottom = self.bottomLayoutGuide.length
+                        edgeInsets.top = tabbar.frame.origin.y
+                        edgeInsets.bottom = 0
                     }
                     
                     scrollView.contentInset = edgeInsets
                     scrollView.scrollIndicatorInsets = edgeInsets
                 }
                 
-                self.pageViewControllers.replaceObjectAtIndex(index, withObject: vc)
+                pageViewControllers.replaceObjectAtIndex(index, withObject: vc)
             }
         }
         
-        return self.pageViewControllers.objectAtIndex(index) as? UIViewController
+        return pageViewControllers.objectAtIndex(index) as? UIViewController
     }
     
     func handleTap(sender: UITapGestureRecognizer) {
-        let tabView: RGTabView = sender.view as RGTabView
-        let i: Int = self.tabs.indexOfObject(tabView)
+        let tabView: RGTabView = sender.view as! RGTabView
+        let i: Int = tabs.indexOfObject(tabView)
         
-        if self.currentTabIndex != i {
-            self.selectTabAtIndex(i)
+        if currentTabIndex != i {
+            selectTabAtIndex(i)
         }
     }
     
-    private func selectTabAtIndex(index: Int) {
-        if index >= self.pageCount {
+    func selectTabAtIndex(index: Int) {
+        if index >= pageCount {
             return
         }
         
-        self.animatingToTab = true
+        animatingToTab = true
         
-        self.updateTabIndex(index, animated: true)
-        self.updatePager(index)
+        updateTabIndex(index, animated: true)
+        updatePager(index)
         
-        self.delegate?.didChangePageToIndex?(index)
+        delegate?.didChangePageToIndex?(index)
     }
     
     private func updateTabIndex(index: Int, animated: Bool) {
-        let activeTab: RGTabView = self.tabViewAtIndex(self.currentTabIndex)!
-        let newTab: RGTabView = self.tabViewAtIndex(index)!
+        let activeTab: RGTabView = tabViewAtIndex(currentTabIndex)!
+        let newTab: RGTabView = tabViewAtIndex(index)!
         
         activeTab.selected = false
         newTab.selected = true
         
-        self.currentTabIndex = index
+        currentTabIndex = index
         
         var visibleRect = newTab.frame
         
-        switch self.tabbarPosition {
+        switch tabbarPosition {
         case .Top, .Bottom:
-            visibleRect.origin.x -= self.tabMargin / 2.0
-            visibleRect.size.width += self.tabMargin
+            visibleRect.origin.x -= tabMargin / 2.0
+            visibleRect.size.width += tabMargin
         case .Left, .Right:
-            visibleRect.origin.y -= self.tabMargin / 2.0
-            visibleRect.size.height += self.tabMargin
+            visibleRect.origin.y -= tabMargin / 2.0
+            visibleRect.size.height += tabMargin
         }
         
-        self.tabScrollView.scrollRectToVisible(visibleRect, animated: animated)
+        tabScrollView.scrollRectToVisible(visibleRect, animated: animated)
     }
     
     private func updatePager(index: Int) {
-        if let vc: UIViewController = self.viewControllerAtIndex(index) {
+        if let vc: UIViewController = viewControllerAtIndex(index) {
             weak var weakSelf: RGPageViewController? = self
-            weak var weakPager: UIPageViewController? = self.pager
+            weak var weakPager: UIPageViewController? = pager
             
-            if index == self.currentPageIndex {
-                self.pager.setViewControllers([vc], direction: UIPageViewControllerNavigationDirection.Forward, animated: false, completion: { (Bool) -> Void in
+            if index == currentPageIndex {
+                pager.setViewControllers([vc], direction: UIPageViewControllerNavigationDirection.Forward, animated: false, completion: { (Bool) -> Void in
                     weakSelf!.animatingToTab = false
                 })
-            } else if !(index + 1 == self.currentPageIndex || index - 1 == self.currentPageIndex) {
-                self.pager.setViewControllers([vc], direction: index < self.currentPageIndex ? UIPageViewControllerNavigationDirection.Reverse : UIPageViewControllerNavigationDirection.Forward, animated: true, completion: { (Bool) -> Void in
+            } else if !(index + 1 == currentPageIndex || index - 1 == currentPageIndex) {
+                pager.setViewControllers([vc], direction: index < currentPageIndex ? UIPageViewControllerNavigationDirection.Reverse : UIPageViewControllerNavigationDirection.Forward, animated: true, completion: { (Bool) -> Void in
                     weakSelf!.animatingToTab = false
                     
                     dispatch_async(dispatch_get_main_queue(), {
@@ -564,29 +521,93 @@ class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UI
                     })
                 })
             } else {
-                self.pager.setViewControllers([vc], direction: index < self.currentPageIndex ? UIPageViewControllerNavigationDirection.Reverse : UIPageViewControllerNavigationDirection.Forward, animated: true, completion: { (Bool) -> Void in
+                pager.setViewControllers([vc], direction: index < currentPageIndex ? UIPageViewControllerNavigationDirection.Reverse : UIPageViewControllerNavigationDirection.Forward, animated: true, completion: { (Bool) -> Void in
                     weakSelf!.animatingToTab = false
                 })
             }
             
-            self.currentPageIndex = index
+            currentPageIndex = index
         }
     }
     
     private func indexForViewController(vc: UIViewController) -> (Int) {
-        return self.pageViewControllers.indexOfObject(vc)
+        return pageViewControllers.indexOfObject(vc)
     }
     
-    // MARK: - Interface rotation
-    override func didRotateFromInterfaceOrientation(fromInterfaceOrientation: UIInterfaceOrientation) {
-        self.selectTabAtIndex(self.currentTabIndex)
+    func reloadData() {
+        for tabView in tabs {
+            (tabView as! RGTabView).removeFromSuperview()
+        }
+        
+        tabScrollView.contentSize = CGSizeZero
+        
+        tabs.removeAllObjects()
+        pageViewControllers.removeAllObjects()
+        
+        if let theSource = datasource {
+            pageCount = theSource.numberOfPagesForViewController(self)
+        }
+        
+        tabs = NSMutableArray(capacity: pageCount)
+        pageViewControllers = NSMutableArray(capacity: pageCount)
+        
+        for i in 0 ..< pageCount {
+            tabs.addObject(NSNull())
+            pageViewControllers.addObject(NSNull())
+        }
+        
+        var contentSizeWH: CGFloat = tabMargin / 2.0
+        
+        for i in 0 ..< pageCount {
+            if let tabView: RGTabView = tabViewAtIndex(i) {
+                var frame: CGRect = tabView.frame
+                
+                switch tabbarPosition {
+                case .Top, .Bottom:
+                    frame.origin.x = contentSizeWH
+                    
+                    contentSizeWH += CGRectGetWidth(frame) + tabMargin
+                case .Left, .Right:
+                    frame.origin.y = contentSizeWH
+                    
+                    contentSizeWH += CGRectGetHeight(frame) + tabMargin
+                }
+                
+                tabView.frame = frame
+                
+                tabScrollView.addSubview(tabView)
+                
+                var tapRecognizer: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "handleTap:")
+                
+                tabView.addGestureRecognizer(tapRecognizer)
+            }
+        }
+        
+        contentSizeWH -= tabMargin / 2.0
+        
+        switch tabbarPosition {
+        case .Top, .Bottom:
+            tabScrollView.contentSize = CGSizeMake(contentSizeWH, tabbarHeight)
+        case .Left, .Right:
+            tabScrollView.contentSize = CGSizeMake(tabbarWidth, contentSizeWH)
+            
+            if tabbarStyle == .Solid {
+                var edgeInsets: UIEdgeInsets = tabScrollView.contentInset
+                
+                edgeInsets.top = topLayoutGuide.length
+                edgeInsets.bottom = bottomLayoutGuide.length
+                
+                tabScrollView.contentInset = edgeInsets
+                tabScrollView.scrollIndicatorInsets = edgeInsets
+            }
+        }
     }
     
     // MARK: - UIToolbarDelegate
     func positionForBar(bar: UIBarPositioning) -> UIBarPosition {
         var position: UIBarPosition = UIBarPosition.Top
 
-        switch self.tabbarPosition {
+        switch tabbarPosition {
         case .Top:
             position = UIBarPosition.Top
         case .Bottom:
@@ -600,7 +621,7 @@ class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UI
     
     // MARK: - PageViewController Data Source
     func pageViewController(pageViewController: UIPageViewController, viewControllerBeforeViewController viewController: UIViewController) -> UIViewController? {
-        var index: Int = self.indexForViewController(viewController)
+        var index: Int = indexForViewController(viewController)
         
         if index == 0 {
             return nil
@@ -608,38 +629,38 @@ class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UI
         
         index--
         
-        return self.viewControllerAtIndex(index)
+        return viewControllerAtIndex(index)
     }
     
     func pageViewController(pageViewController: UIPageViewController, viewControllerAfterViewController viewController: UIViewController) -> UIViewController? {
-        var index: Int = self.indexForViewController(viewController)
+        var index: Int = indexForViewController(viewController)
         
-        if index == self.pageCount - 1 {
+        if index == pageCount - 1 {
             return nil
         }
         
         index++
         
-        return self.viewControllerAtIndex(index)
+        return viewControllerAtIndex(index)
     }
     
     // MARK: - PageViewController Delegate
     func pageViewController(pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [AnyObject], transitionCompleted completed: Bool) {
         if (finished && completed) {
-            let vc: UIViewController = self.pager.viewControllers[0] as UIViewController
-            let index: Int = self.indexForViewController(vc)
+            let vc: UIViewController = pager.viewControllers[0] as! UIViewController
+            let index: Int = indexForViewController(vc)
             
-            self.selectTabAtIndex(index)
+            selectTabAtIndex(index)
         }
     }
     
     // MARK: - UIScrollView Delegate
     func scrollViewDidScroll(scrollView: UIScrollView) {
-        self.pageViewScrollDelegate?.scrollViewDidScroll?(scrollView)
+        pageViewScrollDelegate?.scrollViewDidScroll?(scrollView)
     }
     
     func scrollViewShouldScrollToTop(scrollView: UIScrollView) -> Bool {
-        if let shouldScroll = self.pageViewScrollDelegate?.scrollViewShouldScrollToTop?(scrollView) {
+        if let shouldScroll = pageViewScrollDelegate?.scrollViewShouldScrollToTop?(scrollView) {
             return shouldScroll
         }
         
@@ -647,47 +668,47 @@ class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UI
     }
     
     func scrollViewDidScrollToTop(scrollView: UIScrollView) {
-        self.pageViewScrollDelegate?.scrollViewDidScrollToTop?(scrollView)
+        pageViewScrollDelegate?.scrollViewDidScrollToTop?(scrollView)
     }
     
     func scrollViewDidEndScrollingAnimation(scrollView: UIScrollView) {
-        self.pageViewScrollDelegate?.scrollViewDidEndScrollingAnimation?(scrollView)
+        pageViewScrollDelegate?.scrollViewDidEndScrollingAnimation?(scrollView)
     }
     
     func scrollViewWillBeginDragging(scrollView: UIScrollView) {
-        self.pageViewScrollDelegate?.scrollViewWillBeginDragging?(scrollView)
+        pageViewScrollDelegate?.scrollViewWillBeginDragging?(scrollView)
     }
     
     func scrollViewWillEndDragging(scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
-        self.pageViewScrollDelegate?.scrollViewWillEndDragging?(scrollView, withVelocity: velocity, targetContentOffset: targetContentOffset)
+        pageViewScrollDelegate?.scrollViewWillEndDragging?(scrollView, withVelocity: velocity, targetContentOffset: targetContentOffset)
     }
     
     func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        self.pageViewScrollDelegate?.scrollViewDidEndDragging?(scrollView, willDecelerate: decelerate)
+        pageViewScrollDelegate?.scrollViewDidEndDragging?(scrollView, willDecelerate: decelerate)
     }
     
     func scrollViewWillBeginDecelerating(scrollView: UIScrollView) {
-        self.pageViewScrollDelegate?.scrollViewWillBeginDecelerating?(scrollView)
+        pageViewScrollDelegate?.scrollViewWillBeginDecelerating?(scrollView)
     }
     
     func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
-        self.pageViewScrollDelegate?.scrollViewDidEndDecelerating?(scrollView)
+        pageViewScrollDelegate?.scrollViewDidEndDecelerating?(scrollView)
     }
     
     func scrollViewWillBeginZooming(scrollView: UIScrollView, withView view: UIView!) {
-        self.pageViewScrollDelegate?.scrollViewWillBeginZooming?(scrollView, withView: view)
+        pageViewScrollDelegate?.scrollViewWillBeginZooming?(scrollView, withView: view)
     }
     
     func scrollViewDidZoom(scrollView: UIScrollView) {
-        self.pageViewScrollDelegate?.scrollViewDidZoom?(scrollView)
+        pageViewScrollDelegate?.scrollViewDidZoom?(scrollView)
     }
     
     func scrollViewDidEndZooming(scrollView: UIScrollView, withView view: UIView!, atScale scale: CGFloat) {
-        self.pageViewScrollDelegate?.scrollViewDidEndZooming?(scrollView, withView: view, atScale: scale)
+        pageViewScrollDelegate?.scrollViewDidEndZooming?(scrollView, withView: view, atScale: scale)
     }
     
     func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView? {
-        if let view: UIView = self.pageViewScrollDelegate?.viewForZoomingInScrollView?(scrollView) {
+        if let view: UIView = pageViewScrollDelegate?.viewForZoomingInScrollView?(scrollView) {
             return view
         }
         
@@ -696,7 +717,7 @@ class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UI
 }
 
 // MARK: - RGTabView
-class RGTabView: UIView {
+private class RGTabView: UIView {
     enum RGTabOrientation {
         case Horizontal
         case VerticalLeft
@@ -706,18 +727,18 @@ class RGTabView: UIView {
     // variables
     var selected: Bool = false {
         didSet {
-            if self.subviews[0] is RGTabBarItem {
-                (self.subviews[0] as RGTabBarItem).selected = self.selected
+            if subviews[0] is RGTabBarItem {
+                (subviews[0] as! RGTabBarItem).selected = selected
             } else {
-                if self.style == RGTabStyle.InactiveFaded {
-                    if self.selected {
-                        self.alpha = 1.0
+                if style == .InactiveFaded {
+                    if selected {
+                        alpha = 1.0
                     } else {
-                        self.alpha = 0.566
+                        alpha = 0.566
                     }
                 }
                 
-                self.setNeedsDisplay()
+                setNeedsDisplay()
             }
         }
     }
@@ -734,45 +755,46 @@ class RGTabView: UIView {
         self.indicatorHW = indicatorHW
         self.style = style
         
-        self.initSelf()
+        initSelf()
     }
     
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         
-        self.initSelf()
+        initSelf()
     }
     
     func initSelf() {
-        self.backgroundColor = UIColor.clearColor()
+        backgroundColor = UIColor.clearColor()
         
-        if self.style == RGTabStyle.InactiveFaded {
-            self.alpha = 0.566
+        if style == .InactiveFaded {
+            alpha = 0.566
         }
     }
     
     override func drawRect(rect: CGRect) {
         super.drawRect(rect)
         
-        if self.selected {
-            if !(self.subviews[0] is RGTabBarItem) {
+        if selected {
+            if !(subviews[0] is RGTabBarItem) {
                 var bezierPath: UIBezierPath = UIBezierPath()
                 
-                if self.orientation == .Horizontal {
-                    bezierPath.moveToPoint(CGPointMake(0.0, CGRectGetHeight(rect) - self.indicatorHW / 2.0))
-                    bezierPath.addLineToPoint(CGPointMake(CGRectGetWidth(rect), CGRectGetHeight(rect) - self.indicatorHW / 2.0))
-                    bezierPath.lineWidth = self.indicatorHW
-                } else if self.orientation == .VerticalLeft {
-                    bezierPath.moveToPoint(CGPointMake(self.indicatorHW / 2.0, 0.0))
-                    bezierPath.addLineToPoint(CGPointMake(self.indicatorHW / 2.0, CGRectGetHeight(rect)))
-                    bezierPath.lineWidth = self.indicatorHW
-                } else if self.orientation == .VerticalRight {
-                    bezierPath.moveToPoint(CGPointMake(CGRectGetWidth(rect) - (self.indicatorHW / 2.0), 0.0))
-                    bezierPath.addLineToPoint(CGPointMake(CGRectGetWidth(rect) - (self.indicatorHW / 2.0), CGRectGetHeight(rect)))
-                    bezierPath.lineWidth = self.indicatorHW
+                switch orientation {
+                case .Horizontal:
+                    bezierPath.moveToPoint(CGPointMake(0.0, CGRectGetHeight(rect) - indicatorHW / 2.0))
+                    bezierPath.addLineToPoint(CGPointMake(CGRectGetWidth(rect), CGRectGetHeight(rect) - indicatorHW / 2.0))
+                    bezierPath.lineWidth = indicatorHW
+                case .VerticalLeft:
+                    bezierPath.moveToPoint(CGPointMake(indicatorHW / 2.0, 0.0))
+                    bezierPath.addLineToPoint(CGPointMake(indicatorHW / 2.0, CGRectGetHeight(rect)))
+                    bezierPath.lineWidth = indicatorHW
+                case .VerticalRight:
+                    bezierPath.moveToPoint(CGPointMake(CGRectGetWidth(rect) - (indicatorHW / 2.0), 0.0))
+                    bezierPath.addLineToPoint(CGPointMake(CGRectGetWidth(rect) - (indicatorHW / 2.0), CGRectGetHeight(rect)))
+                    bezierPath.lineWidth = indicatorHW
                 }
                 
-                self.indicatorColor.setStroke()
+                indicatorColor.setStroke()
                 
                 bezierPath.stroke()
             }
@@ -781,10 +803,10 @@ class RGTabView: UIView {
 }
 
 // MARK: - RGTabBarItem
-class RGTabBarItem: UIView {
+private class RGTabBarItem: UIView {
     var selected: Bool = false {
         didSet {
-            self.setSelectedState()
+            setSelectedState()
         }
     }
     var text: String?
@@ -800,94 +822,75 @@ class RGTabBarItem: UIView {
         self.image = image?.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
         
         if color != nil {
-            self.normalColor = color
+            normalColor = color
         }
         
-        self.initSelf()
+        initSelf()
     }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        self.initSelf()
+        initSelf()
     }
     
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         
-        self.initSelf()
+        initSelf()
     }
     
     func initSelf() {
-        self.backgroundColor = UIColor.clearColor()
+        backgroundColor = UIColor.clearColor()
         
-        if self.image != nil {
-            self.imageView = UIImageView(image: self.image)
+        if let img = image {
+            imageView = UIImageView(image: img)
             
-            self.addSubview(self.imageView!)
+            addSubview(imageView!)
             
-            self.imageView!.tintColor = self.normalColor
-            self.imageView!.center.x = self.center.x
-            self.imageView!.center.y = self.center.y - 5.0
+            imageView!.tintColor = normalColor
+            imageView!.center.x = center.x
+            imageView!.center.y = center.y - 5.0
         }
         
-        if self.text != nil {
-            self.textLabel = UILabel()
+        if let txt = text {
+            textLabel = UILabel()
             
-            self.textLabel!.numberOfLines = 1
-            self.textLabel!.text = self.text
-            self.textLabel!.textAlignment = NSTextAlignment.Center
-            self.textLabel!.textColor = self.normalColor
-            self.textLabel!.font = UIFont.systemFontOfSize(10.0)
+            textLabel!.numberOfLines = 1
+            textLabel!.text = txt
+            textLabel!.textAlignment = NSTextAlignment.Center
+            textLabel!.textColor = normalColor
+            textLabel!.font = UIFont.systemFontOfSize(10.0)
             
-            self.textLabel!.sizeToFit()
+            textLabel!.sizeToFit()
             
-            self.textLabel!.frame = CGRectMake(0.0, self.frame.size.height - self.textLabel!.frame.size.height - 3.0, self.frame.size.width, self.textLabel!.frame.size.height)
+            textLabel!.frame = CGRectMake(0.0, frame.size.height - textLabel!.frame.size.height - 3.0, frame.size.width, textLabel!.frame.size.height)
             
-            self.addSubview(self.textLabel!)
+            addSubview(textLabel!)
         }
     }
     
     func setSelectedState() {
-        if self.selected {
-            self.textLabel?.textColor = self.tintColor
-            self.imageView?.tintColor = self.tintColor
+        if selected {
+            textLabel?.textColor = tintColor
+            imageView?.tintColor = tintColor
         } else {
-            self.textLabel?.textColor = self.normalColor
-            self.imageView?.tintColor = self.normalColor
+            textLabel?.textColor = normalColor
+            imageView?.tintColor = normalColor
         }
-    }
-}
-
-// MARK: - UIImage+ColoredImage
-extension UIImage {
-    class func coloredImage(color: UIColor, size: CGSize, opaque: Bool) -> UIImage? {
-        var rect: CGRect = CGRectMake(0.0, 0.0, size.width, size.height)
-        
-        UIGraphicsBeginImageContextWithOptions(rect.size, opaque, 0.0)
-        
-        color.setFill()
-        
-        UIRectFill(rect)
-        
-        var image: UIImage = UIGraphicsGetImageFromCurrentImageContext()
-        
-        UIGraphicsEndImageContext()
-        
-        return image;
     }
 }
 
 // MARK: - UINavigationBar hide Hairline
 extension UINavigationBar {
     func hideHairline() {
-        if let hairlineView: UIImageView = self.findHairlineImageView(containedIn: self) {
+        if let hairlineView: UIImageView = findHairlineImageView(containedIn: self) {
             hairlineView.hidden = true
         }
     }
     
     func showHairline() {
-        if let hairlineView: UIImageView = self.findHairlineImageView(containedIn: self) {
+        if let hairlineView: UIImageView = findHairlineImageView(containedIn: self) {
             hairlineView.hidden = false
         }
     }
@@ -898,7 +901,7 @@ extension UINavigationBar {
         }
         
         for subview in view.subviews {
-            if let imageView: UIImageView = self.findHairlineImageView(containedIn: subview as UIView) {
+            if let imageView: UIImageView = findHairlineImageView(containedIn: subview as! UIView) {
                 return imageView
             }
         }
@@ -938,22 +941,12 @@ extension UINavigationBar {
     /// Delegate objects can implement this method if want to be informed when a page changed.
     ///
     /// :param: index the index of the active page
+    optional func willChangePageToIndex(index: Int, fromIndex from: Int)
+    
+    /// Delegate objects can implement this method if want to be informed when a page changed.
+    ///
+    /// :param: index the index of the active page
     optional func didChangePageToIndex(index: Int)
-    
-    /// Delegate objects can implement this method to set a custom width for the tab view.
-    ///
-    /// :returns: the width of the tab view
-    optional func widthForTabbar() -> CGFloat
-    
-    /// Delegate objects can implement this method to set a custom height for the tab view.
-    ///
-    /// :returns: the height of the tab view
-    optional func heightForTabbar() -> CGFloat
-    
-    /// Delegate objects can implement this method to set a custom width or height for the tab indicator.
-    ///
-    /// :returns: the width or height of the tab indicator
-    optional func widthOrHeightForIndicator() -> CGFloat
     
     /// Delegate objects can implement this method if tabs use dynamic width.
     ///
@@ -966,14 +959,4 @@ extension UINavigationBar {
     /// :param: index the index of the tab
     /// :returns: the height for the tab at the given index
     optional func heightForTabAtIndex(index: Int) -> CGFloat
-    
-    /// Delegate objects can implement this method to specify the color of the tab indicator.
-    ///
-    /// :returns: the color for the tab indicator
-    optional func colorForTabIndicator() -> UIColor
-    
-    /// Delegate objects can implement this method to specify a tint color for the tabbar.
-    ///
-    /// :returns: the tint color for the tabbar
-    optional func tintColorForTabBar() -> UIColor?
 }

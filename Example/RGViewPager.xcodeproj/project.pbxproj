@@ -38,7 +38,6 @@
 		E3796D9D1A0E3B1700F00461 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E3796D9C1A0E3B1700F00461 /* Images.xcassets */; };
 		E3796DA01A0E3B1700F00461 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = E3796D9E1A0E3B1700F00461 /* LaunchScreen.xib */; };
 		E3796DAC1A0E3B1700F00461 /* RGViewPagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3796DAB1A0E3B1700F00461 /* RGViewPagerTests.swift */; };
-		E3C721971A8DF52C000BC1E2 /* FloatRatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3C721961A8DF52C000BC1E2 /* FloatRatingView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -86,7 +85,6 @@
 		E3796DA51A0E3B1700F00461 /* RGViewPagerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RGViewPagerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E3796DAA1A0E3B1700F00461 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E3796DAB1A0E3B1700F00461 /* RGViewPagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RGViewPagerTests.swift; sourceTree = "<group>"; };
-		E3C721961A8DF52C000BC1E2 /* FloatRatingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatRatingView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -267,7 +265,6 @@
 		E3796D8F1A0E3B1700F00461 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				E3C721961A8DF52C000BC1E2 /* FloatRatingView.swift */,
 				E35BD2AA1A8D511D00625A74 /* fanart */,
 				E3796D9C1A0E3B1700F00461 /* Images.xcassets */,
 				E3796D901A0E3B1700F00461 /* Info.plist */,
@@ -417,7 +414,6 @@
 				E309AD851A10B72500AD2EBD /* MainViewController.swift in Sources */,
 				E3796D961A0E3B1700F00461 /* DataViewController.swift in Sources */,
 				E30149FB1A121DCC001D8CAA /* RGPageViewController.swift in Sources */,
-				E3C721971A8DF52C000BC1E2 /* FloatRatingView.swift in Sources */,
 				E3796D921A0E3B1700F00461 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

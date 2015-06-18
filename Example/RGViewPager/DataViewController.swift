@@ -14,7 +14,6 @@ class DataViewController: UIViewController {
     @IBOutlet weak var image: UIImageView!
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var descriptionLabel: UILabel!
-    @IBOutlet weak var ratingView: FloatRatingView!
     @IBOutlet weak var ratingLabel: UILabel!
     @IBOutlet weak var genreLabel: UILabel!
 
@@ -54,11 +53,6 @@ class DataViewController: UIViewController {
         
         if let desc = dataObject["desc"] as? String {
             self.descriptionLabel.text = desc
-        }
-        
-        if let rating = dataObject["rating"] as? Float {
-            self.ratingView.rating = rating
-            self.ratingLabel.text = "\(rating)"
         }
         
         if let genres = dataObject["tags"] as? String {
