@@ -24,18 +24,17 @@ enum RGTabbarPosition {
     case Right
 }
 
-class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate, UIScrollViewDelegate, UIToolbarDelegate {
-    // protocols
+class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate, UIScrollViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UIToolbarDelegate {
+    // MARK: - Protocols
     weak var datasource: RGPageViewControllerDataSource?
     weak var delegate: RGPageViewControllerDelegate?
     var pageViewScrollDelegate: UIScrollViewDelegate?
     
-    // variables
+    // MARK: - Variables
     var animatingToTab: Bool = false
     var needsSetup: Bool = true
     var needsLayoutSubviews = true
-    // pager
-    var pageViewControllers: NSMutableArray = NSMutableArray()
+    // MARK: - Pager
     var pageCount: Int! = 0
     var currentPageIndex: Int = 0
     var pager: UIPageViewController!
@@ -44,10 +43,8 @@ class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UI
             return .Horizontal
         }
     }
-    //var pagerView: UIView?
     var pagerScrollView: UIScrollView!
-    // tabs
-    var tabs: NSMutableArray = NSMutableArray()
+    // MARK: - Tabs
     var currentTabIndex: Int = 0
     var tabWidth: CGFloat = UIScreen.mainScreen().bounds.size.width / 3.0
     var tabbarWidth: CGFloat {
@@ -80,7 +77,7 @@ class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UI
             return .None
         }
     }
-    // tabbar
+    // MARK: - Tabbar
     var tabbarHidden: Bool {
         get {
             return false
@@ -102,8 +99,9 @@ class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UI
             return nil
         }
     }
-    var tabScrollView: UIScrollView = UIScrollView()
+    var tabScrollView: UICollectionView!
     
+    // MARK: - Constructors
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
@@ -112,6 +110,7 @@ class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UI
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
     
+    // MARK: - ViewController life cycle
     override func loadView() {
         super.loadView()
         
@@ -144,23 +143,28 @@ class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UI
         
         tabbar.hidden = tabbarHidden
         
+        // layout
+        switch tabbarPosition {
+        case .Top:
+            layoutTabbarTop()
+            break
+        case .Bottom:
+            layoutTabbarBottom()
+            break
+        case .Left:
+            layoutTabbarLeft()
+            break
+        case .Right:
+            layoutTabbarRight()
+            break
+        }
+        
         tabScrollView.backgroundColor = UIColor.clearColor()
         tabScrollView.scrollsToTop = false
         tabScrollView.opaque = false
         tabScrollView.showsHorizontalScrollIndicator = false
         tabScrollView.showsVerticalScrollIndicator = false
-        
-        // layout
-        switch tabbarPosition {
-        case .Top:
-            layoutTabbarTop()
-        case .Bottom:
-            layoutTabbarBottom()
-        case .Left:
-            layoutTabbarLeft()
-        case .Right:
-            layoutTabbarRight()
-        }
+        tabScrollView.registerClass(UICollectionViewCell.self, forCellWithReuseIdentifier: "rgTabCell")
         
         tabbar.addSubview(tabScrollView)
         
@@ -184,9 +188,9 @@ class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UI
         super.didReceiveMemoryWarning()
     }
     
+    // MARK: - Functions
     private func layoutTabbarTop() {
         tabbar.autoresizingMask = .FlexibleWidth
-        tabScrollView.autoresizingMask = .FlexibleWidth
         pager.view.autoresizingMask = (UIViewAutoresizing.FlexibleHeight | UIViewAutoresizing.FlexibleWidth)
         
         var barTop: CGFloat = 20
@@ -203,8 +207,13 @@ class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UI
         tabbar.frame = tabbarFrame
         
         let tabScrollerFrame = CGRect(x: 0, y: 0, width: tabbarFrame.size.width, height: tabbarFrame.size.height)
+        let flowLayout = UICollectionViewFlowLayout()
         
-        tabScrollView.frame = tabScrollerFrame
+        flowLayout.scrollDirection = .Horizontal
+        
+        tabScrollView = UICollectionView(frame: tabScrollerFrame, collectionViewLayout: flowLayout)
+        
+        tabScrollView.autoresizingMask = .FlexibleWidth
         
         let pagerFrame = CGRect(x: 0, y: 0, width: view.bounds.size.width, height: view.bounds.size.height)
         
@@ -213,7 +222,6 @@ class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UI
     
     private func layoutTabbarBottom() {
         tabbar.autoresizingMask = .FlexibleWidth
-        tabScrollView.autoresizingMask = .FlexibleWidth
         pager.view.autoresizingMask = (UIViewAutoresizing.FlexibleHeight | UIViewAutoresizing.FlexibleWidth)
         
         let tabbarFrame = CGRect(x: 0, y: view.bounds.size.height - tabbarHeight, width: view.bounds.size.width, height: tabbarHidden ? 0 : tabbarHeight)
@@ -221,8 +229,13 @@ class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UI
         tabbar.frame = tabbarFrame
         
         let tabScrollerFrame = CGRect(x: 0, y: 0, width: tabbarFrame.size.width, height: tabbarFrame.size.height)
+        let flowLayout = UICollectionViewFlowLayout()
         
-        tabScrollView.frame = tabScrollerFrame
+        flowLayout.scrollDirection = .Horizontal
+        
+        tabScrollView = UICollectionView(frame: tabScrollerFrame, collectionViewLayout: flowLayout)
+        
+        tabScrollView.autoresizingMask = .FlexibleWidth
         
         let pagerFrame = CGRect(x: 0, y: 0, width: view.bounds.size.width, height: view.bounds.size.height)
         
@@ -231,27 +244,12 @@ class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UI
     
     private func layoutTabbarLeft() {
         tabbar.autoresizingMask = .FlexibleHeight
-        tabScrollView.autoresizingMask = .FlexibleHeight
         pager.view.autoresizingMask = (.FlexibleHeight | .FlexibleWidth)
         
         var barTop: CGFloat = 0
         
         // scroll tabbar under topbar if using solid style
-        if tabbarStyle == .Solid {
-            var scrollTop: CGFloat = 20
-            
-            if let navController = navigationController where !navController.navigationBar.hidden {
-                scrollTop = 64
-            }
-            
-            var edgeInsets: UIEdgeInsets = tabScrollView.contentInset
-            
-            edgeInsets.top = scrollTop
-            edgeInsets.bottom = 0
-            
-            tabScrollView.contentInset = edgeInsets
-            tabScrollView.scrollIndicatorInsets = edgeInsets
-        } else {
+        if tabbarStyle != .Solid {
             barTop = 20
             
             if let navController = navigationController where !navController.navigationBar.hidden {
@@ -264,22 +262,14 @@ class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UI
         tabbar.frame = tabbarFrame
         
         let tabScrollerFrame = CGRect(x: 0, y: 0, width: tabbarFrame.size.width, height: tabbarFrame.size.height)
+        let flowLayout = UICollectionViewFlowLayout()
         
-        tabScrollView.frame = tabScrollerFrame
+        flowLayout.scrollDirection = .Vertical
         
-        let pagerFrame = CGRect(x: tabbarHidden ? 0 : tabbarWidth, y: 0, width: view.bounds.size.width - (tabbarHidden ? 0 : tabbarWidth), height: view.bounds.size.height)
+        tabScrollView = UICollectionView(frame: tabScrollerFrame, collectionViewLayout: flowLayout)
         
-        pager.view.frame = pagerFrame
-    }
-    
-    private func layoutTabbarRight() {
-        tabbar.autoresizingMask = .FlexibleHeight
         tabScrollView.autoresizingMask = .FlexibleHeight
-        pager.view.autoresizingMask = (.FlexibleHeight | .FlexibleWidth)
         
-        var barTop: CGFloat = 0
-        
-        // scroll tabbar under topbar if using solid style
         if tabbarStyle == .Solid {
             var scrollTop: CGFloat = 20
             
@@ -294,7 +284,21 @@ class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UI
             
             tabScrollView.contentInset = edgeInsets
             tabScrollView.scrollIndicatorInsets = edgeInsets
-        } else {
+        }
+        
+        let pagerFrame = CGRect(x: tabbarHidden ? 0 : tabbarWidth, y: 0, width: view.bounds.size.width - (tabbarHidden ? 0 : tabbarWidth), height: view.bounds.size.height)
+        
+        pager.view.frame = pagerFrame
+    }
+    
+    private func layoutTabbarRight() {
+        tabbar.autoresizingMask = .FlexibleHeight
+        pager.view.autoresizingMask = (.FlexibleHeight | .FlexibleWidth)
+        
+        var barTop: CGFloat = 0
+        
+        // scroll tabbar under topbar if using solid style
+        if tabbarStyle != .Solid {
             barTop = 20
             
             if let navController = self.navigationController where !navController.navigationBar.hidden {
@@ -307,8 +311,29 @@ class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UI
         tabbar.frame = tabbarFrame
         
         let tabScrollerFrame = CGRect(x: 0, y: 0, width: tabbarFrame.size.width, height: tabbarFrame.size.height)
+        let flowLayout = UICollectionViewFlowLayout()
         
-        tabScrollView.frame = tabScrollerFrame
+        flowLayout.scrollDirection = .Vertical
+        
+        tabScrollView = UICollectionView(frame: tabScrollerFrame, collectionViewLayout: flowLayout)
+        
+        tabScrollView.autoresizingMask = .FlexibleHeight
+        
+        if tabbarStyle == .Solid {
+            var scrollTop: CGFloat = 20
+            
+            if let navController = navigationController where !navController.navigationBar.hidden {
+                scrollTop = 64
+            }
+            
+            var edgeInsets: UIEdgeInsets = tabScrollView.contentInset
+            
+            edgeInsets.top = scrollTop
+            edgeInsets.bottom = 0
+            
+            tabScrollView.contentInset = edgeInsets
+            tabScrollView.scrollIndicatorInsets = edgeInsets
+        }
         
         let pagerFrame = CGRect(x: 0, y: 0, width: view.bounds.size.width - (tabbarHidden ? 0 : tabbarWidth), height: view.bounds.size.height)
         
@@ -316,112 +341,61 @@ class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UI
     }
     
     private func setupSelf() {
-        for tabView in tabs {
-            (tabView as! RGTabView).removeFromSuperview()
-        }
-        
-        tabScrollView.contentSize = CGSizeZero
-        
-        tabs.removeAllObjects()
-        pageViewControllers.removeAllObjects()
-        
         if let theSource = datasource {
             pageCount = theSource.numberOfPagesForViewController(self)
         }
         
-        tabs = NSMutableArray(capacity: pageCount)
-        pageViewControllers = NSMutableArray(capacity: pageCount)
-        
-        for i in 0 ..< pageCount {
-            tabs.addObject(NSNull())
-            pageViewControllers.addObject(NSNull())
-        }
-        
-        var contentSizeWH: CGFloat = tabMargin / 2.0
-        
-        for i in 0 ..< pageCount {
-            if let tabView: RGTabView = tabViewAtIndex(i) {
-                var frame: CGRect = tabView.frame
-                
-                switch tabbarPosition {
-                case .Top, .Bottom:
-                    frame.origin.x = contentSizeWH
- 
-                    contentSizeWH += CGRectGetWidth(frame) + tabMargin
-                case .Left, .Right:
-                    frame.origin.y = contentSizeWH
-                    
-                    contentSizeWH += CGRectGetHeight(frame) + tabMargin
-                }
-                
-                tabView.frame = frame
-                
-                tabScrollView.addSubview(tabView)
-                
-                var tapRecognizer: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "handleTap:")
-                
-                tabView.addGestureRecognizer(tapRecognizer)
-            }
-        }
-        
-        contentSizeWH -= tabMargin / 2.0
-        
-        switch tabbarPosition {
-        case .Top, .Bottom:
-            tabScrollView.contentSize = CGSizeMake(contentSizeWH, tabbarHeight)
-        case .Left, .Right:
-            tabScrollView.contentSize = CGSizeMake(tabbarWidth, contentSizeWH)
-        }
-        
         pager.dataSource = self
         pager.delegate = self
+        tabScrollView.dataSource = self
+        tabScrollView.delegate = self
         
-        selectTabAtIndex(currentTabIndex)
+        selectTabAtIndex(currentTabIndex, updatePage: true)
         
         needsSetup = false
     }
     
     private func tabViewAtIndex(index: Int) -> RGTabView? {
-        if index >= pageCount {
-            return nil
-        }
-        
-        if tabs.objectAtIndex(index).isEqual(NSNull()) {
-            if let tabViewContent: UIView = datasource?.tabViewForPageAtIndex(self, index: index) {
-                var tabView: RGTabView
-                
-                switch tabbarPosition {
-                case .Top, .Bottom:
-                    if let theWidth: CGFloat = delegate?.widthForTabAtIndex?(index) {
-                        tabView = RGTabView(frame: CGRectMake(0.0, 0.0, theWidth, tabbarHeight), indicatorColor: tabIndicatorColor, indicatorHW: tabIndicatorWidthOrHeight, style: tabStyle, orientation: .Horizontal)
-                    } else {
-                        tabView = RGTabView(frame: CGRectMake(0.0, 0.0, tabWidth, tabbarHeight), indicatorColor: tabIndicatorColor, indicatorHW: tabIndicatorWidthOrHeight, style: tabStyle, orientation: .Horizontal)
-                    }
-                case .Left:
-                    if let theHeight: CGFloat = delegate?.heightForTabAtIndex?(index) {
-                        tabView = RGTabView(frame: CGRectMake(0.0, 0.0, tabbarWidth, theHeight), indicatorColor: tabIndicatorColor, indicatorHW: tabIndicatorWidthOrHeight, style: tabStyle, orientation: .VerticalLeft)
-                    } else {
-                        tabView = RGTabView(frame: CGRectMake(0.0, 0.0, tabbarWidth, tabbarWidth), indicatorColor: tabIndicatorColor, indicatorHW: tabIndicatorWidthOrHeight, style: tabStyle, orientation: .VerticalLeft)
-                    }
-                case .Right:
-                    if let theHeight: CGFloat = delegate?.heightForTabAtIndex?(index) {
-                        tabView = RGTabView(frame: CGRectMake(0.0, 0.0, tabbarWidth, theHeight), indicatorColor: tabIndicatorColor, indicatorHW: tabIndicatorWidthOrHeight, style: tabStyle, orientation: .VerticalRight)
-                    } else {
-                        tabView = RGTabView(frame: CGRectMake(0.0, 0.0, tabbarWidth, tabbarWidth), indicatorColor: tabIndicatorColor, indicatorHW: tabIndicatorWidthOrHeight, style: tabStyle, orientation: .VerticalRight)
-                    }
+        if let tabViewContent: UIView = datasource?.tabViewForPageAtIndex(self, index: index) {
+            var tabView: RGTabView
+            
+            switch tabbarPosition {
+            case .Top, .Bottom:
+                if let theWidth: CGFloat = delegate?.widthForTabAtIndex?(index) {
+                    tabView = RGTabView(frame: CGRectMake(0.0, 0.0, theWidth, tabbarHeight), indicatorColor: tabIndicatorColor, indicatorHW: tabIndicatorWidthOrHeight, style: tabStyle, orientation: .Horizontal)
+                } else {
+                    tabView = RGTabView(frame: CGRectMake(0.0, 0.0, tabWidth, tabbarHeight), indicatorColor: tabIndicatorColor, indicatorHW: tabIndicatorWidthOrHeight, style: tabStyle, orientation: .Horizontal)
                 }
                 
-                tabView.addSubview(tabViewContent)
+                break
+            case .Left:
+                if let theHeight: CGFloat = delegate?.heightForTabAtIndex?(index) {
+                    tabView = RGTabView(frame: CGRectMake(0.0, 0.0, tabbarWidth, theHeight), indicatorColor: tabIndicatorColor, indicatorHW: tabIndicatorWidthOrHeight, style: tabStyle, orientation: .VerticalLeft)
+                } else {
+                    tabView = RGTabView(frame: CGRectMake(0.0, 0.0, tabbarWidth, tabbarWidth), indicatorColor: tabIndicatorColor, indicatorHW: tabIndicatorWidthOrHeight, style: tabStyle, orientation: .VerticalLeft)
+                }
                 
-                tabView.clipsToBounds = true
+                break
+            case .Right:
+                if let theHeight: CGFloat = delegate?.heightForTabAtIndex?(index) {
+                    tabView = RGTabView(frame: CGRectMake(0.0, 0.0, tabbarWidth, theHeight), indicatorColor: tabIndicatorColor, indicatorHW: tabIndicatorWidthOrHeight, style: tabStyle, orientation: .VerticalRight)
+                } else {
+                    tabView = RGTabView(frame: CGRectMake(0.0, 0.0, tabbarWidth, tabbarWidth), indicatorColor: tabIndicatorColor, indicatorHW: tabIndicatorWidthOrHeight, style: tabStyle, orientation: .VerticalRight)
+                }
                 
-                tabViewContent.center = tabView.center
-                
-                tabs.replaceObjectAtIndex(index, withObject: tabView)
+                break
             }
+            
+            tabView.addSubview(tabViewContent)
+            
+            tabView.clipsToBounds = true
+            
+            tabViewContent.center = tabView.center
+            
+            return tabView
         }
         
-        return tabs.objectAtIndex(index) as? RGTabView
+        return nil
     }
     
     private func viewControllerAtIndex(index: Int) -> UIViewController? {
@@ -429,45 +403,36 @@ class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UI
             return nil
         }
         
-        if pageViewControllers.objectAtIndex(index).isEqual(NSNull()) {
-            if let vc: UIViewController = datasource?.viewControllerForPageAtIndex(self, index: index) {
-                let view: UIView = vc.view.subviews[0] as! UIView
+        if let vc: UIViewController = datasource?.viewControllerForPageAtIndex(self, index: index) {
+            vc.view.tag = index
+            
+            let view: UIView = vc.view.subviews[0] as! UIView
+            
+            if view is UIScrollView {
+                let scrollView = (view as! UIScrollView)
+                var edgeInsets: UIEdgeInsets = scrollView.contentInset
                 
-                if view is UIScrollView {
-                    let scrollView = (view as! UIScrollView)
-                    var edgeInsets: UIEdgeInsets = scrollView.contentInset
-                    
-                    if tabbarPosition == RGTabbarPosition.Top {
-                        edgeInsets.top = tabbar.frame.origin.y + tabbarHeight
-                    } else if tabbarPosition == RGTabbarPosition.Bottom {
-                        edgeInsets.top = tabbar.frame.origin.y
-                        edgeInsets.bottom = tabbarHeight
-                    } else {
-                        edgeInsets.top = tabbar.frame.origin.y
-                        edgeInsets.bottom = 0
-                    }
-                    
-                    scrollView.contentInset = edgeInsets
-                    scrollView.scrollIndicatorInsets = edgeInsets
+                if tabbarPosition == .Top {
+                    edgeInsets.top = tabbar.frame.origin.y + tabbarHeight
+                } else if tabbarPosition == .Bottom {
+                    edgeInsets.top = tabbar.frame.origin.y
+                    edgeInsets.bottom = tabbarHeight
+                } else {
+                    edgeInsets.top = tabbar.frame.origin.y
+                    edgeInsets.bottom = 0
                 }
                 
-                pageViewControllers.replaceObjectAtIndex(index, withObject: vc)
+                scrollView.contentInset = edgeInsets
+                scrollView.scrollIndicatorInsets = edgeInsets
             }
+            
+            return vc
         }
         
-        return pageViewControllers.objectAtIndex(index) as? UIViewController
+        return nil
     }
     
-    func handleTap(sender: UITapGestureRecognizer) {
-        let tabView: RGTabView = sender.view as! RGTabView
-        let i: Int = tabs.indexOfObject(tabView)
-        
-        if currentTabIndex != i {
-            selectTabAtIndex(i)
-        }
-    }
-    
-    func selectTabAtIndex(index: Int) {
+    func selectTabAtIndex(index: Int, updatePage: Bool) {
         if index >= pageCount {
             return
         }
@@ -475,32 +440,102 @@ class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UI
         animatingToTab = true
         
         updateTabIndex(index, animated: true)
-        updatePager(index)
+        
+        if updatePage {
+            updatePager(index)
+        } else {
+            currentPageIndex = index
+        }
         
         delegate?.didChangePageToIndex?(index)
     }
     
     private func updateTabIndex(index: Int, animated: Bool) {
-        let activeTab: RGTabView = tabViewAtIndex(currentTabIndex)!
-        let newTab: RGTabView = tabViewAtIndex(index)!
-        
-        activeTab.selected = false
-        newTab.selected = true
-        
-        currentTabIndex = index
-        
-        var visibleRect = newTab.frame
-        
-        switch tabbarPosition {
-        case .Top, .Bottom:
-            visibleRect.origin.x -= tabMargin / 2.0
-            visibleRect.size.width += tabMargin
-        case .Left, .Right:
-            visibleRect.origin.y -= tabMargin / 2.0
-            visibleRect.size.height += tabMargin
+        if let currentTabCell = tabScrollView.cellForItemAtIndexPath(NSIndexPath(forRow: currentTabIndex, inSection: 0)) {
+            (currentTabCell.contentView.subviews.first as! RGTabView).selected = false
+        }
+        if let newTabCell = tabScrollView.cellForItemAtIndexPath(NSIndexPath(forRow: index, inSection: 0)) {
+            var newTabRect = newTabCell.frame
+            
+            switch tabbarPosition {
+            case .Top, .Bottom:
+                newTabRect.origin.x -= tabMargin / 2.0
+                newTabRect.size.width += tabMargin
+            case .Left, .Right:
+                newTabRect.origin.y -= tabMargin / 2.0
+                newTabRect.size.height += tabMargin
+            }
+            
+            let rect = tabScrollView.convertRect(newTabRect, toView: tabScrollView.superview)
+            let newTabVisible = CGRectContainsRect(tabScrollView.frame, rect)
+            
+            if !newTabVisible {
+                var scrollPosition: UICollectionViewScrollPosition = .None
+                
+                if index > currentTabIndex {
+                    switch tabbarPosition {
+                    case .Top, .Bottom:
+                        scrollPosition = .Right
+                    case .Left, .Right:
+                        scrollPosition = .Bottom
+                    }
+                } else {
+                    switch tabbarPosition {
+                    case .Top, .Bottom:
+                        scrollPosition = .Left
+                    case .Left, .Right:
+                        scrollPosition = .Top
+                    }
+                }
+                
+                tabScrollView.selectItemAtIndexPath(NSIndexPath(forRow: index, inSection: 0), animated: animated, scrollPosition: scrollPosition)
+                tabScrollView.scrollRectToVisible(newTabRect, animated: animated)
+            }
+            
+            (newTabCell.contentView.subviews.first as! RGTabView).selected = true
+        } else {
+            let newTabCell = collectionView(tabScrollView, cellForItemAtIndexPath: NSIndexPath(forRow: index, inSection: 0))
+            var newTabRect = newTabCell.frame
+            
+            switch tabbarPosition {
+            case .Top, .Bottom:
+                newTabRect.origin.x -= tabMargin / 2.0
+                newTabRect.size.width += tabMargin
+            case .Left, .Right:
+                newTabRect.origin.y -= tabMargin / 2.0
+                newTabRect.size.height += tabMargin
+            }
+            
+            let rect = tabScrollView.convertRect(newTabRect, toView: tabScrollView.superview)
+            let newTabVisible = CGRectContainsRect(tabScrollView.frame, rect)
+            
+            if !newTabVisible {
+                var scrollPosition: UICollectionViewScrollPosition = .None
+                
+                if index > currentTabIndex {
+                    switch tabbarPosition {
+                    case .Top, .Bottom:
+                        scrollPosition = .Right
+                    case .Left, .Right:
+                        scrollPosition = .Bottom
+                    }
+                } else {
+                    switch tabbarPosition {
+                    case .Top, .Bottom:
+                        scrollPosition = .Left
+                    case .Left, .Right:
+                        scrollPosition = .Top
+                    }
+                }
+                
+                tabScrollView.selectItemAtIndexPath(NSIndexPath(forRow: index, inSection: 0), animated: animated, scrollPosition: scrollPosition)
+                tabScrollView.scrollRectToVisible(newTabRect, animated: animated)
+            }
+            
+            (newTabCell.contentView.subviews.first as! RGTabView).selected = true
         }
         
-        tabScrollView.scrollRectToVisible(visibleRect, animated: animated)
+        currentTabIndex = index
     }
     
     private func updatePager(index: Int) {
@@ -509,19 +544,19 @@ class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UI
             weak var weakPager: UIPageViewController? = pager
             
             if index == currentPageIndex {
-                pager.setViewControllers([vc], direction: UIPageViewControllerNavigationDirection.Forward, animated: false, completion: { (Bool) -> Void in
+                pager.setViewControllers([vc], direction: .Forward, animated: false, completion: { (Bool) -> Void in
                     weakSelf!.animatingToTab = false
                 })
             } else if !(index + 1 == currentPageIndex || index - 1 == currentPageIndex) {
-                pager.setViewControllers([vc], direction: index < currentPageIndex ? UIPageViewControllerNavigationDirection.Reverse : UIPageViewControllerNavigationDirection.Forward, animated: true, completion: { (Bool) -> Void in
+                pager.setViewControllers([vc], direction: index < currentPageIndex ? .Reverse : .Forward, animated: true, completion: { (Bool) -> Void in
                     weakSelf!.animatingToTab = false
                     
                     dispatch_async(dispatch_get_main_queue(), {
-                        weakPager!.setViewControllers([vc], direction: index < weakSelf!.currentPageIndex ? UIPageViewControllerNavigationDirection.Reverse : UIPageViewControllerNavigationDirection.Forward, animated: false, completion: nil)
+                        weakPager!.setViewControllers([vc], direction: index < weakSelf!.currentPageIndex ? .Reverse : .Forward, animated: false, completion: nil)
                     })
                 })
             } else {
-                pager.setViewControllers([vc], direction: index < currentPageIndex ? UIPageViewControllerNavigationDirection.Reverse : UIPageViewControllerNavigationDirection.Forward, animated: true, completion: { (Bool) -> Void in
+                pager.setViewControllers([vc], direction: index < currentPageIndex ? .Reverse : .Forward, animated: true, completion: { (Bool) -> Void in
                     weakSelf!.animatingToTab = false
                 })
             }
@@ -531,82 +566,23 @@ class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UI
     }
     
     private func indexForViewController(vc: UIViewController) -> (Int) {
-        return pageViewControllers.indexOfObject(vc)
+        return vc.view.tag
     }
     
     func reloadData() {
-        for tabView in tabs {
-            (tabView as! RGTabView).removeFromSuperview()
-        }
-        
-        tabScrollView.contentSize = CGSizeZero
-        
-        tabs.removeAllObjects()
-        pageViewControllers.removeAllObjects()
-        
         if let theSource = datasource {
             pageCount = theSource.numberOfPagesForViewController(self)
         }
         
-        tabs = NSMutableArray(capacity: pageCount)
-        pageViewControllers = NSMutableArray(capacity: pageCount)
+        tabScrollView.reloadData()
         
-        for i in 0 ..< pageCount {
-            tabs.addObject(NSNull())
-            pageViewControllers.addObject(NSNull())
-        }
-        
-        var contentSizeWH: CGFloat = tabMargin / 2.0
-        
-        for i in 0 ..< pageCount {
-            if let tabView: RGTabView = tabViewAtIndex(i) {
-                var frame: CGRect = tabView.frame
-                
-                switch tabbarPosition {
-                case .Top, .Bottom:
-                    frame.origin.x = contentSizeWH
-                    
-                    contentSizeWH += CGRectGetWidth(frame) + tabMargin
-                case .Left, .Right:
-                    frame.origin.y = contentSizeWH
-                    
-                    contentSizeWH += CGRectGetHeight(frame) + tabMargin
-                }
-                
-                tabView.frame = frame
-                
-                tabScrollView.addSubview(tabView)
-                
-                var tapRecognizer: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "handleTap:")
-                
-                tabView.addGestureRecognizer(tapRecognizer)
-            }
-        }
-        
-        contentSizeWH -= tabMargin / 2.0
-        
-        switch tabbarPosition {
-        case .Top, .Bottom:
-            tabScrollView.contentSize = CGSizeMake(contentSizeWH, tabbarHeight)
-        case .Left, .Right:
-            tabScrollView.contentSize = CGSizeMake(tabbarWidth, contentSizeWH)
-            
-            if tabbarStyle == .Solid {
-                var edgeInsets: UIEdgeInsets = tabScrollView.contentInset
-                
-                edgeInsets.top = topLayoutGuide.length
-                edgeInsets.bottom = bottomLayoutGuide.length
-                
-                tabScrollView.contentInset = edgeInsets
-                tabScrollView.scrollIndicatorInsets = edgeInsets
-            }
-        }
+        selectTabAtIndex(currentTabIndex, updatePage: true)
     }
     
     // MARK: - UIToolbarDelegate
     func positionForBar(bar: UIBarPositioning) -> UIBarPosition {
         var position: UIBarPosition = UIBarPosition.Top
-
+        
         switch tabbarPosition {
         case .Top:
             position = UIBarPosition.Top
@@ -646,20 +622,101 @@ class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UI
     
     // MARK: - PageViewController Delegate
     func pageViewController(pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [AnyObject], transitionCompleted completed: Bool) {
-        if (finished && completed) {
-            let vc: UIViewController = pager.viewControllers[0] as! UIViewController
+        if finished && completed, let vc: UIViewController = pager.viewControllers.first as? UIViewController {
             let index: Int = indexForViewController(vc)
             
-            selectTabAtIndex(index)
+            selectTabAtIndex(index, updatePage: false)
+        }
+    }
+    
+    // MARK: - UICollectionViewDataSource
+    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+        return 1
+    }
+    
+    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return pageCount
+    }
+    
+    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("rgTabCell", forIndexPath: indexPath) as! UICollectionViewCell
+        
+        cell.tag = indexPath.row
+        
+        if let tabView = tabViewAtIndex(indexPath.row) {
+            cell.contentView.subviews.map({
+                $0.removeFromSuperview()
+            })
+            
+            if indexPath.row == currentTabIndex {
+                tabView.selected = true
+            } else {
+                tabView.selected = false
+            }
+            
+            cell.contentView.addSubview(tabView)
+        }
+        
+        return cell
+    }
+    
+    // MARK: - UICollectionViewDelegate
+    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        if currentTabIndex != indexPath.row {
+            selectTabAtIndex(indexPath.row, updatePage: true)
+        }
+    }
+    
+    // MARK: - UICollectionViewDelegateFlowLayout
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+        
+        switch tabbarPosition {
+        case .Top, .Bottom:
+            if let theWidth: CGFloat = delegate?.widthForTabAtIndex?(indexPath.row) {
+                return CGSize(width: theWidth, height: tabbarHeight)
+            } else {
+                return CGSize(width: tabWidth, height: tabbarHeight)
+            }
+        case .Left, .Right:
+            if let theHeight: CGFloat = delegate?.heightForTabAtIndex?(indexPath.row) {
+                return CGSize(width: tabbarWidth, height: theHeight)
+            } else {
+                return CGSize(width: tabbarWidth, height: tabbarWidth)
+            }
+        }
+    }
+    
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAtIndex section: Int) -> CGFloat {
+        return tabMargin
+    }
+    
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
+        return tabMargin
+    }
+    
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
+        switch tabbarPosition {
+        case .Top, .Bottom:
+            return UIEdgeInsets(top: 0, left: tabMargin / 2, bottom: 0, right: tabMargin / 2)
+        case .Left, .Right:
+            return UIEdgeInsets(top: tabMargin / 2, left: 0, bottom: tabMargin / 2, right: 0)
         }
     }
     
     // MARK: - UIScrollView Delegate
     func scrollViewDidScroll(scrollView: UIScrollView) {
+        if scrollView == tabScrollView {
+            return
+        }
+        
         pageViewScrollDelegate?.scrollViewDidScroll?(scrollView)
     }
     
     func scrollViewShouldScrollToTop(scrollView: UIScrollView) -> Bool {
+        if scrollView == tabScrollView {
+            return false
+        }
+        
         if let shouldScroll = pageViewScrollDelegate?.scrollViewShouldScrollToTop?(scrollView) {
             return shouldScroll
         }
@@ -668,46 +725,90 @@ class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UI
     }
     
     func scrollViewDidScrollToTop(scrollView: UIScrollView) {
+        if scrollView == tabScrollView {
+            return
+        }
+        
         pageViewScrollDelegate?.scrollViewDidScrollToTop?(scrollView)
     }
     
     func scrollViewDidEndScrollingAnimation(scrollView: UIScrollView) {
+        if scrollView == tabScrollView {
+            return
+        }
+        
         pageViewScrollDelegate?.scrollViewDidEndScrollingAnimation?(scrollView)
     }
     
     func scrollViewWillBeginDragging(scrollView: UIScrollView) {
+        if scrollView == tabScrollView {
+            return
+        }
+        
         pageViewScrollDelegate?.scrollViewWillBeginDragging?(scrollView)
     }
     
     func scrollViewWillEndDragging(scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        if scrollView == tabScrollView {
+            return
+        }
+        
         pageViewScrollDelegate?.scrollViewWillEndDragging?(scrollView, withVelocity: velocity, targetContentOffset: targetContentOffset)
     }
     
     func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        if scrollView == tabScrollView {
+            return
+        }
+        
         pageViewScrollDelegate?.scrollViewDidEndDragging?(scrollView, willDecelerate: decelerate)
     }
     
     func scrollViewWillBeginDecelerating(scrollView: UIScrollView) {
+        if scrollView == tabScrollView {
+            return
+        }
+        
         pageViewScrollDelegate?.scrollViewWillBeginDecelerating?(scrollView)
     }
     
     func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+        if scrollView == tabScrollView {
+            return
+        }
+        
         pageViewScrollDelegate?.scrollViewDidEndDecelerating?(scrollView)
     }
     
     func scrollViewWillBeginZooming(scrollView: UIScrollView, withView view: UIView!) {
+        if scrollView == tabScrollView {
+            return
+        }
+        
         pageViewScrollDelegate?.scrollViewWillBeginZooming?(scrollView, withView: view)
     }
     
     func scrollViewDidZoom(scrollView: UIScrollView) {
+        if scrollView == tabScrollView {
+            return
+        }
+        
         pageViewScrollDelegate?.scrollViewDidZoom?(scrollView)
     }
     
     func scrollViewDidEndZooming(scrollView: UIScrollView, withView view: UIView!, atScale scale: CGFloat) {
+        if scrollView == tabScrollView {
+            return
+        }
+        
         pageViewScrollDelegate?.scrollViewDidEndZooming?(scrollView, withView: view, atScale: scale)
     }
     
     func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView? {
+        if scrollView == tabScrollView {
+            return nil
+        }
+        
         if let view: UIView = pageViewScrollDelegate?.viewForZoomingInScrollView?(scrollView) {
             return view
         }
@@ -819,7 +920,7 @@ private class RGTabBarItem: UIView {
         super.init(frame: frame)
         
         self.text = text
-        self.image = image?.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
+        self.image = image?.imageWithRenderingMode(.AlwaysTemplate)
         
         if color != nil {
             normalColor = color

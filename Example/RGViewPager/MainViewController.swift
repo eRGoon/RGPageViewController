@@ -34,6 +34,18 @@ class MainViewController: RGPageViewController, RGPageViewControllerDataSource, 
         }
     }
     
+    override var tabbarWidth: CGFloat {
+        get {
+            return 140.0
+        }
+    }
+    
+    override var tabMargin: CGFloat {
+        get {
+            return 16.0
+        }
+    }
+    
     let bcs = ["title": "Better Call Saul", "desc": "Six years before Saul Goodman meets Walter White. We meet him when the man who will become Saul Goodman is known as Jimmy McGill, a small-time lawyer searching for his destiny, and, more immediately, hustling to make ends meet. Working alongside, and, often, against Jimmy, is \"fixer\" Mike Erhmantraut. The series will track Jimmy's transformation into Saul Goodman, the man who puts “criminal” in \"criminal lawyer\".", "image": "better_call_saul", "rating": 9.4, "tags": "Comedy | Crime | Drama"]
     let bb = ["title": "Breaking Bad", "desc": "Breaking Bad is an American crime drama television series created and produced by Vince Gilligan. Set and produced in Albuquerque, New Mexico, Breaking Bad is the story of Walter White, a struggling high school chemistry teacher who is diagnosed with inoperable lung cancer at the beginning of the series. He turns to a life of crime, producing and selling methamphetamine, in order to secure his family's financial future before he dies, teaming with his former student, Jesse Pinkman. Heavily serialized, the series is known for positioning its characters in seemingly inextricable corners and has been labeled a contemporary western by its creator.", "image": "breaking_bad", "rating": 9.5, "tags": "Crime | Drama | Thriller"]
     let fs = ["title": "Falling Skies", "desc": "Falling Skies is an American science fiction dramatic television series about a group of civilians and fighters fleeing post-apocalyptic Boston following an alien invasion that devastated the planet six months before the events of season one.", "image": "falling_skies", "rating": 7.3, "tags": "Action | Sci-Fi | Thriller"]
@@ -52,8 +64,6 @@ class MainViewController: RGPageViewController, RGPageViewControllerDataSource, 
         super.viewDidLoad()
         
         data = [bcs, bb, fs, f, got, g, hoc, himym, s, tbbt, twd]
-        
-        self.tabMargin = 16.0
         
         self.datasource = self
         self.delegate = self
@@ -96,11 +106,6 @@ class MainViewController: RGPageViewController, RGPageViewControllerDataSource, 
     // use this to set a custom height for the tabbar
     func heightForTabAtIndex(index: Int) -> CGFloat {
         return 164.0
-    }
-    
-    // use this to set a custom height for the tabbar
-    func widthForTabbar() -> CGFloat {
-        return 140.0
     }
     
     // use this to change the height of the tab indicator
