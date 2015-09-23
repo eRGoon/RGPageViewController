@@ -38,6 +38,7 @@
 		E3796D9D1A0E3B1700F00461 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E3796D9C1A0E3B1700F00461 /* Images.xcassets */; };
 		E3796DA01A0E3B1700F00461 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = E3796D9E1A0E3B1700F00461 /* LaunchScreen.xib */; };
 		E3796DAC1A0E3B1700F00461 /* RGViewPagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3796DAB1A0E3B1700F00461 /* RGViewPagerTests.swift */; };
+		E3C19DC51BB2A77700020410 /* UIHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3C19DC41BB2A77700020410 /* UIHelper.swift */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -85,6 +86,7 @@
 		E3796DA51A0E3B1700F00461 /* RGViewPagerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RGViewPagerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E3796DAA1A0E3B1700F00461 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E3796DAB1A0E3B1700F00461 /* RGViewPagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RGViewPagerTests.swift; sourceTree = "<group>"; };
+		E3C19DC41BB2A77700020410 /* UIHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIHelper.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -257,6 +259,7 @@
 				E309AD841A10B72500AD2EBD /* MainViewController.swift */,
 				E3796D991A0E3B1700F00461 /* Main.storyboard */,
 				E3796D9E1A0E3B1700F00461 /* LaunchScreen.xib */,
+				E3C19DC41BB2A77700020410 /* UIHelper.swift */,
 				E3796D8F1A0E3B1700F00461 /* Supporting Files */,
 			);
 			path = RGViewPager;
@@ -416,6 +419,7 @@
 				E309AD851A10B72500AD2EBD /* MainViewController.swift in Sources */,
 				E3796D961A0E3B1700F00461 /* DataViewController.swift in Sources */,
 				E30149FB1A121DCC001D8CAA /* RGPageViewController.swift in Sources */,
+				E3C19DC51BB2A77700020410 /* UIHelper.swift in Sources */,
 				E3796D921A0E3B1700F00461 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

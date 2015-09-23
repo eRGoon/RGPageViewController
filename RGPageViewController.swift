@@ -433,7 +433,7 @@ class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UI
             
             switch tabbarPosition {
             case .Top, .Bottom:
-                newTabRect.origin.x -= tabMargin / 2.0
+                newTabRect.origin.x -= (index == 0 ? tabMargin : tabMargin / 2.0)
                 newTabRect.size.width += tabMargin
             case .Left, .Right:
                 newTabRect.origin.y -= tabMargin / 2.0
@@ -473,7 +473,7 @@ class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UI
             
             switch tabbarPosition {
             case .Top, .Bottom:
-                newTabRect.origin.x -= tabMargin / 2.0
+                newTabRect.origin.x -= (index == 0 ? tabMargin : tabMargin / 2.0)
                 newTabRect.size.width += tabMargin
             case .Left, .Right:
                 newTabRect.origin.y -= tabMargin / 2.0

@@ -12,19 +12,47 @@ import UIKit
 class MainViewController: RGPageViewController, RGPageViewControllerDataSource, RGPageViewControllerDelegate {
     override var pagerOrientation: UIPageViewControllerNavigationOrientation {
         get {
-            return .Vertical
+            if DeviceType.iPad {
+                return .Vertical
+            }
+            
+            return .Horizontal
         }
     }
     
     override var tabbarPosition: RGTabbarPosition {
         get {
-            return .Right
+            if DeviceType.iPad {
+                return .Right
+            }
+            
+            return .Top
         }
     }
     
     override var tabbarStyle: RGTabbarStyle {
         get {
-            return .Solid
+            if DeviceType.iPad {
+                return .Solid
+            }
+            
+            return .Blurred
+        }
+    }
+    
+    override var tabIndicatorColor: UIColor {
+        get {
+            return UIColor.blackColor()
+        }
+    }
+    
+    override var barTintColor: UIColor? {
+        get {
+            if DeviceType.iPad {
+                return nil
+            }
+            
+            return self.navigationController?.navigationBar.barTintColor
         }
     }
     
@@ -63,10 +91,14 @@ class MainViewController: RGPageViewController, RGPageViewControllerDataSource, 
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        if DeviceType.iPad {
+            self.navigationController?.navigationBar.barTintColor = nil
+        }
+        
         data = [bcs, bb, fs, f, got, g, hoc, himym, s, tbbt, twd]
         
-        self.datasource = self
-        self.delegate = self
+        datasource = self
+        delegate = self
     }
     
     override func didReceiveMemoryWarning() {
@@ -75,29 +107,41 @@ class MainViewController: RGPageViewController, RGPageViewControllerDataSource, 
     
     // MARK: - RGPageViewController Data Source
     func numberOfPagesForViewController(pageViewController: RGPageViewController) -> Int {
-        return self.data.count
+        return data.count
     }
     
     func tabViewForPageAtIndex(pageViewController: RGPageViewController, index: Int) -> UIView {
-        let tabView = UIImageView(frame: CGRectMake(0.0, 0.0, 115.0, 164.0))
-        let imageName: String = self.data[index]["image"] as! String
+        var tabView: UIView!
         
-        tabView.contentMode = UIViewContentMode.ScaleAspectFill
-        tabView.backgroundColor = UIColor.whiteColor()
-        tabView.image = UIImage(named: "\(imageName)_poster.jpg")
+        if !DeviceType.iPad {
+            tabView = UILabel()
+            
+            (tabView as! UILabel).font = UIFont.systemFontOfSize(17)
+            (tabView as! UILabel).text = data[index]["title"] as? String
+            
+            (tabView as! UILabel).sizeToFit()
+        } else {
+            tabView = UIImageView(frame: CGRectMake(0.0, 0.0, 115.0, 164.0))
+            let imageName: String = data[index]["image"] as! String
+            
+            tabView.contentMode = UIViewContentMode.ScaleAspectFill
+            tabView.backgroundColor = UIColor.whiteColor()
+            
+            (tabView as! UIImageView).image = UIImage(named: "\(imageName)_poster.jpg")
+        }
         
         return tabView
     }
     
     func viewControllerForPageAtIndex(pageViewController: RGPageViewController, index: Int) -> UIViewController? {
-        if (self.data.count == 0) || (index >= self.data.count) {
+        if (data.count == 0) || (index >= data.count) {
             return nil
         }
         
         // Create a new view controller and pass suitable data.
-        let dataViewController = self.storyboard!.instantiateViewControllerWithIdentifier("DataViewController") as! DataViewController
+        let dataViewController = storyboard!.instantiateViewControllerWithIdentifier("DataViewController") as! DataViewController
         
-        dataViewController.dataObject = self.data[index]
+        dataViewController.dataObject = data[index]
         
         return dataViewController
     }
@@ -108,18 +152,25 @@ class MainViewController: RGPageViewController, RGPageViewControllerDataSource, 
         return 164.0
     }
     
+    // use this to set a custom width for a tab
+    func widthForTabAtIndex(index: Int) -> CGFloat {
+        if DeviceType.iPad {
+            return tabbarWidth
+        } else {
+            var tabSize = (data[index]["title"] as! String).sizeWithAttributes([NSFontAttributeName: UIFont.systemFontOfSize(17)])
+            
+            tabSize.width += 32
+            
+            return tabSize.width
+        }
+    }
+    
     // use this to change the height of the tab indicator
     func widthOrHeightForIndicator() -> CGFloat {
-        return 4.0
-    }
-    
-    // use this to specify the color for the tab indicator
-    func colorForTabIndicator() -> UIColor {
-        return UIColor.blackColor()
-    }
-    
-    // use this to specify the tint color for the tabbar
-    func tintColorForTabBar() -> UIColor? {
-        return UIColor(white: 0.92, alpha: 1.0)
+        if DeviceType.iPad {
+            return 4.0
+        }
+        
+        return 2.0
     }
 }
