@@ -44,6 +44,7 @@ class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UI
         }
     }
     var pagerScrollView: UIScrollView!
+    var pageViewControllers: NSMutableArray = NSMutableArray()
     // MARK: - Tabs
     var currentTabIndex: Int = 0
     var tabWidth: CGFloat = UIScreen.mainScreen().bounds.size.width / 3.0
@@ -102,7 +103,7 @@ class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UI
     var tabScrollView: UICollectionView!
     
     // MARK: - Constructors
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     
@@ -191,7 +192,7 @@ class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UI
     // MARK: - Functions
     private func layoutTabbarTop() {
         tabbar.autoresizingMask = .FlexibleWidth
-        pager.view.autoresizingMask = (UIViewAutoresizing.FlexibleHeight | UIViewAutoresizing.FlexibleWidth)
+        pager.view.autoresizingMask = ([UIViewAutoresizing.FlexibleHeight, UIViewAutoresizing.FlexibleWidth])
         
         var barTop: CGFloat = 20
         
@@ -222,7 +223,7 @@ class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UI
     
     private func layoutTabbarBottom() {
         tabbar.autoresizingMask = .FlexibleWidth
-        pager.view.autoresizingMask = (UIViewAutoresizing.FlexibleHeight | UIViewAutoresizing.FlexibleWidth)
+        pager.view.autoresizingMask = ([UIViewAutoresizing.FlexibleHeight, UIViewAutoresizing.FlexibleWidth])
         
         let tabbarFrame = CGRect(x: 0, y: view.bounds.size.height - tabbarHeight, width: view.bounds.size.width, height: tabbarHidden ? 0 : tabbarHeight)
         
@@ -244,7 +245,7 @@ class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UI
     
     private func layoutTabbarLeft() {
         tabbar.autoresizingMask = .FlexibleHeight
-        pager.view.autoresizingMask = (.FlexibleHeight | .FlexibleWidth)
+        pager.view.autoresizingMask = ([.FlexibleHeight, .FlexibleWidth])
         
         var barTop: CGFloat = 0
         
@@ -293,7 +294,7 @@ class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UI
     
     private func layoutTabbarRight() {
         tabbar.autoresizingMask = .FlexibleHeight
-        pager.view.autoresizingMask = (.FlexibleHeight | .FlexibleWidth)
+        pager.view.autoresizingMask = ([.FlexibleHeight, .FlexibleWidth])
         
         var barTop: CGFloat = 0
         
@@ -345,6 +346,13 @@ class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UI
             pageCount = theSource.numberOfPagesForViewController(self)
         }
         
+        pageViewControllers.removeAllObjects()
+        pageViewControllers = NSMutableArray(capacity: pageCount)
+        
+        for _ in 0 ..< pageCount {
+            pageViewControllers.addObject(NSNull())
+        }
+        
         pager.dataSource = self
         pager.delegate = self
         tabScrollView.dataSource = self
@@ -393,40 +401,6 @@ class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UI
             tabViewContent.center = tabView.center
             
             return tabView
-        }
-        
-        return nil
-    }
-    
-    private func viewControllerAtIndex(index: Int) -> UIViewController? {
-        if index >= pageCount {
-            return nil
-        }
-        
-        if let vc: UIViewController = datasource?.viewControllerForPageAtIndex(self, index: index) {
-            vc.view.tag = index
-            
-            let view: UIView = vc.view.subviews[0] as! UIView
-            
-            if view is UIScrollView {
-                let scrollView = (view as! UIScrollView)
-                var edgeInsets: UIEdgeInsets = scrollView.contentInset
-                
-                if tabbarPosition == .Top {
-                    edgeInsets.top = tabbar.frame.origin.y + tabbarHeight
-                } else if tabbarPosition == .Bottom {
-                    edgeInsets.top = tabbar.frame.origin.y
-                    edgeInsets.bottom = tabbarHeight
-                } else {
-                    edgeInsets.top = tabbar.frame.origin.y
-                    edgeInsets.bottom = 0
-                }
-                
-                scrollView.contentInset = edgeInsets
-                scrollView.scrollIndicatorInsets = edgeInsets
-            }
-            
-            return vc
         }
         
         return nil
@@ -566,12 +540,19 @@ class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UI
     }
     
     private func indexForViewController(vc: UIViewController) -> (Int) {
-        return vc.view.tag
+        return pageViewControllers.indexOfObject(vc)
     }
     
     func reloadData() {
         if let theSource = datasource {
             pageCount = theSource.numberOfPagesForViewController(self)
+        }
+        
+        pageViewControllers.removeAllObjects()
+        pageViewControllers = NSMutableArray(capacity: pageCount)
+        
+        for _ in 0 ..< pageCount {
+            pageViewControllers.addObject(NSNull())
         }
         
         tabScrollView.reloadData()
@@ -620,9 +601,41 @@ class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UI
         return viewControllerAtIndex(index)
     }
     
+    private func viewControllerAtIndex(index: Int) -> UIViewController? {
+        if index >= pageCount {
+            return nil
+        }
+        
+        if pageViewControllers.objectAtIndex(index).isEqual(NSNull()), let vc: UIViewController = datasource?.viewControllerForPageAtIndex(self, index: index) {
+            let view: UIView = vc.view.subviews[0]
+            
+            if view is UIScrollView {
+                let scrollView = (view as! UIScrollView)
+                var edgeInsets: UIEdgeInsets = scrollView.contentInset
+                
+                if tabbarPosition == .Top {
+                    edgeInsets.top = tabbar.frame.origin.y + tabbarHeight
+                } else if tabbarPosition == .Bottom {
+                    edgeInsets.top = tabbar.frame.origin.y
+                    edgeInsets.bottom = tabbarHeight
+                } else {
+                    edgeInsets.top = tabbar.frame.origin.y
+                    edgeInsets.bottom = 0
+                }
+                
+                scrollView.contentInset = edgeInsets
+                scrollView.scrollIndicatorInsets = edgeInsets
+            }
+            
+            pageViewControllers.replaceObjectAtIndex(index, withObject: vc)
+        }
+        
+        return pageViewControllers.objectAtIndex(index) as? UIViewController
+    }
+    
     // MARK: - PageViewController Delegate
-    func pageViewController(pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [AnyObject], transitionCompleted completed: Bool) {
-        if finished && completed, let vc: UIViewController = pager.viewControllers.first as? UIViewController {
+    func pageViewController(pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
+        if finished && completed, let vc: UIViewController = pager.viewControllers?.first as UIViewController? {
             let index: Int = indexForViewController(vc)
             
             selectTabAtIndex(index, updatePage: false)
@@ -639,14 +652,14 @@ class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UI
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("rgTabCell", forIndexPath: indexPath) as! UICollectionViewCell
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("rgTabCell", forIndexPath: indexPath)
         
         cell.tag = indexPath.row
         
         if let tabView = tabViewAtIndex(indexPath.row) {
-            cell.contentView.subviews.map({
-                $0.removeFromSuperview()
-            })
+            for view in cell.contentView.subviews {
+                view.removeFromSuperview()
+            }
             
             if indexPath.row == currentTabIndex {
                 tabView.selected = true
@@ -780,7 +793,7 @@ class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UI
         pageViewScrollDelegate?.scrollViewDidEndDecelerating?(scrollView)
     }
     
-    func scrollViewWillBeginZooming(scrollView: UIScrollView, withView view: UIView!) {
+    func scrollViewWillBeginZooming(scrollView: UIScrollView, withView view: UIView?) {
         if scrollView == tabScrollView {
             return
         }
@@ -796,7 +809,7 @@ class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UI
         pageViewScrollDelegate?.scrollViewDidZoom?(scrollView)
     }
     
-    func scrollViewDidEndZooming(scrollView: UIScrollView, withView view: UIView!, atScale scale: CGFloat) {
+    func scrollViewDidEndZooming(scrollView: UIScrollView, withView view: UIView?, atScale scale: CGFloat) {
         if scrollView == tabScrollView {
             return
         }
@@ -859,7 +872,7 @@ private class RGTabView: UIView {
         initSelf()
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         
         initSelf()
@@ -878,7 +891,7 @@ private class RGTabView: UIView {
         
         if selected {
             if !(subviews[0] is RGTabBarItem) {
-                var bezierPath: UIBezierPath = UIBezierPath()
+                let bezierPath: UIBezierPath = UIBezierPath()
                 
                 switch orientation {
                 case .Horizontal:
@@ -904,7 +917,7 @@ private class RGTabView: UIView {
 }
 
 // MARK: - RGTabBarItem
-private class RGTabBarItem: UIView {
+class RGTabBarItem: UIView {
     var selected: Bool = false {
         didSet {
             setSelectedState()
@@ -935,7 +948,7 @@ private class RGTabBarItem: UIView {
         initSelf()
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         
         initSelf()
@@ -961,7 +974,7 @@ private class RGTabBarItem: UIView {
             textLabel!.text = txt
             textLabel!.textAlignment = NSTextAlignment.Center
             textLabel!.textColor = normalColor
-            textLabel!.font = UIFont.systemFontOfSize(10.0)
+            textLabel!.font = UIFont(name: "HelveticaNeue", size: 10)
             
             textLabel!.sizeToFit()
             
@@ -1002,7 +1015,7 @@ extension UINavigationBar {
         }
         
         for subview in view.subviews {
-            if let imageView: UIImageView = findHairlineImageView(containedIn: subview as! UIView) {
+            if let imageView: UIImageView = findHairlineImageView(containedIn: subview ) {
                 return imageView
             }
         }
@@ -1015,25 +1028,25 @@ extension UINavigationBar {
 @objc protocol RGPageViewControllerDataSource {
     /// Asks dataSource how many pages will there be.
     ///
-    /// :param: pageViewController the RGPageViewController instance that's subject to
+    /// - parameter pageViewController: the RGPageViewController instance that's subject to
     ///
-    /// :returns: the total number of pages
+    /// - returns: the total number of pages
     func numberOfPagesForViewController(pageViewController: RGPageViewController) -> Int
     
     /// Asks dataSource to give a view to display as a tab item.
     ///
-    /// :param: pageViewController the RGPageViewController instance that's subject to
-    /// :param: index the index of the tab whose view is asked
+    /// - parameter pageViewController: the RGPageViewController instance that's subject to
+    /// - parameter index: the index of the tab whose view is asked
     ///
-    /// :returns: a UIView instance that will be shown as tab at the given index
+    /// - returns: a UIView instance that will be shown as tab at the given index
     func tabViewForPageAtIndex(pageViewController: RGPageViewController, index: Int) -> UIView
     
     /// The content for any tab. Return a UIViewController instance and RGPageViewController will use its view to show as content.
     ///
-    /// :param: pageViewController the RGPageViewController instance that's subject to
-    /// :param: index the index of the content whose view is asked
+    /// - parameter pageViewController: the RGPageViewController instance that's subject to
+    /// - parameter index: the index of the content whose view is asked
     ///
-    /// :returns: a UIViewController instance whose view will be shown as content
+    /// - returns: a UIViewController instance whose view will be shown as content
     func viewControllerForPageAtIndex(pageViewController: RGPageViewController, index: Int) -> UIViewController?
 }
 
@@ -1041,23 +1054,23 @@ extension UINavigationBar {
 @objc protocol RGPageViewControllerDelegate {
     /// Delegate objects can implement this method if want to be informed when a page changed.
     ///
-    /// :param: index the index of the active page
+    /// - parameter index: the index of the active page
     optional func willChangePageToIndex(index: Int, fromIndex from: Int)
     
     /// Delegate objects can implement this method if want to be informed when a page changed.
     ///
-    /// :param: index the index of the active page
+    /// - parameter index: the index of the active page
     optional func didChangePageToIndex(index: Int)
     
     /// Delegate objects can implement this method if tabs use dynamic width.
     ///
-    /// :param: index the index of the tab
-    /// :returns: the width for the tab at the given index
+    /// - parameter index: the index of the tab
+    /// - returns: the width for the tab at the given index
     optional func widthForTabAtIndex(index: Int) -> CGFloat
     
     /// Delegate objects can implement this method if tabs use dynamic height.
     ///
-    /// :param: index the index of the tab
-    /// :returns: the height for the tab at the given index
+    /// - parameter index: the index of the tab
+    /// - returns: the height for the tab at the given index
     optional func heightForTabAtIndex(index: Int) -> CGFloat
 }
