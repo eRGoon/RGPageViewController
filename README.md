@@ -25,9 +25,9 @@ Screenshots
 
 <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" width="4">
 <img src="Screenshots/iPhone.png" width="210" title="Top Tabbar with horizontal paging">
-<img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" width="28">
+<img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" width="30">
 <img src="Screenshots/tabbar_top.png" width="210" title="Default appearance">
-<img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" width="28">
+<img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" width="30">
 <img src="Screenshots/tabbar_bottom.png" width="210" title="Bottom Tabbar with horizontal paging">
 
 Installation
