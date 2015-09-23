@@ -85,31 +85,22 @@ func viewControllerForPageAtIndex(pageViewController: RGPageViewController, inde
 
 ### RGPageViewControllerDelegate
 ```swift
+optional func willChangePageToIndex(index: Int, fromIndex from: Int)
+```
+**Description:**&nbsp;&nbsp;Delegate objects can implement this method if they want to be informed when a page  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;is about to change.  
+**Parameters:**&nbsp;&nbsp;`index`  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the index of the new page.  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`from`  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the index of the old page. 
+
+```swift
 optional func didChangePageToIndex(index: Int)
 ```
 **Description:**&nbsp;&nbsp;Delegate objects can implement this method if they want to be informed when a page  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;changed.  
 **Parameters:**&nbsp;&nbsp;`index`  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the index of the current page.  
-
-```swift
-optional func widthForTabbar() -> CGFloat
-```
-**Description:**&nbsp;&nbsp;Delegate objects can implement this method to set a custom width for the tabbar if attached to Left or Right.  
-**Returns:**&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the width of the tabbar.  
-
-```swift
-optional func heightForTabbar() -> CGFloat
-```
-**Description:**&nbsp;&nbsp;Delegate objects can implement this method to set a custom height for the tabbar if atached to Top or Bottom.  
-**Returns:**&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the height of the tabbar.  
-
-```swift
-optional func widthOrHeightForIndicator() -> CGFloat
-```
-**Description:**&nbsp;&nbsp;Delegate objects can implement this method to set a custom width or height for the  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tab indicator.  
-**Returns:**&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the width or height of the tab indicator.  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the index of the current page. 
 
 ```swift
 optional func widthForTabAtIndex(index: Int) -> CGFloat
@@ -128,18 +119,6 @@ optional func heightForTabAtIndex(index: Int) -> CGFloat
 **Parameters:**&nbsp;&nbsp;`index`  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the index of the tab.  
 **Returns:**&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the height for the tab at the given index.  
-
-```swift
-optional func colorForTabIndicator() -> UIColor
-```
-**Description:**&nbsp;&nbsp;Delegate objects can implement this method to specify the color of the tab indicator.  
-**Returns:**&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the color for the tab indicator.  
-
-```swift
-optional func tintColorForTabBar() -> UIColor?
-```
-**Description:**&nbsp;&nbsp;Delegate objects can implement this method to specify a tint color for the tabbar.  
-**Returns:**&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;thethe tint color for the tabbar.  
 
 Examples
 ---
@@ -187,6 +166,13 @@ override var tabbarPosition: RGTabbarPosition {
     }
 }
 
+// MARK: - TabbarHeight
+override var tabbarHeight: CGFloat {
+    get {
+        return 49
+    }
+}
+
 // MARK: - RGPageViewController Data Source
 func tabViewForPageAtIndex(pageViewController: RGPageViewController, index: Int) -> UIView {
     let title: String = self.tabTitles.objectAtIndex(index) as String
@@ -198,12 +184,6 @@ func tabViewForPageAtIndex(pageViewController: RGPageViewController, index: Int)
     tabView.tintColor = UIColor.redColor()
         
     return tabView
-}
-
-// MARK: - RGPageViewController Delegate
-func heightForTabbar() -> CGFloat {
-    // default height of UITabBar is 49px
-    return 49.0
 }
 ```
 #### Additional Options
