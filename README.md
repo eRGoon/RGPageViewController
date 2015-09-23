@@ -21,14 +21,10 @@ Screenshots
 ---
 
 <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" width="4">
-<img src="http://ergoon.github.io/RGPageViewController/images/ipad.png" width="700" title="Left Tabbar">
+<img src="Screenshots/iPad.png" width="700" title="Right Tabbar with vertical paging">
 
 <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" width="10">
-<img src="http://ergoon.github.io/RGPageViewController/images/default.png" width="210" title="Default settings">
-<img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" width="20">
-<img src="http://ergoon.github.io/RGPageViewController/images/uitabbar.png" width="210" title="UITabBar mode">
-<img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" width="20">
-<img src="http://ergoon.github.io/RGPageViewController/images/colored.png" width="210" title="Custom colors">
+<img src="Screenshots/iPhone.png" width="210" title="Top Tabbar with horizontal paging">
 
 Installation
 ---
