@@ -514,24 +514,21 @@ class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UI
     
     private func updatePager(index: Int) {
         if let vc: UIViewController = viewControllerAtIndex(index) {
-            weak var weakSelf: RGPageViewController? = self
-            weak var weakPager: UIPageViewController? = pager
-            
             if index == currentPageIndex {
-                pager.setViewControllers([vc], direction: .Forward, animated: false, completion: { (Bool) -> Void in
-                    weakSelf!.animatingToTab = false
+                pager.setViewControllers([vc], direction: .Forward, animated: false, completion: { [weak self] (Bool) -> Void in
+                    self?.animatingToTab = false
                 })
             } else if !(index + 1 == currentPageIndex || index - 1 == currentPageIndex) {
-                pager.setViewControllers([vc], direction: index < currentPageIndex ? .Reverse : .Forward, animated: true, completion: { (Bool) -> Void in
-                    weakSelf!.animatingToTab = false
+                pager.setViewControllers([vc], direction: index < currentPageIndex ? .Reverse : .Forward, animated: true, completion: { [unowned self] (Bool) -> Void in
+                    self.animatingToTab = false
                     
-                    dispatch_async(dispatch_get_main_queue(), {
-                        weakPager!.setViewControllers([vc], direction: index < weakSelf!.currentPageIndex ? .Reverse : .Forward, animated: false, completion: nil)
+                    dispatch_async(dispatch_get_main_queue(), { [unowned self] in
+                        self.pager.setViewControllers([vc], direction: index < self.currentPageIndex ? .Reverse : .Forward, animated: false, completion: nil)
                     })
                 })
             } else {
-                pager.setViewControllers([vc], direction: index < currentPageIndex ? .Reverse : .Forward, animated: true, completion: { (Bool) -> Void in
-                    weakSelf!.animatingToTab = false
+                pager.setViewControllers([vc], direction: index < currentPageIndex ? .Reverse : .Forward, animated: true, completion: { [weak self] (Bool) -> Void in
+                    self?.animatingToTab = false
                 })
             }
             

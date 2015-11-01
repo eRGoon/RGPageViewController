@@ -87,6 +87,18 @@ class MainViewController: RGPageViewController, RGPageViewControllerDataSource, 
     let twd = ["title": "The Walking Dead", "desc": "The Walking Dead is an American horror drama television series developed by Frank Darabont. It is based on the comic book series of the same name by Robert Kirkman, Tony Moore, and Charlie Adlard. The series stars Andrew Lincoln as sheriff's deputy Rick Grimes, who awakens from a coma to find a post-apocalyptic world dominated by flesh-eating zombies. He sets out to find his family and encounters many other survivors along the way.", "image": "the_walking_dead", "rating": 8.7, "tags": "Drama | Horror | Thriller"]
     
     var data: [[String: AnyObject]] = []
+  
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+      super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+      
+      self.currentTabIndex = 3
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+      super.init(coder: aDecoder)
+      
+      self.currentTabIndex = 3
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -103,6 +115,10 @@ class MainViewController: RGPageViewController, RGPageViewControllerDataSource, 
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
+    }
+    
+    @IBAction func reloadPager(sender: UIBarButtonItem) {
+        reloadData()
     }
     
     // MARK: - RGPageViewController Data Source
