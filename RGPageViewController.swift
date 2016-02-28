@@ -94,6 +94,11 @@ class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UI
             return .Top
         }
     }
+    var tabbarTop: CGFloat {
+        get {
+            return 20
+        }
+    }
     var tabbar: UIView!
     var barTintColor: UIColor? {
         get {
@@ -194,11 +199,11 @@ class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UI
         tabbar.autoresizingMask = .FlexibleWidth
         pager.view.autoresizingMask = ([UIViewAutoresizing.FlexibleHeight, UIViewAutoresizing.FlexibleWidth])
         
-        var barTop: CGFloat = 20
+        var barTop: CGFloat = tabbarTop
         
         // remove hairline image in navigation bar if attached to top
         if let navController = navigationController where !navController.navigationBar.hidden {
-            barTop = 64
+            barTop = tabbarTop + 44
             
             navController.navigationBar.hideHairline()
         }
@@ -251,10 +256,10 @@ class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UI
         
         // scroll tabbar under topbar if using solid style
         if tabbarStyle != .Solid {
-            barTop = 20
+            barTop = tabbarTop
             
             if let navController = navigationController where !navController.navigationBar.hidden {
-                barTop = 64
+                barTop = tabbarTop + 44
             }
         }
         
@@ -272,10 +277,10 @@ class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UI
         tabScrollView.autoresizingMask = .FlexibleHeight
         
         if tabbarStyle == .Solid {
-            var scrollTop: CGFloat = 20
+            var scrollTop: CGFloat = tabbarTop
             
             if let navController = navigationController where !navController.navigationBar.hidden {
-                scrollTop = 64
+                scrollTop = tabbarTop + 44
             }
             
             var edgeInsets: UIEdgeInsets = tabScrollView.contentInset
@@ -300,10 +305,10 @@ class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UI
         
         // scroll tabbar under topbar if using solid style
         if tabbarStyle != .Solid {
-            barTop = 20
+            barTop = tabbarTop
             
             if let navController = self.navigationController where !navController.navigationBar.hidden {
-                barTop = 64
+                barTop = tabbarTop + 44
             }
         }
         
@@ -321,10 +326,10 @@ class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UI
         tabScrollView.autoresizingMask = .FlexibleHeight
         
         if tabbarStyle == .Solid {
-            var scrollTop: CGFloat = 20
+            var scrollTop: CGFloat = tabbarTop
             
             if let navController = navigationController where !navController.navigationBar.hidden {
-                scrollTop = 64
+                scrollTop = tabbarTop + 44
             }
             
             var edgeInsets: UIEdgeInsets = tabScrollView.contentInset
