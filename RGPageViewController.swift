@@ -586,7 +586,7 @@ class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UI
             return nil
         }
         
-        index--
+        index -= 1
         
         return viewControllerAtIndex(index)
     }
@@ -598,7 +598,7 @@ class RGPageViewController: UIViewController, UIPageViewControllerDataSource, UI
             return nil
         }
         
-        index++
+        index += 1
         
         return viewControllerAtIndex(index)
     }
