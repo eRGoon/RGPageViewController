@@ -404,6 +404,7 @@
 				E305C2C31E35A9B500D11D0C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		E305C2C41E35A9B500D11D0C /* Build configuration list for PBXNativeTarget "RGPageViewControllerTests" */ = {
 			isa = XCConfigurationList;
@@ -412,6 +413,7 @@
 				E305C2C61E35A9B500D11D0C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
