@@ -1,0 +1,16 @@
+PODS:
+  - RGPageViewController (1.0.0)
+
+DEPENDENCIES:
+  - RGPageViewController (from `../RGPageViewController`)
+
+EXTERNAL SOURCES:
+  RGPageViewController:
+    :path: "../RGPageViewController"
+
+SPEC CHECKSUMS:
+  RGPageViewController: 87899cbb293d69f2856ebf9e5d8f632d89339996
+
+PODFILE CHECKSUM: cd3fbcf1b969b090d93d69e86fa9e35604f54bed
+
+COCOAPODS: 1.1.1

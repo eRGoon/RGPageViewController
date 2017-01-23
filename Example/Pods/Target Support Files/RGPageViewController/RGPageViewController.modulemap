@@ -1,0 +1,6 @@
+framework module RGPageViewController {
+  umbrella header "RGPageViewController-umbrella.h"
+
+  export *
+  module * { export * }
+}

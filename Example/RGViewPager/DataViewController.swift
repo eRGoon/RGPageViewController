@@ -18,7 +18,7 @@ class DataViewController: UIViewController {
     @IBOutlet weak var genreLabel: UILabel!
     @IBOutlet weak var descriptionView: UITextView!
 
-    var dataObject: [String: AnyObject]!
+    var dataObject: [String:Any]!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,13 +28,13 @@ class DataViewController: UIViewController {
         super.didReceiveMemoryWarning()
     }
 
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         posterView.layer.borderWidth = 0.75
-        posterView.layer.borderColor = UIColor(white: 0.25, alpha: 0.45).CGColor
+        posterView.layer.borderColor = UIColor(white: 0.25, alpha: 0.45).cgColor
         posterView.layer.cornerRadius = 2.0
-        posterView.layer.shadowColor = UIColor(white: 0.85, alpha: 0.85).CGColor
+        posterView.layer.shadowColor = UIColor(white: 0.85, alpha: 0.85).cgColor
         posterView.layer.shadowOpacity = 0.25
         posterView.layer.shadowOffset = CGSize(width: 0.0, height: 0.0)
         posterView.layer.shadowRadius = 1.0
@@ -42,7 +42,7 @@ class DataViewController: UIViewController {
         posterView.layer.shouldRasterize = true
         
         if DeviceType.iPad {
-            descriptionView.hidden = true
+            descriptionView.isHidden = true
             
             if let imageName = dataObject["image"] as? String {
                 bgImage.image = UIImage(named: "\(imageName)_bg.jpg")
@@ -53,8 +53,8 @@ class DataViewController: UIViewController {
                 descriptionLabel.text = desc
             }
         } else {
-            bgImage.hidden = true
-            descriptionLabel.hidden = true
+            bgImage.isHidden = true
+            descriptionLabel.isHidden = true
             
             if let imageName = dataObject["image"] as? String {
                 image.image = UIImage(named: "\(imageName)_poster.jpg")

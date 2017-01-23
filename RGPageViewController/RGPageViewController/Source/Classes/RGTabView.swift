@@ -16,7 +16,6 @@ enum RGTabOrientation {
 
 // MARK: - RGTabView
 class RGTabView: UIView {
-  
   // variables
   var selected: Bool = false {
     didSet {
@@ -35,7 +34,7 @@ class RGTabView: UIView {
       }
     }
   }
-  var indicatorHW: CGFloat = 2.0
+  var indicatorHW: CGFloat = 2
   var indicatorColor: UIColor = UIColor.lightGray
   var orientation: RGTabOrientation = .horizontal
   var style: RGTabStyle = .none
@@ -74,16 +73,16 @@ class RGTabView: UIView {
         
         switch orientation {
         case .horizontal:
-          bezierPath.move(to: CGPoint(x: 0.0, y: rect.height - indicatorHW / 2.0))
-          bezierPath.addLine(to: CGPoint(x: rect.width, y: rect.height - indicatorHW / 2.0))
+          bezierPath.move(to: CGPoint(x: 0, y: rect.height - indicatorHW / 2))
+          bezierPath.addLine(to: CGPoint(x: rect.width, y: rect.height - indicatorHW / 2))
           bezierPath.lineWidth = indicatorHW
         case .verticalLeft:
-          bezierPath.move(to: CGPoint(x: indicatorHW / 2.0, y: 0.0))
-          bezierPath.addLine(to: CGPoint(x: indicatorHW / 2.0, y: rect.height))
+          bezierPath.move(to: CGPoint(x: indicatorHW / 2, y: 0))
+          bezierPath.addLine(to: CGPoint(x: indicatorHW / 2, y: rect.height))
           bezierPath.lineWidth = indicatorHW
         case .verticalRight:
-          bezierPath.move(to: CGPoint(x: rect.width - (indicatorHW / 2.0), y: 0.0))
-          bezierPath.addLine(to: CGPoint(x: rect.width - (indicatorHW / 2.0), y: rect.height))
+          bezierPath.move(to: CGPoint(x: rect.width - (indicatorHW / 2), y: 0))
+          bezierPath.addLine(to: CGPoint(x: rect.width - (indicatorHW / 2), y: rect.height))
           bezierPath.lineWidth = indicatorHW
         }
         

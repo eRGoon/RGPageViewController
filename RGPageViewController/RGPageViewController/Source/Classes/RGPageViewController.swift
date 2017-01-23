@@ -10,17 +10,19 @@ import Foundation
 import UIKit
 
 // MARK: - RGTabbarStyle
-enum RGTabbarStyle {
+public enum RGTabbarStyle {
   case solid
   case blurred
 }
+
 // MARK: - RGTabStyle
-enum RGTabStyle {
+public enum RGTabStyle {
   case none
   case inactiveFaded
 }
+
 // MARK: - RGTabbarPosition
-enum RGTabbarPosition {
+public enum RGTabbarPosition {
   case top
   case bottom
   case left
@@ -28,7 +30,7 @@ enum RGTabbarPosition {
 }
 
 // MARK: - RGPageViewController
-public class RGPageViewController: UIViewController {
+open class RGPageViewController: UIViewController {
   // MARK: - Protocols
   public weak var datasource: RGPageViewControllerDataSource?
   public weak var delegate: RGPageViewControllerDelegate?
@@ -37,80 +39,56 @@ public class RGPageViewController: UIViewController {
   // MARK: - Variables
   private var needsSetup: Bool = true
   private var animatingToTab: Bool = false
-  
-  // MARK: - Pager
-  var pageCount: Int = 0
-  var currentPageIndex: Int = 0
-  var pager: UIPageViewController!
-  var pagerOrientation: UIPageViewControllerNavigationOrientation {
-    get {
-      return .horizontal
-    }
+  // Pager
+  internal var pager: UIPageViewController!
+  internal var pageCount: Int = 0
+  private var currentPageIndex: Int = 0
+  private var pagerScrollView: UIScrollView?
+  internal var pageViewControllers: Array<UIViewController?> = Array<UIViewController>()
+  open var pagerOrientation: UIPageViewControllerNavigationOrientation {
+    return .horizontal
   }
-  var pagerScrollView: UIScrollView?
-  var pageViewControllers: Array<UIViewController?> = Array<UIViewController>()
-  
-  // MARK: - Tabs
-  var currentTabIndex: Int = 0
-  var tabWidth: CGFloat = UIScreen.main.bounds.size.width / 3.0
-  var tabbarWidth: CGFloat {
-    get {
-      return 100.0
-    }
+  // Tabs
+  internal var tabbar: UIView!
+  internal var tabScrollView: UICollectionView!
+  open var currentTabIndex: Int = 0
+  open var tabWidth: CGFloat {
+    return UIScreen.main.bounds.size.width / 3
   }
-  var tabbarHeight: CGFloat {
-    get {
-      return 38.0
-    }
+  open var tabbarWidth: CGFloat {
+    return 100
   }
-  var tabIndicatorWidthOrHeight: CGFloat {
-    get {
-      return 2.0
-    }
+  open var tabbarHeight: CGFloat {
+    return 38
   }
-  var tabIndicatorColor: UIColor {
-    get {
-      return UIColor.lightGray
-    }
+  open var tabIndicatorWidthOrHeight: CGFloat {
+    return 2
   }
-  var tabMargin: CGFloat {
-    get {
-      return 0.0
-    }
+  open var tabIndicatorColor: UIColor {
+    return UIColor.lightGray
   }
-  var tabStyle: RGTabStyle {
-    get {
-      return .none
-    }
+  open var tabMargin: CGFloat {
+    return 0
   }
-  // MARK: - Tabbar
-  var tabbarHidden: Bool {
-    get {
-      return false
-    }
+  open var tabStyle: RGTabStyle {
+    return .none
   }
-  var tabbarStyle: RGTabbarStyle {
-    get {
-      return .blurred
-    }
+  // Tabbar
+  open var tabbarHidden: Bool {
+    return false
   }
-  var tabbarPosition: RGTabbarPosition {
-    get {
-      return .top
-    }
+  open var tabbarStyle: RGTabbarStyle {
+    return .blurred
   }
-  var tabbarTop: CGFloat {
-    get {
-      return 20
-    }
+  open var tabbarPosition: RGTabbarPosition {
+    return .top
   }
-  var tabbar: UIView!
-  var barTintColor: UIColor? {
-    get {
-      return nil
-    }
+  open var tabbarTop: CGFloat {
+    return 20
   }
-  var tabScrollView: UICollectionView!
+  open var barTintColor: UIColor? {
+    return nil
+  }
   
   // MARK: - Constructors
   public required init?(coder aDecoder: NSCoder) {
@@ -122,7 +100,7 @@ public class RGPageViewController: UIViewController {
   }
   
   // MARK: - ViewController life cycle
-  public override func viewDidLoad() {
+  open override func viewDidLoad() {
     super.viewDidLoad()
     
     initPager()
@@ -135,7 +113,7 @@ public class RGPageViewController: UIViewController {
     view.addSubview(tabbar)
   }
   
-  override public func viewWillAppear(_ animated: Bool) {
+  open override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     
     if needsSetup {
@@ -396,7 +374,7 @@ public class RGPageViewController: UIViewController {
   }
   
   internal func tabViewAtIndex(_ index: Int) -> RGTabView? {
-    if let tabViewContent: UIView = datasource?.tabViewForPageAtIndex(self, index: index) {
+    if let tabViewContent = datasource?.tabViewForPageAtIndex(self, index: index) {
       var tabView: RGTabView
       var frame: CGRect = .zero
       var orientation: RGTabOrientation = .horizontal
@@ -510,7 +488,7 @@ public class RGPageViewController: UIViewController {
   }
   
   private func selectTab(at index: Int, animated: Bool) {
-    let indexPath = IndexPath(row: index, section: 0)
+    let indexPath = IndexPath(item: index, section: 0)
     let cell = tabScrollView.cellForItem(at: indexPath) ?? collectionView(tabScrollView, cellForItemAt: indexPath)
     var cellFrame = cell.frame
     
@@ -527,7 +505,7 @@ public class RGPageViewController: UIViewController {
     let cellIsVisible = tabScrollView.frame.contains(rect)
     
     if !cellIsVisible {
-      var scrollPosition: UICollectionViewScrollPosition = UICollectionViewScrollPosition()
+      var scrollPosition: UICollectionViewScrollPosition!
       
       if index > currentTabIndex {
         switch tabbarPosition {
@@ -584,7 +562,7 @@ public class RGPageViewController: UIViewController {
     return pageViewControllers.index(where: { $0 == viewController })
   }
   
-  func reloadData() {
+  open func reloadData() {
     pageCount = datasource?.numberOfPagesForViewController(self) ?? 0
     
     pageViewControllers.removeAll()
