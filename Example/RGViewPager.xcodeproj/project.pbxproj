@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		E30149FB1A121DCC001D8CAA /* RGPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E30149FA1A121DCC001D8CAA /* RGPageViewController.swift */; };
-		E30149FC1A121DCC001D8CAA /* RGPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E30149FA1A121DCC001D8CAA /* RGPageViewController.swift */; };
 		E309AD851A10B72500AD2EBD /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E309AD841A10B72500AD2EBD /* MainViewController.swift */; };
 		E35BD2CC1A8D511D00625A74 /* better_call_saul_bg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E35BD2AC1A8D511D00625A74 /* better_call_saul_bg.jpg */; };
 		E35BD2CD1A8D511D00625A74 /* better_call_saul_poster.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E35BD2AD1A8D511D00625A74 /* better_call_saul_poster.jpg */; };
@@ -52,7 +50,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		E30149FA1A121DCC001D8CAA /* RGPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RGPageViewController.swift; path = ../RGPageViewController.swift; sourceTree = "<group>"; };
 		E309AD841A10B72500AD2EBD /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		E35BD2AC1A8D511D00625A74 /* better_call_saul_bg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = better_call_saul_bg.jpg; sourceTree = "<group>"; };
 		E35BD2AD1A8D511D00625A74 /* better_call_saul_poster.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = better_call_saul_poster.jpg; sourceTree = "<group>"; };
@@ -107,14 +104,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		E30149FD1A121DEC001D8CAA /* RGPageViewController */ = {
-			isa = PBXGroup;
-			children = (
-				E30149FA1A121DCC001D8CAA /* RGPageViewController.swift */,
-			);
-			name = RGPageViewController;
-			sourceTree = "<group>";
-		};
 		E35BD2AA1A8D511D00625A74 /* fanart */ = {
 			isa = PBXGroup;
 			children = (
@@ -237,7 +226,6 @@
 			children = (
 				E3796D8E1A0E3B1700F00461 /* RGViewPager */,
 				E3796DA81A0E3B1700F00461 /* RGViewPagerTests */,
-				E30149FD1A121DEC001D8CAA /* RGPageViewController */,
 				E3796D8D1A0E3B1700F00461 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -418,7 +406,6 @@
 			files = (
 				E309AD851A10B72500AD2EBD /* MainViewController.swift in Sources */,
 				E3796D961A0E3B1700F00461 /* DataViewController.swift in Sources */,
-				E30149FB1A121DCC001D8CAA /* RGPageViewController.swift in Sources */,
 				E3C19DC51BB2A77700020410 /* UIHelper.swift in Sources */,
 				E3796D921A0E3B1700F00461 /* AppDelegate.swift in Sources */,
 			);
@@ -428,7 +415,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E30149FC1A121DCC001D8CAA /* RGPageViewController.swift in Sources */,
 				E3796DAC1A0E3B1700F00461 /* RGViewPagerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
