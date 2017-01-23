@@ -11,6 +11,18 @@
 		E305C2BC1E35A9B500D11D0C /* RGPageViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E305C2BB1E35A9B500D11D0C /* RGPageViewControllerTests.swift */; };
 		E305C2BE1E35A9B500D11D0C /* RGPageViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = E305C2B01E35A9B500D11D0C /* RGPageViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E305C2C81E35A9EA00D11D0C /* RGPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E305C2C71E35A9EA00D11D0C /* RGPageViewController.swift */; };
+		E35880011E3613DF0080D796 /* RGPageViewController+UIToolbarDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E35880001E3613DF0080D796 /* RGPageViewController+UIToolbarDelegate.swift */; };
+		E35880031E3614720080D796 /* RGPageViewController+UIPageViewControllerDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = E35880021E3614720080D796 /* RGPageViewController+UIPageViewControllerDataSource.swift */; };
+		E35880061E3615D70080D796 /* RGPageViewController+UIPageViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E35880051E3615D70080D796 /* RGPageViewController+UIPageViewControllerDelegate.swift */; };
+		E35880081E36163F0080D796 /* RGPageViewController+UICollectionViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = E35880071E36163F0080D796 /* RGPageViewController+UICollectionViewDataSource.swift */; };
+		E358800A1E3617880080D796 /* RGPageViewController+UICollectionViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E35880091E3617880080D796 /* RGPageViewController+UICollectionViewDelegate.swift */; };
+		E358800C1E3617A80080D796 /* RGPageViewController+UICollectionViewDelegateFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = E358800B1E3617A80080D796 /* RGPageViewController+UICollectionViewDelegateFlowLayout.swift */; };
+		E358800E1E3617D30080D796 /* RGPageViewController+UIScrollViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E358800D1E3617D30080D796 /* RGPageViewController+UIScrollViewDelegate.swift */; };
+		E3F028431E35B151002FAAE5 /* RGTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F028421E35B151002FAAE5 /* RGTabView.swift */; };
+		E3F028451E35B1EF002FAAE5 /* RGTabBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F028441E35B1EF002FAAE5 /* RGTabBarItem.swift */; };
+		E3F028471E35B2B4002FAAE5 /* UINavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F028461E35B2B4002FAAE5 /* UINavigationBar.swift */; };
+		E3F0284A1E35BD90002FAAE5 /* RGPageViewControllerDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F028491E35BD90002FAAE5 /* RGPageViewControllerDataSource.swift */; };
+		E3F0284C1E35BE09002FAAE5 /* RGPageViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F0284B1E35BE09002FAAE5 /* RGPageViewControllerDelegate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -31,6 +43,18 @@
 		E305C2BB1E35A9B500D11D0C /* RGPageViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RGPageViewControllerTests.swift; sourceTree = "<group>"; };
 		E305C2BD1E35A9B500D11D0C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E305C2C71E35A9EA00D11D0C /* RGPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RGPageViewController.swift; sourceTree = "<group>"; };
+		E35880001E3613DF0080D796 /* RGPageViewController+UIToolbarDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "RGPageViewController+UIToolbarDelegate.swift"; sourceTree = "<group>"; };
+		E35880021E3614720080D796 /* RGPageViewController+UIPageViewControllerDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "RGPageViewController+UIPageViewControllerDataSource.swift"; sourceTree = "<group>"; };
+		E35880051E3615D70080D796 /* RGPageViewController+UIPageViewControllerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "RGPageViewController+UIPageViewControllerDelegate.swift"; sourceTree = "<group>"; };
+		E35880071E36163F0080D796 /* RGPageViewController+UICollectionViewDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "RGPageViewController+UICollectionViewDataSource.swift"; sourceTree = "<group>"; };
+		E35880091E3617880080D796 /* RGPageViewController+UICollectionViewDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "RGPageViewController+UICollectionViewDelegate.swift"; sourceTree = "<group>"; };
+		E358800B1E3617A80080D796 /* RGPageViewController+UICollectionViewDelegateFlowLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "RGPageViewController+UICollectionViewDelegateFlowLayout.swift"; sourceTree = "<group>"; };
+		E358800D1E3617D30080D796 /* RGPageViewController+UIScrollViewDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "RGPageViewController+UIScrollViewDelegate.swift"; sourceTree = "<group>"; };
+		E3F028421E35B151002FAAE5 /* RGTabView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RGTabView.swift; sourceTree = "<group>"; };
+		E3F028441E35B1EF002FAAE5 /* RGTabBarItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RGTabBarItem.swift; sourceTree = "<group>"; };
+		E3F028461E35B2B4002FAAE5 /* UINavigationBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UINavigationBar.swift; sourceTree = "<group>"; };
+		E3F028491E35BD90002FAAE5 /* RGPageViewControllerDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RGPageViewControllerDataSource.swift; sourceTree = "<group>"; };
+		E3F0284B1E35BE09002FAAE5 /* RGPageViewControllerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RGPageViewControllerDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,7 +97,7 @@
 		E305C2AF1E35A9B500D11D0C /* RGPageViewController */ = {
 			isa = PBXGroup;
 			children = (
-				E305C2C71E35A9EA00D11D0C /* RGPageViewController.swift */,
+				E3F028481E35B2EE002FAAE5 /* Source */,
 				E305C2B01E35A9B500D11D0C /* RGPageViewController.h */,
 				E305C2B11E35A9B500D11D0C /* Info.plist */,
 			);
@@ -87,6 +111,50 @@
 				E305C2BD1E35A9B500D11D0C /* Info.plist */,
 			);
 			path = RGPageViewControllerTests;
+			sourceTree = "<group>";
+		};
+		E35880041E3615430080D796 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				E35880071E36163F0080D796 /* RGPageViewController+UICollectionViewDataSource.swift */,
+				E35880091E3617880080D796 /* RGPageViewController+UICollectionViewDelegate.swift */,
+				E358800B1E3617A80080D796 /* RGPageViewController+UICollectionViewDelegateFlowLayout.swift */,
+				E35880021E3614720080D796 /* RGPageViewController+UIPageViewControllerDataSource.swift */,
+				E35880051E3615D70080D796 /* RGPageViewController+UIPageViewControllerDelegate.swift */,
+				E358800D1E3617D30080D796 /* RGPageViewController+UIScrollViewDelegate.swift */,
+				E35880001E3613DF0080D796 /* RGPageViewController+UIToolbarDelegate.swift */,
+				E3F028461E35B2B4002FAAE5 /* UINavigationBar.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		E358800F1E36183A0080D796 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				E3F028491E35BD90002FAAE5 /* RGPageViewControllerDataSource.swift */,
+				E3F0284B1E35BE09002FAAE5 /* RGPageViewControllerDelegate.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
+		E35880101E3618750080D796 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				E305C2C71E35A9EA00D11D0C /* RGPageViewController.swift */,
+				E3F028441E35B1EF002FAAE5 /* RGTabBarItem.swift */,
+				E3F028421E35B151002FAAE5 /* RGTabView.swift */,
+			);
+			path = Classes;
+			sourceTree = "<group>";
+		};
+		E3F028481E35B2EE002FAAE5 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				E35880101E3618750080D796 /* Classes */,
+				E35880041E3615430080D796 /* Extensions */,
+				E358800F1E36183A0080D796 /* Protocols */,
+			);
+			path = Source;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -200,7 +268,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E3F028451E35B1EF002FAAE5 /* RGTabBarItem.swift in Sources */,
+				E35880031E3614720080D796 /* RGPageViewController+UIPageViewControllerDataSource.swift in Sources */,
+				E35880081E36163F0080D796 /* RGPageViewController+UICollectionViewDataSource.swift in Sources */,
+				E3F0284C1E35BE09002FAAE5 /* RGPageViewControllerDelegate.swift in Sources */,
+				E35880011E3613DF0080D796 /* RGPageViewController+UIToolbarDelegate.swift in Sources */,
 				E305C2C81E35A9EA00D11D0C /* RGPageViewController.swift in Sources */,
+				E358800C1E3617A80080D796 /* RGPageViewController+UICollectionViewDelegateFlowLayout.swift in Sources */,
+				E3F028431E35B151002FAAE5 /* RGTabView.swift in Sources */,
+				E3F0284A1E35BD90002FAAE5 /* RGPageViewControllerDataSource.swift in Sources */,
+				E358800A1E3617880080D796 /* RGPageViewController+UICollectionViewDelegate.swift in Sources */,
+				E358800E1E3617D30080D796 /* RGPageViewController+UIScrollViewDelegate.swift in Sources */,
+				E35880061E3615D70080D796 /* RGPageViewController+UIPageViewControllerDelegate.swift in Sources */,
+				E3F028471E35B2B4002FAAE5 /* UINavigationBar.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -270,6 +350,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -315,6 +396,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -338,7 +420,6 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -357,7 +438,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = ergoon.RGPageViewController;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
