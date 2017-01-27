@@ -15,4 +15,14 @@ extension RGPageViewController: UICollectionViewDelegate {
       selectTabAtIndex(indexPath.row, updatePage: true)
     }
   }
+  
+  public func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+    if let tabView = cell.contentView.subviews.first as? RGTabView {
+      if indexPath.row == currentTabIndex {
+        tabView.selected = true
+      } else {
+        tabView.selected = false
+      }
+    }
+  }
 }

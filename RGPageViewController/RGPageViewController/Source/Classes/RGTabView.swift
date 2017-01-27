@@ -67,29 +67,31 @@ class RGTabView: UIView {
   override func draw(_ rect: CGRect) {
     super.draw(rect)
     
-    if selected {
-      if !(subviews[0] is RGTabBarItem) {
-        let bezierPath: UIBezierPath = UIBezierPath()
-        
-        switch orientation {
-        case .horizontal:
-          bezierPath.move(to: CGPoint(x: 0, y: rect.height - indicatorHW / 2))
-          bezierPath.addLine(to: CGPoint(x: rect.width, y: rect.height - indicatorHW / 2))
-          bezierPath.lineWidth = indicatorHW
-        case .verticalLeft:
-          bezierPath.move(to: CGPoint(x: indicatorHW / 2, y: 0))
-          bezierPath.addLine(to: CGPoint(x: indicatorHW / 2, y: rect.height))
-          bezierPath.lineWidth = indicatorHW
-        case .verticalRight:
-          bezierPath.move(to: CGPoint(x: rect.width - (indicatorHW / 2), y: 0))
-          bezierPath.addLine(to: CGPoint(x: rect.width - (indicatorHW / 2), y: rect.height))
-          bezierPath.lineWidth = indicatorHW
-        }
-        
-        indicatorColor.setStroke()
-        
-        bezierPath.stroke()
+    if !(subviews[0] is RGTabBarItem) {
+      let bezierPath: UIBezierPath = UIBezierPath()
+      
+      switch orientation {
+      case .horizontal:
+        bezierPath.move(to: CGPoint(x: 0, y: rect.height - indicatorHW / 2))
+        bezierPath.addLine(to: CGPoint(x: rect.width, y: rect.height - indicatorHW / 2))
+        bezierPath.lineWidth = indicatorHW
+      case .verticalLeft:
+        bezierPath.move(to: CGPoint(x: indicatorHW / 2, y: 0))
+        bezierPath.addLine(to: CGPoint(x: indicatorHW / 2, y: rect.height))
+        bezierPath.lineWidth = indicatorHW
+      case .verticalRight:
+        bezierPath.move(to: CGPoint(x: rect.width - (indicatorHW / 2), y: 0))
+        bezierPath.addLine(to: CGPoint(x: rect.width - (indicatorHW / 2), y: rect.height))
+        bezierPath.lineWidth = indicatorHW
       }
+      
+      if selected {
+        indicatorColor.setStroke()
+      } else {
+        UIColor(white: 0, alpha: 0).setStroke()
+      }
+      
+      bezierPath.stroke()
     }
   }
 }

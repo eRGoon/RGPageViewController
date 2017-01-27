@@ -480,9 +480,10 @@ open class RGPageViewController: UIViewController {
   }
   
   private func deselectCurrentTab() {
-    let indexPath = IndexPath(row: currentTabIndex, section: 0)
+    let indexPath = IndexPath(item: currentTabIndex, section: 0)
+    let cell = tabScrollView.cellForItem(at: indexPath) ?? collectionView(tabScrollView, cellForItemAt: indexPath)
     
-    if let tabView = tabScrollView.cellForItem(at: indexPath)?.contentView.subviews.first as? RGTabView {
+    if let tabView = cell.contentView.subviews.first as? RGTabView {
       tabView.selected = false
     }
   }
@@ -490,11 +491,25 @@ open class RGPageViewController: UIViewController {
   private func selectTab(at index: Int, animated: Bool) {
     let indexPath = IndexPath(item: index, section: 0)
     let cell = tabScrollView.cellForItem(at: indexPath) ?? collectionView(tabScrollView, cellForItemAt: indexPath)
+    
+    if let tabView = cell.contentView.subviews.first as? RGTabView {
+      tabView.selected = true
+    }
+    
+    updateTabScrollPosition(at: index, animated: animated)
+  }
+  
+  private func updateTabScrollPosition(at index: Int, animated: Bool) {
+    var nextIndex = index > currentTabIndex ? min(index + 1, pageCount - 1) : max(0, index - 1)
+    
+    let indexPath = IndexPath(item: nextIndex, section: 0)
+    let cell = tabScrollView.cellForItem(at: indexPath) ?? collectionView(tabScrollView, cellForItemAt: indexPath)
+    
     var cellFrame = cell.frame
     
     switch tabbarPosition {
     case .top, .bottom:
-      cellFrame.origin.x -= (index == 0 ? tabMargin : tabMargin / 2.0)
+      cellFrame.origin.x -= (nextIndex == 0 ? tabMargin : tabMargin / 2.0)
       cellFrame.size.width += tabMargin
     case .left, .right:
       cellFrame.origin.y -= tabMargin / 2.0
@@ -505,30 +520,31 @@ open class RGPageViewController: UIViewController {
     let cellIsVisible = tabScrollView.frame.contains(rect)
     
     if !cellIsVisible {
-      var scrollPosition: UICollectionViewScrollPosition!
+      if index == nextIndex {
+        tabScrollView.scrollRectToVisible(cellFrame, animated: animated)
+        
+        return
+      }
       
       if index > currentTabIndex {
         switch tabbarPosition {
         case .top, .bottom:
-          scrollPosition = .right
+          cellFrame.size.width /= 3
         case .left, .right:
-          scrollPosition = .bottom
+          cellFrame.size.height /= 3
         }
       } else {
         switch tabbarPosition {
         case .top, .bottom:
-          scrollPosition = .left
+          cellFrame.origin.x += cellFrame.size.width - (cellFrame.size.width / 3)
+          cellFrame.size.width /= 3
         case .left, .right:
-          scrollPosition = .top
+          cellFrame.origin.y += cellFrame.size.height - (cellFrame.size.height / 3)
+          cellFrame.size.height /= 3
         }
       }
       
-      tabScrollView.selectItem(at: indexPath, animated: animated, scrollPosition: scrollPosition)
       tabScrollView.scrollRectToVisible(cellFrame, animated: animated)
-    }
-    
-    if let tabView = cell.contentView.subviews.first as? RGTabView {
-      tabView.selected = true
     }
   }
   
@@ -538,15 +554,17 @@ open class RGPageViewController: UIViewController {
     }
     
     if index == currentPageIndex {
-      pager.setViewControllers([viewController], direction: .forward, animated: false, completion: { [unowned self] _ -> Void in
-        self.animatingToTab = false
+      pager.setViewControllers([viewController], direction: .forward, animated: false, completion: { [weak self] _ -> Void in
+        self?.animatingToTab = false
       })
     } else if !(index + 1 == currentPageIndex || index - 1 == currentPageIndex) {
-      pager.setViewControllers([viewController], direction: index < currentPageIndex ? .reverse : .forward, animated: true, completion: { [unowned self] (finished) -> Void in
-        self.animatingToTab = false
+      let direction: UIPageViewControllerNavigationDirection = index < currentPageIndex ? .reverse : .forward
         
-        DispatchQueue.main.async { [unowned self] in
-          self.pager.setViewControllers([viewController], direction: index < self.currentPageIndex ? .reverse : .forward, animated: false, completion: nil)
+      pager.setViewControllers([viewController], direction: direction, animated: true, completion: { [weak self] (finished) -> Void in
+        self?.animatingToTab = false
+        
+        DispatchQueue.main.async {
+          self?.pager.setViewControllers([viewController], direction: direction, animated: false, completion: nil)
         }
       })
     } else {
