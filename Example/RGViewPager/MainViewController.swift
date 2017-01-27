@@ -92,13 +92,13 @@ class MainViewController: RGPageViewController, RGPageViewControllerDataSource, 
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
       super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
       
-//      self.currentTabIndex = 3
+      self.currentTabIndex = 3
     }
 
     required init?(coder aDecoder: NSCoder) {
       super.init(coder: aDecoder)
       
-//      self.currentTabIndex = 3
+      self.currentTabIndex = 3
     }
     
     override func viewDidLoad() {

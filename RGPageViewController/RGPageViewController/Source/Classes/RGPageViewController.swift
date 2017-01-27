@@ -83,9 +83,6 @@ open class RGPageViewController: UIViewController {
   open var tabbarPosition: RGTabbarPosition {
     return .top
   }
-  open var tabbarTop: CGFloat {
-    return 20
-  }
   open var barTintColor: UIColor? {
     return nil
   }
@@ -107,10 +104,10 @@ open class RGPageViewController: UIViewController {
     initTabBar()
     initTabScrollView()
     
-    layoutSubviews()
-    
     view.addSubview(pager.view)
     view.addSubview(tabbar)
+    
+    layoutSubviews()
   }
   
   open override func viewWillAppear(_ animated: Bool) {
@@ -167,6 +164,10 @@ open class RGPageViewController: UIViewController {
   }
   
   private func layoutSubviews() {
+    tabbar.translatesAutoresizingMaskIntoConstraints = false
+    tabScrollView.translatesAutoresizingMaskIntoConstraints = false
+    pager.view.translatesAutoresizingMaskIntoConstraints = false
+    
     switch tabbarPosition {
     case .top:
       layoutTabbarTop()
@@ -180,105 +181,60 @@ open class RGPageViewController: UIViewController {
   }
   
   private func layoutTabbarTop() {
-    tabbar.autoresizingMask = .flexibleWidth
-    tabScrollView.autoresizingMask = .flexibleWidth
-    pager.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-    
     (tabScrollView.collectionViewLayout as! UICollectionViewFlowLayout).scrollDirection = .horizontal
     
-    var barTop: CGFloat = tabbarTop
-    
-    // remove hairline image in navigation bar if attached to top
     if let navigationController = self.navigationController, !navigationController.navigationBar.isHidden {
-      barTop += 44
-      
       navigationController.navigationBar.hideHairline()
     }
     
-    tabbar.frame = tabbarHidden ? .zero : CGRect(
-      x: 0,
-      y: barTop,
-      width: view.bounds.size.width,
-      height: tabbarHeight
-    )
+    NSLayoutConstraint(item: tabbar, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1, constant: 0).isActive = true
+    NSLayoutConstraint(item: tabbar, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1, constant: 0).isActive = true
+    NSLayoutConstraint(item: tabbar, attribute: .top, relatedBy: .equal, toItem: topLayoutGuide, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
+    NSLayoutConstraint(item: tabbar, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: tabbarHeight).isActive = true
     
-    tabScrollView.frame = CGRect(
-      x: 0,
-      y: 0,
-      width: tabbar.frame.size.width,
-      height: tabbar.frame.size.height
-    )
+    NSLayoutConstraint(item: tabScrollView, attribute: .leading, relatedBy: .equal, toItem: tabbar, attribute: .leading, multiplier: 1, constant: 0).isActive = true
+    NSLayoutConstraint(item: tabScrollView, attribute: .trailing, relatedBy: .equal, toItem: tabbar, attribute: .trailing, multiplier: 1, constant: 0).isActive = true
+    NSLayoutConstraint(item: tabScrollView, attribute: .top, relatedBy: .equal, toItem: tabbar, attribute: .top, multiplier: 1, constant: 0).isActive = true
+    NSLayoutConstraint(item: tabScrollView, attribute: .bottom, relatedBy: .equal, toItem: tabbar, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
     
-    pager.view.frame = CGRect(
-      x: 0,
-      y: 0,
-      width: view.bounds.size.width,
-      height: view.bounds.size.height
-    )
+    NSLayoutConstraint(item: pager.view, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1, constant: 0).isActive = true
+    NSLayoutConstraint(item: pager.view, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1, constant: 0).isActive = true
+    NSLayoutConstraint(item: pager.view, attribute: .top, relatedBy: .equal, toItem: view, attribute: .top, multiplier: 1, constant: 0).isActive = true
+    NSLayoutConstraint(item: pager.view, attribute: .bottom, relatedBy: .equal, toItem: bottomLayoutGuide, attribute: .top, multiplier: 1, constant: 0).isActive = true
   }
   
   private func layoutTabbarBottom() {
-    tabbar.autoresizingMask = .flexibleWidth
-    tabScrollView.autoresizingMask = .flexibleWidth
-    pager.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-    
     (tabScrollView.collectionViewLayout as! UICollectionViewFlowLayout).scrollDirection = .horizontal
     
-    tabbar.frame = tabbarHidden ? .zero : CGRect(
-      x: 0,
-      y: view.bounds.size.height - tabbarHeight,
-      width: view.bounds.size.width,
-      height: tabbarHeight
-    )
+    NSLayoutConstraint(item: tabbar, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1, constant: 0).isActive = true
+    NSLayoutConstraint(item: tabbar, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1, constant: 0).isActive = true
+    NSLayoutConstraint(item: tabbar, attribute: .bottom, relatedBy: .equal, toItem: bottomLayoutGuide, attribute: .top, multiplier: 1, constant: 0).isActive = true
+    NSLayoutConstraint(item: tabbar, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: tabbarHeight).isActive = true
     
-    tabScrollView.frame = CGRect(
-      x: 0,
-      y: 0,
-      width: tabbar.frame.size.width,
-      height: tabbar.frame.size.height
-    )
+    NSLayoutConstraint(item: tabScrollView, attribute: .leading, relatedBy: .equal, toItem: tabbar, attribute: .leading, multiplier: 1, constant: 0).isActive = true
+    NSLayoutConstraint(item: tabScrollView, attribute: .trailing, relatedBy: .equal, toItem: tabbar, attribute: .trailing, multiplier: 1, constant: 0).isActive = true
+    NSLayoutConstraint(item: tabScrollView, attribute: .top, relatedBy: .equal, toItem: tabbar, attribute: .top, multiplier: 1, constant: 0).isActive = true
+    NSLayoutConstraint(item: tabScrollView, attribute: .bottom, relatedBy: .equal, toItem: tabbar, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
     
-    pager.view.frame = CGRect(
-      x: 0,
-      y: 0,
-      width: view.bounds.size.width,
-      height: view.bounds.size.height
-    )
+    NSLayoutConstraint(item: pager.view, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1, constant: 0).isActive = true
+    NSLayoutConstraint(item: pager.view, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1, constant: 0).isActive = true
+    NSLayoutConstraint(item: pager.view, attribute: .top, relatedBy: .equal, toItem: view, attribute: .top, multiplier: 1, constant: 0).isActive = true
+    NSLayoutConstraint(item: pager.view, attribute: .bottom, relatedBy: .equal, toItem: bottomLayoutGuide, attribute: .top, multiplier: 1, constant: tabbarHeight).isActive = true
   }
   
   private func layoutTabbarLeft() {
-    tabbar.autoresizingMask = .flexibleHeight
-    tabScrollView.autoresizingMask = .flexibleHeight
-    pager.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-    
     (tabScrollView.collectionViewLayout as! UICollectionViewFlowLayout).scrollDirection = .vertical
     
-    var barTop: CGFloat = 0
+    NSLayoutConstraint(item: tabbar, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1, constant: 0).isActive = true
+    NSLayoutConstraint(item: tabbar, attribute: .bottom, relatedBy: .equal, toItem: bottomLayoutGuide, attribute: .top, multiplier: 1, constant: 0).isActive = true
+    NSLayoutConstraint(item: tabbar, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: tabbarWidth).isActive = true
     
-    if tabbarStyle != .solid {
-      barTop = tabbarTop
+    if tabbarStyle == .blurred {
+      NSLayoutConstraint(item: tabbar, attribute: .top, relatedBy: .equal, toItem: topLayoutGuide, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
+    } else {
+      NSLayoutConstraint(item: tabbar, attribute: .top, relatedBy: .equal, toItem: view, attribute: .top, multiplier: 1, constant: 0).isActive = true
       
-      if let navigationController = self.navigationController, !navigationController.navigationBar.isHidden {
-        barTop += 44
-      }
-    }
-    
-    tabbar.frame = tabbarHidden ? .zero : CGRect(
-      x: 0,
-      y: barTop,
-      width: tabbarWidth,
-      height: view.bounds.size.height - barTop
-    )
-    
-    tabScrollView.frame = CGRect(
-      x: 0,
-      y: 0,
-      width: tabbar.frame.size.width,
-      height: tabbar.frame.size.height
-    )
-    
-    if tabbarStyle == .solid {
-      var scrollTop: CGFloat = tabbarTop
+      var scrollTop: CGFloat = UIApplication.shared.isStatusBarHidden ? 0 : 20
       
       if let navigationController = self.navigationController, !navigationController.navigationBar.isHidden {
         scrollTop += 44
@@ -293,47 +249,31 @@ open class RGPageViewController: UIViewController {
       tabScrollView.scrollIndicatorInsets = edgeInsets
     }
     
-    pager.view.frame = CGRect(
-      x: tabbar.frame.size.width,
-      y: 0,
-      width: view.bounds.size.width - tabbar.frame.size.width,
-      height: view.bounds.size.height
-    )
+    NSLayoutConstraint(item: tabScrollView, attribute: .leading, relatedBy: .equal, toItem: tabbar, attribute: .leading, multiplier: 1, constant: 0).isActive = true
+    NSLayoutConstraint(item: tabScrollView, attribute: .trailing, relatedBy: .equal, toItem: tabbar, attribute: .trailing, multiplier: 1, constant: 0).isActive = true
+    NSLayoutConstraint(item: tabScrollView, attribute: .top, relatedBy: .equal, toItem: tabbar, attribute: .top, multiplier: 1, constant: 0).isActive = true
+    NSLayoutConstraint(item: tabScrollView, attribute: .bottom, relatedBy: .equal, toItem: tabbar, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
+    
+    NSLayoutConstraint(item: pager.view, attribute: .leading, relatedBy: .equal, toItem: tabbar, attribute: .trailing, multiplier: 1, constant: 0).isActive = true
+    NSLayoutConstraint(item: pager.view, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1, constant: 0).isActive = true
+    NSLayoutConstraint(item: pager.view, attribute: .top, relatedBy: .equal, toItem: view, attribute: .top, multiplier: 1, constant: 0).isActive = true
+    NSLayoutConstraint(item: pager.view, attribute: .bottom, relatedBy: .equal, toItem: bottomLayoutGuide, attribute: .top, multiplier: 1, constant: 0).isActive = true
   }
   
   private func layoutTabbarRight() {
-    tabbar.autoresizingMask = .flexibleHeight
-    tabScrollView.autoresizingMask = .flexibleHeight
-    pager.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-    
     (tabScrollView.collectionViewLayout as! UICollectionViewFlowLayout).scrollDirection = .vertical
+
     
-    var barTop: CGFloat = 0
+    NSLayoutConstraint(item: tabbar, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1, constant: 0).isActive = true
+    NSLayoutConstraint(item: tabbar, attribute: .bottom, relatedBy: .equal, toItem: bottomLayoutGuide, attribute: .top, multiplier: 1, constant: 0).isActive = true
+    NSLayoutConstraint(item: tabbar, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: tabbarWidth).isActive = true
     
-    if tabbarStyle != .solid {
-      barTop = tabbarTop
+    if tabbarStyle == .blurred {
+      NSLayoutConstraint(item: tabbar, attribute: .top, relatedBy: .equal, toItem: topLayoutGuide, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
+    } else {
+      NSLayoutConstraint(item: tabbar, attribute: .top, relatedBy: .equal, toItem: view, attribute: .top, multiplier: 1, constant: 0).isActive = true
       
-      if let navigationController = self.navigationController, !navigationController.navigationBar.isHidden {
-        barTop += 44
-      }
-    }
-    
-    tabbar.frame = tabbarHidden ? .zero : CGRect(
-      x: view.bounds.size.width - tabbarWidth,
-      y: barTop,
-      width: tabbarWidth,
-      height: view.bounds.size.height - barTop
-    )
-    
-    tabScrollView.frame = CGRect(
-      x: 0,
-      y: 0,
-      width: tabbar.frame.size.width,
-      height: tabbar.frame.size.height
-    )
-    
-    if tabbarStyle == .solid {
-      var scrollTop: CGFloat = tabbarTop
+      var scrollTop: CGFloat = UIApplication.shared.isStatusBarHidden ? 0 : 20
       
       if let navigationController = self.navigationController, !navigationController.navigationBar.isHidden {
         scrollTop += 44
@@ -348,12 +288,15 @@ open class RGPageViewController: UIViewController {
       tabScrollView.scrollIndicatorInsets = edgeInsets
     }
     
-    pager.view.frame = CGRect(
-      x: 0,
-      y: 0,
-      width: view.bounds.size.width - tabbar.frame.size.width,
-      height: view.bounds.size.height
-    )
+    NSLayoutConstraint(item: tabScrollView, attribute: .leading, relatedBy: .equal, toItem: tabbar, attribute: .leading, multiplier: 1, constant: 0).isActive = true
+    NSLayoutConstraint(item: tabScrollView, attribute: .trailing, relatedBy: .equal, toItem: tabbar, attribute: .trailing, multiplier: 1, constant: 0).isActive = true
+    NSLayoutConstraint(item: tabScrollView, attribute: .top, relatedBy: .equal, toItem: tabbar, attribute: .top, multiplier: 1, constant: 0).isActive = true
+    NSLayoutConstraint(item: tabScrollView, attribute: .bottom, relatedBy: .equal, toItem: tabbar, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
+    
+    NSLayoutConstraint(item: pager.view, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1, constant: 0).isActive = true
+    NSLayoutConstraint(item: pager.view, attribute: .trailing, relatedBy: .equal, toItem: tabbar, attribute: .leading, multiplier: 1, constant: 0).isActive = true
+    NSLayoutConstraint(item: pager.view, attribute: .top, relatedBy: .equal, toItem: view, attribute: .top, multiplier: 1, constant: 0).isActive = true
+    NSLayoutConstraint(item: pager.view, attribute: .bottom, relatedBy: .equal, toItem: bottomLayoutGuide, attribute: .top, multiplier: 1, constant: 0).isActive = true
   }
   
   private func setupSelf() {
