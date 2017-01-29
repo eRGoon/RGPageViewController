@@ -112,11 +112,22 @@ open class RGPageViewController: UIViewController {
     
     if needsSetup {
       setupSelf()
+      
+      tabScrollView.layoutIfNeeded()
+      
+      let cellIsVisible = tabScrollView.indexPathsForVisibleItems.contains(where: {$0.item == currentTabIndex})
+      
+      if !cellIsVisible {
+        let indexPath = IndexPath(item: currentTabIndex, section: 0)
+        
+        switch tabbarPosition {
+        case .top, .bottom:
+          tabScrollView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: false)
+        case .left, .right:
+          tabScrollView.scrollToItem(at: indexPath, at: .centeredVertically, animated: false)
+        }
+      }
     }
-  }
-  
-  open override func viewWillAppear(_ animated: Bool) {
-    super.viewWillAppear(animated)
   }
   
   open override func viewWillDisappear(_ animated: Bool) {
@@ -463,7 +474,7 @@ open class RGPageViewController: UIViewController {
   }
   
   private func updateTabScrollPosition(at index: Int, animated: Bool) {
-    let nextIndex = index > currentTabIndex ? min(index + 1, pageCount - 1) : max(0, index - 1)
+    let nextIndex = index >= currentTabIndex ? min(index + 1, pageCount - 1) : max(0, index - 1)
     let indexPath = IndexPath(item: nextIndex, section: 0)
     let cell = tabScrollView.cellForItem(at: indexPath) ?? collectionView(tabScrollView, cellForItemAt: indexPath)
     
