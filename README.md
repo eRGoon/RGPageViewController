@@ -35,14 +35,14 @@ RGPageViewController is a custom UIPageViewController written in Swift. It is in
 
 ### [CocoaPods](https://cocoapods.org)
 
-    pod 'RGPageViewController'
+```ruby
+pod 'RGPageViewController'
+```
 
 Built this way, you should add
-
 ```swift
 import RGPageViewController
 ```
-
 to your Swift code.
 
 ### Installing Manually
