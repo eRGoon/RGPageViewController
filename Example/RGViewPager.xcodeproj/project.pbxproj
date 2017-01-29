@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		43E0C14F794CA0D75DFF971E /* Pods_RGViewPagerTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7AD2B177BC3D3653710B317 /* Pods_RGViewPagerTests.framework */; };
-		D49504335A634490442C5C25 /* Pods_RGViewPager.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AEED3F820EA109E38D711E5 /* Pods_RGViewPager.framework */; };
+		967A936C9A30456FEE7B45CA /* Pods_RGViewPagerTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CE5025E60558D0D8C9E811A /* Pods_RGViewPagerTests.framework */; };
+		E22291CE2F9ECE8B4A8F0386 /* Pods_RGViewPager.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29173971950E3C07C63A0900 /* Pods_RGViewPager.framework */; };
 		E309AD851A10B72500AD2EBD /* ExampleTopBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E309AD841A10B72500AD2EBD /* ExampleTopBarViewController.swift */; };
 		E314584C1E3D6B6A00C3F943 /* narcos_bg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E314584A1E3D6B6A00C3F943 /* narcos_bg.jpg */; };
 		E314584D1E3D6B6A00C3F943 /* narcos_poster.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E314584B1E3D6B6A00C3F943 /* narcos_poster.jpg */; };
@@ -54,10 +54,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		0AEED3F820EA109E38D711E5 /* Pods_RGViewPager.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RGViewPager.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		357170C767C017B67A0249C0 /* Pods-RGViewPager.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RGViewPager.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RGViewPager/Pods-RGViewPager.debug.xcconfig"; sourceTree = "<group>"; };
-		C7AD2B177BC3D3653710B317 /* Pods_RGViewPagerTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RGViewPagerTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		CF4A2B2023531F3CEE1FBF82 /* Pods-RGViewPagerTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RGViewPagerTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RGViewPagerTests/Pods-RGViewPagerTests.debug.xcconfig"; sourceTree = "<group>"; };
+		0923975E71C69A800164BDD5 /* Pods-RGViewPager.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RGViewPager.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RGViewPager/Pods-RGViewPager.debug.xcconfig"; sourceTree = "<group>"; };
+		29173971950E3C07C63A0900 /* Pods_RGViewPager.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RGViewPager.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		3CE5025E60558D0D8C9E811A /* Pods_RGViewPagerTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RGViewPagerTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7BB4D23AD42142A9C28FFFCD /* Pods-RGViewPagerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RGViewPagerTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-RGViewPagerTests/Pods-RGViewPagerTests.release.xcconfig"; sourceTree = "<group>"; };
+		935F452C3337E6ED303A68FE /* Pods-RGViewPager.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RGViewPager.release.xcconfig"; path = "Pods/Target Support Files/Pods-RGViewPager/Pods-RGViewPager.release.xcconfig"; sourceTree = "<group>"; };
+		D9F63F47CD6E36A34A2DF5E1 /* Pods-RGViewPagerTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RGViewPagerTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RGViewPagerTests/Pods-RGViewPagerTests.debug.xcconfig"; sourceTree = "<group>"; };
 		E309AD841A10B72500AD2EBD /* ExampleTopBarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExampleTopBarViewController.swift; sourceTree = "<group>"; };
 		E314584A1E3D6B6A00C3F943 /* narcos_bg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = narcos_bg.jpg; sourceTree = "<group>"; };
 		E314584B1E3D6B6A00C3F943 /* narcos_poster.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = narcos_poster.jpg; sourceTree = "<group>"; };
@@ -94,8 +96,6 @@
 		E3A0820F1E3E3E1700EE8563 /* ExampleUITabBarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExampleUITabBarViewController.swift; sourceTree = "<group>"; };
 		E3A082111E3E4D0800EE8563 /* SectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SectionViewController.swift; sourceTree = "<group>"; };
 		E3C19DC41BB2A77700020410 /* UIHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIHelper.swift; sourceTree = "<group>"; };
-		F8BC963D9A8A5E1193014E3F /* Pods-RGViewPager.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RGViewPager.release.xcconfig"; path = "Pods/Target Support Files/Pods-RGViewPager/Pods-RGViewPager.release.xcconfig"; sourceTree = "<group>"; };
-		F935FC5C7D35A3329770B500 /* Pods-RGViewPagerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RGViewPagerTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-RGViewPagerTests/Pods-RGViewPagerTests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,7 +103,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D49504335A634490442C5C25 /* Pods_RGViewPager.framework in Frameworks */,
+				E22291CE2F9ECE8B4A8F0386 /* Pods_RGViewPager.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -111,29 +111,18 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				43E0C14F794CA0D75DFF971E /* Pods_RGViewPagerTests.framework in Frameworks */,
+				967A936C9A30456FEE7B45CA /* Pods_RGViewPagerTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		30718E9835B6C6EE18A27A78 /* Pods */ = {
+		D77BDAF92523BA1BDE31C2D4 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				357170C767C017B67A0249C0 /* Pods-RGViewPager.debug.xcconfig */,
-				F8BC963D9A8A5E1193014E3F /* Pods-RGViewPager.release.xcconfig */,
-				CF4A2B2023531F3CEE1FBF82 /* Pods-RGViewPagerTests.debug.xcconfig */,
-				F935FC5C7D35A3329770B500 /* Pods-RGViewPagerTests.release.xcconfig */,
-			);
-			name = Pods;
-			sourceTree = "<group>";
-		};
-		9FFDE070F19793B50CDE8D20 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				0AEED3F820EA109E38D711E5 /* Pods_RGViewPager.framework */,
-				C7AD2B177BC3D3653710B317 /* Pods_RGViewPagerTests.framework */,
+				29173971950E3C07C63A0900 /* Pods_RGViewPager.framework */,
+				3CE5025E60558D0D8C9E811A /* Pods_RGViewPagerTests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -255,8 +244,8 @@
 				E3796D8E1A0E3B1700F00461 /* RGViewPager */,
 				E3796DA81A0E3B1700F00461 /* RGViewPagerTests */,
 				E3796D8D1A0E3B1700F00461 /* Products */,
-				30718E9835B6C6EE18A27A78 /* Pods */,
-				9FFDE070F19793B50CDE8D20 /* Frameworks */,
+				E8C4B7F412FA80429B1474A2 /* Pods */,
+				D77BDAF92523BA1BDE31C2D4 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -310,6 +299,17 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		E8C4B7F412FA80429B1474A2 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				0923975E71C69A800164BDD5 /* Pods-RGViewPager.debug.xcconfig */,
+				935F452C3337E6ED303A68FE /* Pods-RGViewPager.release.xcconfig */,
+				D9F63F47CD6E36A34A2DF5E1 /* Pods-RGViewPagerTests.debug.xcconfig */,
+				7BB4D23AD42142A9C28FFFCD /* Pods-RGViewPagerTests.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -317,12 +317,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = E3796DAF1A0E3B1700F00461 /* Build configuration list for PBXNativeTarget "RGViewPager" */;
 			buildPhases = (
-				E97472F9FD4C93EC92A34CC7 /* [CP] Check Pods Manifest.lock */,
+				05DCE4C66C31ED06BA21E013 /* [CP] Check Pods Manifest.lock */,
 				E3796D881A0E3B1700F00461 /* Sources */,
 				E3796D891A0E3B1700F00461 /* Frameworks */,
 				E3796D8A1A0E3B1700F00461 /* Resources */,
-				B97AA0DC4D9132CF0E9B2BE3 /* [CP] Embed Pods Frameworks */,
-				A95DC8B9AA58389BCEBA8C56 /* [CP] Copy Pods Resources */,
+				4E58248C8F63280920BD4366 /* [CP] Embed Pods Frameworks */,
+				CE3C83336EE3ADC1B4B20AA3 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -337,12 +337,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = E3796DB21A0E3B1700F00461 /* Build configuration list for PBXNativeTarget "RGViewPagerTests" */;
 			buildPhases = (
-				FAE23CB7EDA716E22DDFCEDF /* [CP] Check Pods Manifest.lock */,
+				DF65C78DB494E63D47076667 /* [CP] Check Pods Manifest.lock */,
 				E3796DA11A0E3B1700F00461 /* Sources */,
 				E3796DA21A0E3B1700F00461 /* Frameworks */,
 				E3796DA31A0E3B1700F00461 /* Resources */,
-				51579A6BCA2953B54BFADF79 /* [CP] Embed Pods Frameworks */,
-				4566F013260EBF1F02EE30E2 /* [CP] Copy Pods Resources */,
+				90E4CF5282936325D0686049 /* [CP] Embed Pods Frameworks */,
+				C58AD3AE23587F25E485E31E /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -434,67 +434,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		4566F013260EBF1F02EE30E2 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-RGViewPagerTests/Pods-RGViewPagerTests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		51579A6BCA2953B54BFADF79 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-RGViewPagerTests/Pods-RGViewPagerTests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		A95DC8B9AA58389BCEBA8C56 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-RGViewPager/Pods-RGViewPager-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		B97AA0DC4D9132CF0E9B2BE3 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-RGViewPager/Pods-RGViewPager-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		E97472F9FD4C93EC92A34CC7 /* [CP] Check Pods Manifest.lock */ = {
+		05DCE4C66C31ED06BA21E013 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -509,7 +449,67 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		FAE23CB7EDA716E22DDFCEDF /* [CP] Check Pods Manifest.lock */ = {
+		4E58248C8F63280920BD4366 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-RGViewPager/Pods-RGViewPager-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		90E4CF5282936325D0686049 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-RGViewPagerTests/Pods-RGViewPagerTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C58AD3AE23587F25E485E31E /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-RGViewPagerTests/Pods-RGViewPagerTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		CE3C83336EE3ADC1B4B20AA3 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-RGViewPager/Pods-RGViewPager-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		DF65C78DB494E63D47076667 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -620,7 +620,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -659,7 +659,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
@@ -669,7 +669,7 @@
 		};
 		E3796DB01A0E3B1700F00461 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 357170C767C017B67A0249C0 /* Pods-RGViewPager.debug.xcconfig */;
+			baseConfigurationReference = 0923975E71C69A800164BDD5 /* Pods-RGViewPager.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = RGViewPager/Info.plist;
@@ -683,7 +683,7 @@
 		};
 		E3796DB11A0E3B1700F00461 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F8BC963D9A8A5E1193014E3F /* Pods-RGViewPager.release.xcconfig */;
+			baseConfigurationReference = 935F452C3337E6ED303A68FE /* Pods-RGViewPager.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = RGViewPager/Info.plist;
@@ -697,7 +697,7 @@
 		};
 		E3796DB31A0E3B1700F00461 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = CF4A2B2023531F3CEE1FBF82 /* Pods-RGViewPagerTests.debug.xcconfig */;
+			baseConfigurationReference = D9F63F47CD6E36A34A2DF5E1 /* Pods-RGViewPagerTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -719,7 +719,7 @@
 		};
 		E3796DB41A0E3B1700F00461 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F935FC5C7D35A3329770B500 /* Pods-RGViewPagerTests.release.xcconfig */;
+			baseConfigurationReference = 7BB4D23AD42142A9C28FFFCD /* Pods-RGViewPagerTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				FRAMEWORK_SEARCH_PATHS = (

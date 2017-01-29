@@ -463,8 +463,7 @@ open class RGPageViewController: UIViewController {
   }
   
   private func updateTabScrollPosition(at index: Int, animated: Bool) {
-    var nextIndex = index > currentTabIndex ? min(index + 1, pageCount - 1) : max(0, index - 1)
-    
+    let nextIndex = index > currentTabIndex ? min(index + 1, pageCount - 1) : max(0, index - 1)
     let indexPath = IndexPath(item: nextIndex, section: 0)
     let cell = tabScrollView.cellForItem(at: indexPath) ?? collectionView(tabScrollView, cellForItemAt: indexPath)
     

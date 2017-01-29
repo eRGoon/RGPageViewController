@@ -9,7 +9,7 @@
     "Ronny Gerasch": "rg@ergoon.com"
   },
   "platforms": {
-    "ios": null
+    "ios": "8.0"
   },
   "source": {
     "path": "."
