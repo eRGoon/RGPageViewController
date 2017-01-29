@@ -23,11 +23,11 @@ RGPageViewController is a custom UIPageViewController written in Swift. It is in
 <img src="Screenshots/tabbar_right.png" width="700" title="Right Tab Bar with vertical paging">
 
 <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" width="4">
-<img src="Screenshots/tabbar_top.png" width="210" title="Top Tab Bar with horizontal paging">
-<img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" width="4">
-<img src="Screenshots/tabbar_bottom.png" width="210" title="Bottom Tab Bar with horizontal paging">
-<img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" width="4">
-<img src="Screenshots/uitabbar.png" width="210" title="UITabBar Replacement">
+<img src="Screenshots/tabbar_top.png" width="220" title="Top Tab Bar with horizontal paging">
+<img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" width="15">
+<img src="Screenshots/tabbar_bottom.png" width="220" title="Bottom Tab Bar with horizontal paging">
+<img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" width="15">
+<img src="Screenshots/uitabbar.png" width="220" title="UITabBar Replacement">
 
 ## Installation
 
