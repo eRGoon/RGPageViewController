@@ -40,12 +40,12 @@ extension RGPageViewController: UIPageViewControllerDataSource {
         var edgeInsets: UIEdgeInsets = scrollView.contentInset
         
         if tabbarPosition == .top {
-          edgeInsets.top = tabbar.frame.origin.y + tabbarHeight
+          edgeInsets.top = topLayoutGuide.length + tabbarHeight
         } else if tabbarPosition == .bottom {
-          edgeInsets.top = tabbar.frame.origin.y
+          edgeInsets.top = topLayoutGuide.length
           edgeInsets.bottom = tabbarHeight
         } else {
-          edgeInsets.top = tabbar.frame.origin.y
+          edgeInsets.top = topLayoutGuide.length
           edgeInsets.bottom = 0
         }
         

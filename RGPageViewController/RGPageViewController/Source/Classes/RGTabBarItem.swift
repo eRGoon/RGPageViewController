@@ -9,7 +9,7 @@
 import UIKit
 
 // MARK: - RGTabBarItem
-class RGTabBarItem: UIView {
+open class RGTabBarItem: UIView {
   var selected: Bool = false {
     didSet {
       setSelectedState()
@@ -21,7 +21,7 @@ class RGTabBarItem: UIView {
   var imageView: UIImageView?
   var normalColor: UIColor? = UIColor.gray
   
-  init(frame: CGRect, text: String?, image: UIImage?, color: UIColor?) {
+  public init(frame: CGRect, text: String?, image: UIImage?, color: UIColor?) {
     super.init(frame: frame)
     
     self.text = text
@@ -34,13 +34,13 @@ class RGTabBarItem: UIView {
     initSelf()
   }
   
-  override init(frame: CGRect) {
+  public override init(frame: CGRect) {
     super.init(frame: frame)
     
     initSelf()
   }
   
-  required init?(coder aDecoder: NSCoder) {
+  public required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
     
     initSelf()

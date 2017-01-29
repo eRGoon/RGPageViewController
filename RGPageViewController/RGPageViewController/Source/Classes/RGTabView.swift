@@ -9,7 +9,8 @@
 import UIKit
 
 enum RGTabOrientation {
-  case horizontal
+  case horizontalTop
+  case horizontalBottom
   case verticalLeft
   case verticalRight
 }
@@ -36,7 +37,7 @@ class RGTabView: UIView {
   }
   var indicatorHW: CGFloat = 2
   var indicatorColor: UIColor = UIColor.lightGray
-  var orientation: RGTabOrientation = .horizontal
+  var orientation: RGTabOrientation = .horizontalTop
   var style: RGTabStyle = .none
   
   init(frame: CGRect, indicatorColor: UIColor, indicatorHW: CGFloat, style: RGTabStyle, orientation: RGTabOrientation) {
@@ -71,9 +72,13 @@ class RGTabView: UIView {
       let bezierPath: UIBezierPath = UIBezierPath()
       
       switch orientation {
-      case .horizontal:
+      case .horizontalTop:
         bezierPath.move(to: CGPoint(x: 0, y: rect.height - indicatorHW / 2))
         bezierPath.addLine(to: CGPoint(x: rect.width, y: rect.height - indicatorHW / 2))
+        bezierPath.lineWidth = indicatorHW
+      case .horizontalBottom:
+        bezierPath.move(to: CGPoint(x: 0, y: indicatorHW / 2))
+        bezierPath.addLine(to: CGPoint(x: rect.width, y: indicatorHW / 2))
         bezierPath.lineWidth = indicatorHW
       case .verticalLeft:
         bezierPath.move(to: CGPoint(x: indicatorHW / 2, y: 0))

@@ -104,23 +104,40 @@ open class RGPageViewController: UIViewController {
     initTabBar()
     initTabScrollView()
     
-    view.addSubview(pager.view)
-    view.addSubview(tabbar)
-    
     layoutSubviews()
   }
   
-  open override func viewWillAppear(_ animated: Bool) {
-    super.viewWillAppear(animated)
+  open override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
     
     if needsSetup {
       setupSelf()
     }
   }
   
+  open override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+  }
+  
+  open override func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
+    
+    navigationController?.navigationBar.showHairline()
+  }
+  
   // MARK: - Functions
   private func initPager() {
     pager = UIPageViewController(transitionStyle: .scroll, navigationOrientation: pagerOrientation, options: nil)
+    
+    let pagerX: CGFloat = tabbarHidden || tabbarPosition != .left ? 0 : tabbarWidth
+    let pagerWidth: CGFloat = tabbarPosition == .top || tabbarPosition == .bottom ? view.bounds.size.width : view.bounds.size.width - (tabbarHidden ? 0 : tabbarWidth)
+    
+    pager.view.frame = CGRect(
+      x: pagerX,
+      y: 0,
+      width: pagerWidth,
+      height: view.bounds.size.height
+    )
     
     addChildViewController(pager)
     
@@ -129,6 +146,10 @@ open class RGPageViewController: UIViewController {
     
     pagerScrollView?.scrollsToTop = false
     pagerScrollView?.delegate = self
+    
+    view.addSubview(pager.view)
+    
+    pager.didMove(toParentViewController: self)
   }
   
   private func initTabBar() {
@@ -161,12 +182,13 @@ open class RGPageViewController: UIViewController {
     tabScrollView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "rgTabCell")
     
     tabbar.addSubview(tabScrollView)
+    
+    view.addSubview(tabbar)
   }
   
   private func layoutSubviews() {
     tabbar.translatesAutoresizingMaskIntoConstraints = false
     tabScrollView.translatesAutoresizingMaskIntoConstraints = false
-    pager.view.translatesAutoresizingMaskIntoConstraints = false
     
     switch tabbarPosition {
     case .top:
@@ -196,11 +218,6 @@ open class RGPageViewController: UIViewController {
     NSLayoutConstraint(item: tabScrollView, attribute: .trailing, relatedBy: .equal, toItem: tabbar, attribute: .trailing, multiplier: 1, constant: 0).isActive = true
     NSLayoutConstraint(item: tabScrollView, attribute: .top, relatedBy: .equal, toItem: tabbar, attribute: .top, multiplier: 1, constant: 0).isActive = true
     NSLayoutConstraint(item: tabScrollView, attribute: .bottom, relatedBy: .equal, toItem: tabbar, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
-    
-    NSLayoutConstraint(item: pager.view, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1, constant: 0).isActive = true
-    NSLayoutConstraint(item: pager.view, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1, constant: 0).isActive = true
-    NSLayoutConstraint(item: pager.view, attribute: .top, relatedBy: .equal, toItem: view, attribute: .top, multiplier: 1, constant: 0).isActive = true
-    NSLayoutConstraint(item: pager.view, attribute: .bottom, relatedBy: .equal, toItem: bottomLayoutGuide, attribute: .top, multiplier: 1, constant: 0).isActive = true
   }
   
   private func layoutTabbarBottom() {
@@ -215,11 +232,6 @@ open class RGPageViewController: UIViewController {
     NSLayoutConstraint(item: tabScrollView, attribute: .trailing, relatedBy: .equal, toItem: tabbar, attribute: .trailing, multiplier: 1, constant: 0).isActive = true
     NSLayoutConstraint(item: tabScrollView, attribute: .top, relatedBy: .equal, toItem: tabbar, attribute: .top, multiplier: 1, constant: 0).isActive = true
     NSLayoutConstraint(item: tabScrollView, attribute: .bottom, relatedBy: .equal, toItem: tabbar, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
-    
-    NSLayoutConstraint(item: pager.view, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1, constant: 0).isActive = true
-    NSLayoutConstraint(item: pager.view, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1, constant: 0).isActive = true
-    NSLayoutConstraint(item: pager.view, attribute: .top, relatedBy: .equal, toItem: view, attribute: .top, multiplier: 1, constant: 0).isActive = true
-    NSLayoutConstraint(item: pager.view, attribute: .bottom, relatedBy: .equal, toItem: bottomLayoutGuide, attribute: .top, multiplier: 1, constant: tabbarHeight).isActive = true
   }
   
   private func layoutTabbarLeft() {
@@ -253,11 +265,6 @@ open class RGPageViewController: UIViewController {
     NSLayoutConstraint(item: tabScrollView, attribute: .trailing, relatedBy: .equal, toItem: tabbar, attribute: .trailing, multiplier: 1, constant: 0).isActive = true
     NSLayoutConstraint(item: tabScrollView, attribute: .top, relatedBy: .equal, toItem: tabbar, attribute: .top, multiplier: 1, constant: 0).isActive = true
     NSLayoutConstraint(item: tabScrollView, attribute: .bottom, relatedBy: .equal, toItem: tabbar, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
-    
-    NSLayoutConstraint(item: pager.view, attribute: .leading, relatedBy: .equal, toItem: tabbar, attribute: .trailing, multiplier: 1, constant: 0).isActive = true
-    NSLayoutConstraint(item: pager.view, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1, constant: 0).isActive = true
-    NSLayoutConstraint(item: pager.view, attribute: .top, relatedBy: .equal, toItem: view, attribute: .top, multiplier: 1, constant: 0).isActive = true
-    NSLayoutConstraint(item: pager.view, attribute: .bottom, relatedBy: .equal, toItem: bottomLayoutGuide, attribute: .top, multiplier: 1, constant: 0).isActive = true
   }
   
   private func layoutTabbarRight() {
@@ -292,11 +299,6 @@ open class RGPageViewController: UIViewController {
     NSLayoutConstraint(item: tabScrollView, attribute: .trailing, relatedBy: .equal, toItem: tabbar, attribute: .trailing, multiplier: 1, constant: 0).isActive = true
     NSLayoutConstraint(item: tabScrollView, attribute: .top, relatedBy: .equal, toItem: tabbar, attribute: .top, multiplier: 1, constant: 0).isActive = true
     NSLayoutConstraint(item: tabScrollView, attribute: .bottom, relatedBy: .equal, toItem: tabbar, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
-    
-    NSLayoutConstraint(item: pager.view, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1, constant: 0).isActive = true
-    NSLayoutConstraint(item: pager.view, attribute: .trailing, relatedBy: .equal, toItem: tabbar, attribute: .leading, multiplier: 1, constant: 0).isActive = true
-    NSLayoutConstraint(item: pager.view, attribute: .top, relatedBy: .equal, toItem: view, attribute: .top, multiplier: 1, constant: 0).isActive = true
-    NSLayoutConstraint(item: pager.view, attribute: .bottom, relatedBy: .equal, toItem: bottomLayoutGuide, attribute: .top, multiplier: 1, constant: 0).isActive = true
   }
   
   private func setupSelf() {
@@ -320,10 +322,10 @@ open class RGPageViewController: UIViewController {
     if let tabViewContent = datasource?.tabViewForPageAtIndex(self, index: index) {
       var tabView: RGTabView
       var frame: CGRect = .zero
-      var orientation: RGTabOrientation = .horizontal
+      var orientation: RGTabOrientation = .horizontalTop
       
       switch tabbarPosition {
-      case .top, .bottom:
+      case .top:
         if let theWidth: CGFloat = delegate?.widthForTabAtIndex?(index) {
           frame = CGRect(
             x: 0,
@@ -339,6 +341,24 @@ open class RGPageViewController: UIViewController {
             height: tabbarHeight
           )
         }
+      case .bottom:
+        if let theWidth: CGFloat = delegate?.widthForTabAtIndex?(index) {
+          frame = CGRect(
+            x: 0,
+            y: 0,
+            width: theWidth,
+            height: tabbarHeight
+          )
+        } else {
+          frame = CGRect(
+            x: 0,
+            y: 0,
+            width: tabWidth,
+            height: tabbarHeight
+          )
+        }
+        
+        orientation = .horizontalBottom
       case .left:
         if let theHeight: CGFloat = delegate?.heightForTabAtIndex?(index) {
           frame = CGRect(
