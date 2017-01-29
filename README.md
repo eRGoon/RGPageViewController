@@ -1,5 +1,5 @@
 # RGPageViewController
-===
+
 RGPageViewController is a custom UIPageViewController written in Swift. It is inspired by [ICViewPager](https://github.com/iltercengiz/ICViewPager "ICViewPager") by Ilter Cengiz but with some modifications. It combines an Android-like ViewPager with the blur effect introduced in iOS7. It is fully customizable and can also be used as a replacement for UITabBar.
 
 - [Screenshots](#screenshots)
@@ -18,7 +18,6 @@ RGPageViewController is a custom UIPageViewController written in Swift. It is in
 - [License](#license)
 
 ## Screenshots
----
 
 <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" width="4">
 <img src="Screenshots/tabbar_right.png" width="700" title="Right Tab Bar with vertical paging">
@@ -31,9 +30,8 @@ RGPageViewController is a custom UIPageViewController written in Swift. It is in
 <img src="Screenshots/uitabbar.png" width="210" title="UITabBar Replacement">
 
 ## Installation
----
-### Requirements
 
+### Requirements
 
 ### [CocoaPods](https://cocoapods.org)
 
@@ -49,8 +47,8 @@ to your Swift code.
 
 ### Installing Manually
 
-Usage
----
+## Usage
+
 Subclass `RGPageViewController` and implement it's `datasource` and `delegate` methods.
 
 ```swift
@@ -135,8 +133,7 @@ optional func heightForTabAtIndex(index: Int) -> CGFloat
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the index of the tab.  
 **Returns:**&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the height for the tab at the given index.  
 
-Examples
----
+## Examples
 
 All `RGPageViewControllerDataSource` protocol methods must be implemented. All `RGPageViewControllerDelegate` protocol methods are optional.
 
@@ -169,7 +166,7 @@ func viewControllerForPageAtIndex(pageViewController: RGPageViewController, inde
     return dataViewController
 }
 ```
-#### UITabBar replacement
+### UITabBar replacement
 
 If you need something similar to a `UITabBar` but with the features of a `UIPageViewController`, change your `tabViewForPageAtIndex(pageViewController: RGPageViewController, index: Int)` and implement `heightForTabbar()` and override the default position `RGTabbarPosition.Top`.
 
@@ -201,8 +198,8 @@ func tabViewForPageAtIndex(pageViewController: RGPageViewController, index: Int)
     return tabView
 }
 ```
-#### Additional Options
-##### UIPageViewControllerNavigationOrientation
+## Additional Options
+### UIPageViewControllerNavigationOrientation
 Change the default orientation of the pageView by overriding `pagerOrientation`.    
 **Default:**&nbsp;&nbsp;&nbsp;UIPageViewControllerNavigationOrientation.Horizontal    
 **Options:**&nbsp;&nbsp;Horizontal | Vertical
@@ -214,7 +211,7 @@ override var pagerOrientation: UIPageViewControllerNavigationOrientation {
     }
 }
 ```
-##### RGTabbarPosition
+### RGTabbarPosition
 Change the default position of the Tabbar by overriding `tabbarPosition`.    
 **Default:**&nbsp;&nbsp;&nbsp;RGTabbarPosition.Top    
 **Options:**&nbsp;&nbsp;Top | Bottom | Left | Right
@@ -226,7 +223,7 @@ override var tabbarPosition: RGTabbarPosition {
     }
 }
 ```
-##### RGTabbarStyle
+### RGTabbarStyle
 Change the default style of the Tabbar by overriding `tabbarStyle`.    
 **Default:**&nbsp;&nbsp;&nbsp;RGTabbarStyle.Blurred    
 **Options:**&nbsp;&nbsp;Blurred | Solid
@@ -238,7 +235,7 @@ override var tabbarStyle: RGTabbarStyle {
     }
 }
 ```
-##### RGTabStyle
+### RGTabStyle
 Change the default style of the Tabs by overriding `tabStyle`.    
 **Default:**&nbsp;&nbsp;&nbsp;RGTabStyle.None    
 **Options:**&nbsp;&nbsp;None | InactiveFaded
@@ -252,8 +249,8 @@ override var tabStyle: RGTabStyle {
 ```
 
 
-License
----
+## License
+
 The MIT License (MIT)
 
 Copyright (c) 2014 Ronny Gerasch
