@@ -5,7 +5,7 @@ target 'RGViewPager' do
   # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
   use_frameworks!
 
-  pod 'RGPageViewController', :path => '../RGPageViewController'
+  pod 'RGPageViewController', :git => 'https://github.com/eRGoon/RGPageViewController.git', :tag => '1.0.0'
 
   target 'RGViewPagerTests' do
     inherit! :search_paths

@@ -13,7 +13,7 @@ Pod::Spec.new do |s|
   s.ios.deployment_target = '8.0'
   
   s.source = { :git => 'https://github.com/eRGoon/RGPageViewController.git', :tag => s.version }
-  s.source_files  = 'RGPageViewController/RGPageViewController', 'RGPageViewController/RGPageViewController/**/*.{h,m,swift}'
+  s.source_files  = 'RGPageViewController', 'RGPageViewController/**/*.{h,m,swift}'
   
   s.pod_target_xcconfig = { 'SWIFT_VERSION' => '3' }
 end
