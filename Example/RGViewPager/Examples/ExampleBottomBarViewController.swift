@@ -56,11 +56,11 @@ class ExampleBottomBarViewController: RGPageViewController {
 
 // MARK: - RGPageViewControllerDataSource
 extension ExampleBottomBarViewController: RGPageViewControllerDataSource {
-  func numberOfPagesForViewController(_ pageViewController: RGPageViewController) -> Int {
+  func numberOfPages(for pageViewController: RGPageViewController) -> Int {
     return movies.count
   }
   
-  func tabViewForPageAtIndex(_ pageViewController: RGPageViewController, index: Int) -> UIView {
+  func pageViewController(_ pageViewController: RGPageViewController, tabViewForPageAt index: Int) -> UIView {
     let tabView = UILabel()
     
     tabView.font = UIFont.systemFont(ofSize: 17)
@@ -72,7 +72,7 @@ extension ExampleBottomBarViewController: RGPageViewControllerDataSource {
     return tabView
   }
   
-  func viewControllerForPageAtIndex(_ pageViewController: RGPageViewController, index: Int) -> UIViewController? {
+  func pageViewController(_ pageViewController: RGPageViewController, viewControllerForPageAt index: Int) -> UIViewController? {
     if (movies.count == 0) || (index >= movies.count) {
       return nil
     }
@@ -89,7 +89,7 @@ extension ExampleBottomBarViewController: RGPageViewControllerDataSource {
 // MARK: - RGPageViewController Delegate
 extension ExampleBottomBarViewController: RGPageViewControllerDelegate {
   // use this to set a custom width for a tab
-  func widthForTabAtIndex(_ index: Int) -> CGFloat {
+  func pageViewController(_ pageViewController: RGPageViewController, widthForTabAt index: Int) -> CGFloat {
     var tabSize = (movies[index]["title"] as! String).size(attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 17)])
     
     tabSize.width += 32

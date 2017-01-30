@@ -313,7 +313,7 @@ open class RGPageViewController: UIViewController {
   }
   
   private func setupSelf() {
-    pageCount = datasource?.numberOfPagesForViewController(self) ?? 0
+    pageCount = datasource?.numberOfPages(for: self) ?? 0
     
     pageViewControllers.removeAll()
     pageViewControllers = Array<UIViewController?>(repeating: nil, count: pageCount)
@@ -330,14 +330,14 @@ open class RGPageViewController: UIViewController {
   }
   
   internal func tabViewAtIndex(_ index: Int) -> RGTabView? {
-    if let tabViewContent = datasource?.tabViewForPageAtIndex(self, index: index) {
+    if let tabViewContent = datasource?.pageViewController(self, tabViewForPageAt: index) {
       var tabView: RGTabView
       var frame: CGRect = .zero
       var orientation: RGTabOrientation = .horizontalTop
       
       switch tabbarPosition {
       case .top:
-        if let theWidth: CGFloat = delegate?.widthForTabAtIndex?(index) {
+        if let theWidth = delegate?.pageViewController?(self, widthForTabAt: index) {
           frame = CGRect(
             x: 0,
             y: 0,
@@ -353,7 +353,7 @@ open class RGPageViewController: UIViewController {
           )
         }
       case .bottom:
-        if let theWidth: CGFloat = delegate?.widthForTabAtIndex?(index) {
+        if let theWidth = delegate?.pageViewController?(self, widthForTabAt: index) {
           frame = CGRect(
             x: 0,
             y: 0,
@@ -371,7 +371,7 @@ open class RGPageViewController: UIViewController {
         
         orientation = .horizontalBottom
       case .left:
-        if let theHeight: CGFloat = delegate?.heightForTabAtIndex?(index) {
+        if let theHeight = delegate?.pageViewController?(self, heightForTabAt: index) {
           frame = CGRect(
             x: 0,
             y: 0,
@@ -389,7 +389,7 @@ open class RGPageViewController: UIViewController {
         
         orientation = .verticalLeft
       case .right:
-        if let theHeight: CGFloat = delegate?.heightForTabAtIndex?(index) {
+        if let theHeight = delegate?.pageViewController?(self, heightForTabAt: index) {
           frame = CGRect(
             x: 0,
             y: 0,
@@ -443,7 +443,7 @@ open class RGPageViewController: UIViewController {
       currentPageIndex = index
     }
     
-    delegate?.didChangePageToIndex?(index)
+    delegate?.pageViewController?(self, didChangePageTo: index)
   }
   
   private func updateTabIndex(_ index: Int, animated: Bool) {
@@ -554,7 +554,7 @@ open class RGPageViewController: UIViewController {
   }
   
   open func reloadData() {
-    pageCount = datasource?.numberOfPagesForViewController(self) ?? 0
+    pageCount = datasource?.numberOfPages(for: self) ?? 0
     
     pageViewControllers.removeAll()
     pageViewControllers = Array<UIViewController?>(repeating: nil, count: pageCount)

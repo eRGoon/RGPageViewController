@@ -30,10 +30,11 @@ RGPageViewController is a custom UIPageViewController written in Swift. It is in
 <img src="Screenshots/uitabbar.png" width="220" title="UITabBar Replacement">
 
 ## Installation
-
 ### Requirements
+- Xcode 8
+- [CocoaPods](https://cocoapods.org)
 
-### [CocoaPods](https://cocoapods.org)
+### CocoaPods
 
 ```ruby
 pod 'RGPageViewController'
@@ -46,6 +47,8 @@ import RGPageViewController
 to your Swift code.
 
 ### Installing Manually
+
+The version available through CocoaPods is written in Swift 3. However, if you still use an older version of Swift, just import [`RGPageViewController.swift`](https://github.com/eRGoon/RGPageViewController/blob/master/RGPageViewController.swift) into your project. Ther is also a version for for Swift 3, if you prefer not to use CocoaPods [`RGPageViewController3.swift`](https://github.com/eRGoon/RGPageViewController/blob/master/RGPageViewController3.swift). These versions are deprecated and will not get any future updates.
 
 ## Usage
 
@@ -69,83 +72,91 @@ class MainViewController: RGPageViewController, RGPageViewControllerDataSource, 
 
 ### RGPageViewControllerDataSource
 ```swift
-func numberOfPagesForViewController(pageViewController: RGPageViewController) -> Int
+func numberOfPages(for pageViewController: RGPageViewController) -> Int
 ```
 **Description:**&nbsp;&nbsp;Asks the datasource about the number of pages.  
 **Parameters:**&nbsp;&nbsp;`pageViewController`  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the RGPageViewController instance that's subject to.  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the `RGPageViewController instance.  
 **Returns:**&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the total number of pages.  
 
 ```swift
-func tabViewForPageAtIndex(pageViewController: RGPageViewController, index: Int) -> UIView
+func pageViewController(_ pageViewController: RGPageViewController, tabViewForPageAt index: Int) -> UIView
 ```
 **Description:**&nbsp;&nbsp;Asks the datasource to give a view to display as a tab item.  
 **Parameters:**&nbsp;&nbsp;`pageViewController`  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the RGPageViewController instance that's subject to.  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the `RGPageViewController` instance.  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`index`  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the index of the tab whose view is asked.  
-**Returns:**&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a UIView instance that will be shown as tab at the given index.  
+**Returns:**&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a `UIView instance that will be shown as tab at the given index.  
 
 ```swift
-func viewControllerForPageAtIndex(pageViewController: RGPageViewController, index: Int) -> UIViewController?
+func pageViewController(_ pageViewController: RGPageViewController, viewControllerForPageAt index: Int) -> UIViewController?
 ```
 **Description:**&nbsp;&nbsp;Asks the datasource to give a ViewController to display as a page.  
 **Parameters:**&nbsp;&nbsp;`pageViewController`  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the RGPageViewController instance that's subject to.  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the `RGPageViewController` instance.  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`index`  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the index of the content whose view is asked.  
-**Returns:**&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a UIViewController instance whose view will be shown as content at the given index.  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the index of the content whose ViewController is asked.  
+**Returns:**&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a `UIViewController instance whose view will be shown as content at the given index.  
 
 ### RGPageViewControllerDelegate
 ```swift
-optional func willChangePageToIndex(index: Int, fromIndex from: Int)
+optional func pageViewController(_ pageViewController: RGPageViewController, willChangePageTo index: Int, fromIndex from: Int)
 ```
 **Description:**&nbsp;&nbsp;Delegate objects can implement this method if they want to be informed when a page  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;is about to change.  
-**Parameters:**&nbsp;&nbsp;`index`  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the index of the new page.  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`from`  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the index of the old page. 
-
-```swift
-optional func didChangePageToIndex(index: Int)
-```
-**Description:**&nbsp;&nbsp;Delegate objects can implement this method if they want to be informed when a page  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;changed.  
-**Parameters:**&nbsp;&nbsp;`index`  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;is about to become visible.  
+**Parameters:**&nbsp;&nbsp;`pageViewController`  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the `RGPageViewController` instance.  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`index`  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the index of the next page.  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`fromIndex`  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the index of the current page. 
 
 ```swift
-optional func widthForTabAtIndex(index: Int) -> CGFloat
+optional func pageViewController(_ pageViewController: RGPageViewController, didChangePageTo index: Int)
+```
+**Description:**&nbsp;&nbsp;Delegate objects can implement this method if they want to be informed when a page  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;became visible.  
+**Parameters:**&nbsp;&nbsp;`pageViewController`  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the `RGPageViewController` instance.  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`index`  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the index of the current page. 
+
+```swift
+optional func pageViewController(_ pageViewController: RGPageViewController, widthForTabAt index: Int) -> CGFloat
 ```
 **Description:**&nbsp;&nbsp;Delegate objects can implement this method if tabs use dynamic width  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;or to overwrite the default width for tabs.  
-**Parameters:**&nbsp;&nbsp;`index`  
+**Parameters:**&nbsp;&nbsp;`pageViewController`  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the `RGPageViewController` instance.  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`index`  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the index of the tab.  
 **Returns:**&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the width for the tab at the given index.  
 
 ```swift
-optional func heightForTabAtIndex(index: Int) -> CGFloat
+optional func pageViewController(_ pageViewController: RGPageViewController, heightForTabAt index: Int) -> CGFloat
 ```
 **Description:**&nbsp;&nbsp;Delegate objects can implement this method if tabs use dynamic height  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;or to overwrite the default height for tabs.  
-**Parameters:**&nbsp;&nbsp;`index`  
+**Parameters:**&nbsp;&nbsp;`pageViewController`  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the `RGPageViewController` instance.  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`index`  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the index of the tab.  
 **Returns:**&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the height for the tab at the given index.  
 
 ## Examples
 
-All `RGPageViewControllerDataSource` protocol methods must be implemented. All `RGPageViewControllerDelegate` protocol methods are optional.
+All `RGPageViewControllerDataSource` methods must be implemented. All `RGPageViewControllerDelegate` methods are optional.
 
 ### Basic Configuration
 ```swift
 // MARK: - RGPageViewController Data Source
-func numberOfPagesForViewController(pageViewController: RGPageViewController) -> Int {
+func numberOfPages(for pageViewController: RGPageViewController) -> Int {
     // return the total number of pages
     return self.tabTitles.count
 }
     
-func tabViewForPageAtIndex(pageViewController: RGPageViewController, index: Int) -> UIView {
+func pageViewController(_ pageViewController: RGPageViewController, tabViewForPageAt index: Int) -> UIView {
     // return a simple label for the tab view
     let title: String = self.tabTitles.objectAtIndex(index) as String
     let label: UILabel = UILabel()
@@ -157,7 +168,7 @@ func tabViewForPageAtIndex(pageViewController: RGPageViewController, index: Int)
     return label
 }
     
-func viewControllerForPageAtIndex(pageViewController: RGPageViewController, index: Int) -> UIViewController? {
+func pageViewController(_ pageViewController: RGPageViewController, viewControllerForPageAt index: Int) -> UIViewController? {
     // Create a new view controller and pass suitable data.
     let dataViewController = self.storyboard!.instantiateViewControllerWithIdentifier("DataViewController") as DataViewController
         
@@ -168,29 +179,25 @@ func viewControllerForPageAtIndex(pageViewController: RGPageViewController, inde
 ```
 ### UITabBar replacement
 
-If you need something similar to a `UITabBar` but with the features of a `UIPageViewController`, change your `tabViewForPageAtIndex(pageViewController: RGPageViewController, index: Int)` and implement `heightForTabbar()` and override the default position `RGTabbarPosition.Top`.
+If you need something similar to a `UITabBar` but with the features of a `UIPageViewController`, change your `pageViewController(_ pageViewController: RGPageViewController, tabViewForPageAt index: Int) -> UIView` and implement `pageViewController(_ pageViewController: RGPageViewController, heightForTabAt index: Int) -> CGFloat` and override the default position `RGTabbarPosition.Top`.
 
 ```swift
 // MARK: - RGTabbarPosition
 override var tabbarPosition: RGTabbarPosition {
-    get {
-        return .Bottom
-    }
+    return .bottom
 }
 
 // MARK: - TabbarHeight
 override var tabbarHeight: CGFloat {
-    get {
-        return 49
-    }
+    return 49
 }
 
 // MARK: - RGPageViewController Data Source
-func tabViewForPageAtIndex(pageViewController: RGPageViewController, index: Int) -> UIView {
+func pageViewController(_ pageViewController: RGPageViewController, tabViewForPageAt index: Int) -> UIView {
     let title: String = self.tabTitles.objectAtIndex(index) as String
     // create a RGTabBarItem and pass a title, an image and a color
     // the color will be used for tinting image and text
-    let tabView: RGTabBarItem = RGTabBarItem(frame: CGRectMake(0.0, 0.0, self.view.bounds.width / 6.0, 49.0), text: title, image: UIImage(named: "Grid"), color: nil)
+    let tabView: RGTabBarItem = RGTabBarItem(frame: CGRect(x: 0, y: 0, width: view.bounds.width / 6, height: 49), text: title, image: UIImage(named: "your_image"), color: nil)
     
     // if you want to adjust the color for selected state of the item, adjust the tintColor
     tabView.tintColor = UIColor.redColor()
@@ -200,51 +207,110 @@ func tabViewForPageAtIndex(pageViewController: RGPageViewController, index: Int)
 ```
 ## Additional Options
 ### UIPageViewControllerNavigationOrientation
-Change the default orientation of the pageView by overriding `pagerOrientation`.    
-**Default:**&nbsp;&nbsp;&nbsp;UIPageViewControllerNavigationOrientation.Horizontal    
-**Options:**&nbsp;&nbsp;Horizontal | Vertical
+Change the default orientation of the pageView.    
+**Default:**&nbsp;&nbsp;&nbsp;`UIPageViewControllerNavigationOrientation.horizontal`    
+**Options:**&nbsp;&nbsp;`horizontal` | `vertical`
 ```swift
 // MARK: - UIPageViewControllerNavigationOrientation
 override var pagerOrientation: UIPageViewControllerNavigationOrientation {
-    get {
-        return .Vertical
-    }
+    return .vertical
 }
 ```
 ### RGTabbarPosition
-Change the default position of the Tabbar by overriding `tabbarPosition`.    
-**Default:**&nbsp;&nbsp;&nbsp;RGTabbarPosition.Top    
-**Options:**&nbsp;&nbsp;Top | Bottom | Left | Right
+Change the default position of the Tabbar.    
+**Default:**&nbsp;&nbsp;&nbsp;`RGTabbarPosition.top`    
+**Options:**&nbsp;&nbsp;`top` | `bottom` | `left` | `right`
 ```swift
 // MARK: - RGTabbarPosition
 override var tabbarPosition: RGTabbarPosition {
-    get {
-        return .Left
-    }
+    return .left
 }
 ```
 ### RGTabbarStyle
-Change the default style of the Tabbar by overriding `tabbarStyle`.    
-**Default:**&nbsp;&nbsp;&nbsp;RGTabbarStyle.Blurred    
-**Options:**&nbsp;&nbsp;Blurred | Solid
+Change the default style of the Tabbar.    
+**Default:**&nbsp;&nbsp;&nbsp;`RGTabbarStyle.blurred`    
+**Options:**&nbsp;&nbsp;`blurred` | `solid`
 ```swift
 // MARK: - RGTabbarStyle
 override var tabbarStyle: RGTabbarStyle {
-    get {
-        return .Solid
-    }
+    return .solid
 }
 ```
 ### RGTabStyle
-Change the default style of the Tabs by overriding `tabStyle`.    
-**Default:**&nbsp;&nbsp;&nbsp;RGTabStyle.None    
-**Options:**&nbsp;&nbsp;None | InactiveFaded
+Change the default style of the Tabs.    
+**Default:**&nbsp;&nbsp;&nbsp;`RGTabStyle.none`    
+**Options:**&nbsp;&nbsp;`none` | `inactiveFaded`
 ```swift
 // MARK: - RGTabStyle
 override var tabStyle: RGTabStyle {
-    get {
-        return .InactiveFaded
-    }
+    return .inactiveFaded
+}
+```
+### tabWidth
+Change the default width for all tabs.    
+**Default:**&nbsp;&nbsp;&nbsp;`UIScreen.main.bounds.size.width / 3`    
+```swift
+override var tabWidth: CGFloat {
+    return UIScreen.main.bounds.size.width / 6
+}
+```
+### tabbarWidth
+Change the default width for the tabbar.    
+This is only applied for vertical tabbars.    
+**Default:**&nbsp;&nbsp;&nbsp;`100`
+```swift
+override var tabbarWidth: CGFloat {
+    return 140
+}
+```
+### tabbarHeight
+Change the default height for the tabbar.    
+This is only applied for horizontal tabbars.    
+**Default:**&nbsp;&nbsp;&nbsp;`38`
+```swift
+override var tabbarHeight: CGFloat {
+    return 49
+}
+```
+### tabIndicatorWidthOrHeight
+Change the width or height of the tab indicator.    
+**Default:**&nbsp;&nbsp;&nbsp;`2`
+```swift
+override var tabIndicatorWidthOrHeight: CGFloat {
+    return 0
+}
+```
+### barTintColor
+Change the tint color of the tabbar.    
+**Default:**&nbsp;&nbsp;&nbsp;`nil`
+```swift
+override var barTintColor: UIColor {
+    return navigationController?.navigationBar.barTintColor
+}
+```
+### tabIndicatorColor
+Change the color of the tab indicator.    
+**Default:**&nbsp;&nbsp;&nbsp;`UIColor.lightGray`
+```swift
+override var tabIndicatorColor: UIColor {
+    return UIColor.white
+}
+```
+### tabMargin
+Add additional margin between each tab.    
+This also applies half of the amount as additional margin before the first amd after the last tab.    
+**Default:**&nbsp;&nbsp;&nbsp;`0`
+```swift
+override var tabMargin: CGFloat {
+    return 16
+}
+```
+### tabbarHidden
+Hide the tabbar completely.    
+**Default:**&nbsp;&nbsp;&nbsp;`false`
+```swift
+override var tabbarHidden: Bool {
+    return true
 }
 ```
 

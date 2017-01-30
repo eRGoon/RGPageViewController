@@ -60,11 +60,11 @@ class ExampleRightBarViewController: RGPageViewController {
 
 // MARK: - RGPageViewControllerDataSource
 extension ExampleRightBarViewController: RGPageViewControllerDataSource {
-  func numberOfPagesForViewController(_ pageViewController: RGPageViewController) -> Int {
+  func numberOfPages(for pageViewController: RGPageViewController) -> Int {
     return movies.count
   }
   
-  func tabViewForPageAtIndex(_ pageViewController: RGPageViewController, index: Int) -> UIView {
+  func pageViewController(_ pageViewController: RGPageViewController, tabViewForPageAt index: Int) -> UIView {
     let tabView = UIImageView(frame: CGRect(x: 0, y: 0, width: 115, height: 164))
     let imageName: String = movies[index]["image"] as! String
     
@@ -76,7 +76,7 @@ extension ExampleRightBarViewController: RGPageViewControllerDataSource {
     return tabView
   }
   
-  func viewControllerForPageAtIndex(_ pageViewController: RGPageViewController, index: Int) -> UIViewController? {
+  func pageViewController(_ pageViewController: RGPageViewController, viewControllerForPageAt index: Int) -> UIViewController? {
     if (movies.count == 0) || (index >= movies.count) {
       return nil
     }
@@ -94,7 +94,7 @@ extension ExampleRightBarViewController: RGPageViewControllerDataSource {
 extension ExampleRightBarViewController: RGPageViewControllerDelegate {
   // use this to set a custom height for a tab
   // this is only used for vertical paging
-  func heightForTabAtIndex(_ index: Int) -> CGFloat {
+  func pageViewController(_ pageViewController: RGPageViewController, heightForTabAt index: Int) -> CGFloat {
     return 164.0
   }
 }

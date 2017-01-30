@@ -10,26 +10,26 @@ import Foundation
 
 // MARK: - RGPageViewControllerData Source
 @objc public protocol RGPageViewControllerDataSource {
-  /// Asks dataSource how many pages will there be.
+  /// Asks the dataSource about the number of page.
   ///
-  /// - parameter pageViewController: the RGPageViewController instance that's subject to
+  /// - parameter pageViewController: the `RGPageViewController` instance.
   ///
   /// - returns: the total number of pages
-  func numberOfPagesForViewController(_ pageViewController: RGPageViewController) -> Int
+  func numberOfPages(for pageViewController: RGPageViewController) -> Int
   
-  /// Asks dataSource to give a view to display as a tab item.
+  /// Asks the dataSource for a view to display as a tab item.
   ///
-  /// - parameter pageViewController: the RGPageViewController instance that's subject to
-  /// - parameter index: the index of the tab whose view is asked
+  /// - parameter pageViewController: the `RGPageViewController` instance.
+  /// - parameter index: the index of the tab whose view is asked.
   ///
-  /// - returns: a UIView instance that will be shown as tab at the given index
-  func tabViewForPageAtIndex(_ pageViewController: RGPageViewController, index: Int) -> UIView
+  /// - returns: a `UIView` instance that will be shown as tab at the given index.
+  func pageViewController(_ pageViewController: RGPageViewController, tabViewForPageAt index: Int) -> UIView
   
-  /// The content for any tab. Return a UIViewController instance and RGPageViewController will use its view to show as content.
+  /// Asks the datasource to give a ViewController to display as a page.
   ///
-  /// - parameter pageViewController: the RGPageViewController instance that's subject to
-  /// - parameter index: the index of the content whose view is asked
+  /// - parameter pageViewController: the `RGPageViewController` instance.
+  /// - parameter index: the index of the content whose ViewController is asked.
   ///
-  /// - returns: a UIViewController instance whose view will be shown as content
-  func viewControllerForPageAtIndex(_ pageViewController: RGPageViewController, index: Int) -> UIViewController?
+  /// - returns: a `UIViewController` instance whose view will be shown as content.
+  func pageViewController(_ pageViewController: RGPageViewController, viewControllerForPageAt index: Int) -> UIViewController?
 }

@@ -35,7 +35,7 @@ extension RGPageViewController: UIPageViewControllerDataSource {
       return nil
     }
     
-    if pageViewControllers[index] == nil, let viewController = datasource?.viewControllerForPageAtIndex(self, index: index) {
+    if pageViewControllers[index] == nil, let viewController = datasource?.pageViewController(self, viewControllerForPageAt: index) {
       if let scrollView = viewController.view.subviews.first as? UIScrollView {
         var edgeInsets: UIEdgeInsets = scrollView.contentInset
         

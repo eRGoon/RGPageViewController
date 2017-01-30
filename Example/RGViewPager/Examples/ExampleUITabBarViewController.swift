@@ -22,7 +22,7 @@ class ExampleUITabBarViewController: RGPageViewController {
     return navigationController?.navigationBar.barTintColor
   }
   
-  var titles = [
+  fileprivate let titles = [
     "Playlists",
     "Favorites",
     "Movies",
@@ -30,7 +30,7 @@ class ExampleUITabBarViewController: RGPageViewController {
     "Photos",
     "TV Shows"
   ]
-  let icons = [
+  fileprivate let icons = [
     "lists",
     "favorites",
     "movies",
@@ -50,11 +50,11 @@ class ExampleUITabBarViewController: RGPageViewController {
 
 // MARK: - RGPageViewControllerDataSource
 extension ExampleUITabBarViewController: RGPageViewControllerDataSource {
-  func numberOfPagesForViewController(_ pageViewController: RGPageViewController) -> Int {
-    return 6
+  func numberOfPages(for pageViewController: RGPageViewController) -> Int {
+    return titles.count
   }
   
-  func tabViewForPageAtIndex(_ pageViewController: RGPageViewController, index: Int) -> UIView {
+  func pageViewController(_ pageViewController: RGPageViewController, tabViewForPageAt index: Int) -> UIView {
     let title: String = titles[index]
     let tabView: RGTabBarItem = RGTabBarItem(frame: CGRect(x: 0, y: 0, width: view.bounds.width / 6, height: 49), text: title, image: UIImage(named: icons[index]), color: nil)
     
@@ -63,7 +63,7 @@ extension ExampleUITabBarViewController: RGPageViewControllerDataSource {
     return tabView
   }
   
-  func viewControllerForPageAtIndex(_ pageViewController: RGPageViewController, index: Int) -> UIViewController? {
+  func pageViewController(_ pageViewController: RGPageViewController, viewControllerForPageAt index: Int) -> UIViewController? {
     if (titles.count == 0) || (index >= titles.count) {
       return nil
     }
@@ -81,7 +81,7 @@ extension ExampleUITabBarViewController: RGPageViewControllerDataSource {
 // MARK: - RGPageViewController Delegate
 extension ExampleUITabBarViewController: RGPageViewControllerDelegate {
   // use this to set a custom width for a tab
-  func widthForTabAtIndex(_ index: Int) -> CGFloat {
+  func pageViewController(_ pageViewController: RGPageViewController, widthForTabAt index: Int) -> CGFloat {
     return view.bounds.size.width / 6
   }
 }

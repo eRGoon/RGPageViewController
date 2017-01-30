@@ -14,13 +14,13 @@ extension RGPageViewController: UICollectionViewDelegateFlowLayout {
     
     switch tabbarPosition {
     case .top, .bottom:
-      if let theWidth: CGFloat = delegate?.widthForTabAtIndex?(indexPath.row) {
+      if let theWidth = delegate?.pageViewController?(self, widthForTabAt: indexPath.row) {
         return CGSize(width: theWidth, height: tabbarHeight)
       } else {
         return CGSize(width: tabWidth, height: tabbarHeight)
       }
     case .left, .right:
-      if let theHeight: CGFloat = delegate?.heightForTabAtIndex?(indexPath.row) {
+      if let theHeight = delegate?.pageViewController?(self, heightForTabAt: indexPath.row) {
         return CGSize(width: tabbarWidth, height: theHeight)
       } else {
         return CGSize(width: tabbarWidth, height: tabbarWidth)
